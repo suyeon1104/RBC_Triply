@@ -11,13 +11,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-	
+
 	private final MemberRepository memberRepo;
 
 	public MemberController(MemberRepository memberRepo) {
 		this.memberRepo = memberRepo;
 	}
-	
+
 	@Operation(summary = "회원 저장")
 	@PostMapping("/save")
 	public String save() {
