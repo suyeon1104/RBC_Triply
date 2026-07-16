@@ -1,6 +1,7 @@
 package com.triply.global.config;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.triply.global.jwt.JwtAuthFilter;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -47,9 +48,12 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 				// URL 권한 설정
-				.authorizeHttpRequests(
-						auth -> auth.requestMatchers("/api-server/v1/auth/**", "/swagger/**", "/api-docs/**")
-								.permitAll().anyRequest().authenticated());
+				.authorizeHttpRequests(auth -> auth
+//						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger")
+//						.requestMatchers("/**")
+						.requestMatchers("/api-server/v1/auth/**", "/swagger-ui/**", "/swagger-ui.html",
+								"/v3/api-docs/**", "/v3/api-docs", "/api-docs/**")
+						.permitAll().anyRequest().authenticated());
 
 		// JWT 검사 필터 추가
 		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
