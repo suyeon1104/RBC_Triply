@@ -1,0 +1,17 @@
+package com.triply.user;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class UserEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	private String name;
+
+	private Integer age;
+}

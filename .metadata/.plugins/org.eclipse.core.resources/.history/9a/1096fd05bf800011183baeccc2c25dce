@@ -1,0 +1,8 @@
+package com.triply.user;
+
+@Tag(name = "회원관리", description = "회원 CRUD API")
+@RestController
+@RequestMapping("/member")
+public class MemberController {
+
+}

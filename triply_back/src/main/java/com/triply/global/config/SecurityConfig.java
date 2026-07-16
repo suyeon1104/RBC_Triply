@@ -1,6 +1,7 @@
 package com.triply.global.config;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -17,106 +18,68 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.triply.global.jwt.JwtAuthFilter;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+	private final JwtAuthFilter jwtAuthFilter;
 
+	// 비밀번호 암호화 BCrypt
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    // 비밀번호 암호화 BCrypt
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	// Spring Security 설정
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+		http
+				// CORS 허용
+				.cors(cors -> Customizer.withDefaults())
 
-    // Spring Security 설정
-    @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
+				// CSRF 비활성화 (JWT 사용)
+				.csrf(csrf -> csrf.disable())
 
-        http
-                // CORS 허용
-                .cors(cors -> Customizer.withDefaults())
+				// 세션 사용 안 함 (JWT 방식)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // CSRF 비활성화 (JWT 사용)
-                .csrf(csrf -> csrf.disable())
+				// URL 권한 설정
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api-server/v1/auth/**", "/swagger", "/swagger-ui.html", "/swagger-ui/**",
+								"/v3/api-docs/**")
+						.permitAll()
 
-                // 세션 사용 안 함 (JWT 방식)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
+						.anyRequest().authenticated());
 
-                // URL 권한 설정
-                .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers(
-                                        "/auth/**",
-                                        "/swagger",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**"
-                                )
-                                .permitAll()
+		// JWT 검사 필터 추가
+		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                                .anyRequest()
-                                .authenticated()
-                );
+		return http.build();
+	}
 
+	// React CORS 설정
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
 
-        // JWT 검사 필터 추가
-        http.addFilterBefore(
-                jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+		CorsConfiguration config = new CorsConfiguration();
 
+		// 그냥 react 서버 주소넣으면됨
+		config.setAllowedOrigins(List.of("http://localhost:5173"));
 
-        return http.build();
-    }
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
 
+		config.setAllowedHeaders(List.of("*"));
 
-    // React CORS 설정
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+		config.setAllowCredentials(true);
 
-        CorsConfiguration config = new CorsConfiguration();
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        // 그냥 react 서버 주소넣으면됨
-        config.setAllowedOrigins(
-                List.of("http://localhost:5173")
-        );
+		source.registerCorsConfiguration("/**", config);
 
-        config.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "PATCH",
-                        "DELETE"
-                )
-        );
-
-        config.setAllowedHeaders(
-                List.of("*")
-        );
-
-        config.setAllowCredentials(true);
-
-
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration(
-                "/**",
-                config
-        );
-
-        return source;
-    }
+		return source;
+	}
 }
