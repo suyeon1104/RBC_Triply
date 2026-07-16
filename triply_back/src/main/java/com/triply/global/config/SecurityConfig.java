@@ -24,99 +24,58 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthFilter jwtAuthFilter;
+	private final JwtAuthFilter jwtAuthFilter;
 
+	// 비밀번호 암호화 BCrypt
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    // 비밀번호 암호화 BCrypt
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	// Spring Security 설정
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+		http
+				// CORS 허용
+				.cors(cors -> Customizer.withDefaults())
 
-    // Spring Security 설정
-    @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
+				// CSRF 비활성화 (JWT 사용)
+				.csrf(csrf -> csrf.disable())
 
-        http
-                // CORS 허용
-                .cors(cors -> Customizer.withDefaults())
+				// 세션 사용 안 함 (JWT 방식)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // CSRF 비활성화 (JWT 사용)
-                .csrf(csrf -> csrf.disable())
+				// URL 권한 설정
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers("/api-server/v1/auth/**", "/swagger/**", "/api-docs/**")
+								.permitAll().anyRequest().authenticated());
 
-                // 세션 사용 안 함 (JWT 방식)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
+		// JWT 검사 필터 추가
+		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                // URL 권한 설정
-                .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers(
-                                        "/auth/**",
-                                        "/swagger",
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**"
-                                )
-                                .permitAll()
+		return http.build();
+	}
 
-                                .anyRequest()
-                                .authenticated()
-                );
+	// React CORS 설정
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
 
+		CorsConfiguration config = new CorsConfiguration();
 
-        // JWT 검사 필터 추가
-        http.addFilterBefore(
-                jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
+		// 그냥 react 서버 주소넣으면됨
+		config.setAllowedOrigins(List.of("http://localhost:5173"));
 
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE"));
 
-        return http.build();
-    }
+		config.setAllowedHeaders(List.of("*"));
 
+		config.setAllowCredentials(true);
 
-    // React CORS 설정
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        CorsConfiguration config = new CorsConfiguration();
+		source.registerCorsConfiguration("/**", config);
 
-        // 그냥 react 서버 주소넣으면됨
-        config.setAllowedOrigins(
-                List.of("http://localhost:5173")
-        );
-
-        config.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "PATCH",
-                        "DELETE"
-                )
-        );
-
-        config.setAllowedHeaders(
-                List.of("*")
-        );
-
-        config.setAllowCredentials(true);
-
-
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration(
-                "/**",
-                config
-        );
-
-        return source;
-    }
+		return source;
+	}
 }
