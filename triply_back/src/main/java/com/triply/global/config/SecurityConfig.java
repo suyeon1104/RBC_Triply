@@ -48,12 +48,9 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 				// URL 권한 설정
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api-server/v1/auth/**", "/swagger", "/swagger-ui.html", "/swagger-ui/**",
-								"/v3/api-docs/**")
-						.permitAll()
-
-						.anyRequest().authenticated());
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers("/api-server/v1/auth/**", "/swagger/**", "/api-docs/**")
+								.permitAll().anyRequest().authenticated());
 
 		// JWT 검사 필터 추가
 		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
