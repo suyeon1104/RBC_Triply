@@ -1,7 +1,5 @@
 package com.triply.user;
 
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +24,7 @@ public class UserController {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
-	private final JwtProvider tokenProvider;
+	final private JwtProvider tokenProvider;
 
 	@Operation(summary = "회원가입")
 	@PostMapping("/auth/join")
@@ -60,15 +58,6 @@ public class UserController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-	}
-
-	@Operation(summary = "전화번호 본인확인")
-	@GetMapping("/auth/phoneCheck")
-	public ResponseEntity<?> checkPhone() {
-
-		int code = (int) (Math.random() * 900000) + 100000;
-
-		return ResponseEntity.ok().body(Map.of("code", code));
 	}
 
 	@Operation(summary = "로그인")
@@ -116,28 +105,6 @@ public class UserController {
 			// 응답용
 			UserDto responseUserDTO = UserDto.builder().userName(user.getUserName()).loginId(user.getLoginId())
 					.userPhone(user.getUserPhone()).result(true).msg("회원정보 수정이 완료되었습니다").build();
-
-			return ResponseEntity.ok().body(responseUserDTO);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-
-	}
-
-	@Operation(summary = "비밀번호 변경")
-	@PatchMapping("/patchPw")
-	public ResponseEntity<?> patchPw(@RequestBody PatchPwDto patchPwDto, @AuthenticationPrincipal Long userId) {
-		try {
-			UserEntity userEntity = userService.getByCredentialsPw(patchPwDto.getUserPw(), userId);
-			UserDto responseUserDTO;
-			if (userEntity != null) {
-				// 현재 비밀번호 일치 확인 후 비밀번호 수정
-				UserDto user = UserDto.builder().loginPw(passwordEncoder.encode(patchPwDto.getNewUserPw())).build();
-				UserEntity updateUser = userService.updateUserPw(user, userId);
-				responseUserDTO = UserDto.builder().result(true).msg("비밀번호 수정이 완료되었습니다").build();
-			} else {
-				responseUserDTO = UserDto.builder().result(false).msg("현재 비밀번호가 일치하지 않습니다").build();
-			}
 
 			return ResponseEntity.ok().body(responseUserDTO);
 		} catch (Exception e) {
