@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+<<<<<<< HEAD
 	<list key="installedFeatures">
 		<item value="org.eclipse.buildship:3.1.11.v20250904-1000"/>
 		<item value="org.eclipse.egit.gitflow.feature:7.7.0.202606012155-r"/>
@@ -38,6 +39,10 @@
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
 			<item value=""/>
 		</list>
+=======
+<<<<<<< HEAD
+	<section name="ExternalProjectImportWizard">
+>>>>>>> 4b2609019d81af640e84249e696946d1deba0335
 		<section name="ExternalProjectImportWizard.dialogBounds">
 			<item key="DIALOG_X_ORIGIN" value="530"/>
 			<item key="DIALOG_Y_ORIGIN" value="76"/>
@@ -45,13 +50,24 @@
 			<item key="DIALOG_HEIGHT" value="744"/>
 			<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
 		</section>
+<<<<<<< HEAD
 	</section>
 	<section name="ChooseWorkspaceDialogSettings">
 		<item key="DIALOG_X_ORIGIN" value="438"/>
 		<item key="DIALOG_Y_ORIGIN" value="215"/>
+=======
+=======
+	<section name="ChooseWorkspaceDialogSettings">
+		<item key="DIALOG_X_ORIGIN" value="175"/>
+		<item key="DIALOG_Y_ORIGIN" value="184"/>
+>>>>>>> 4b2609019d81af640e84249e696946d1deba0335
 	</section>
 	<section name="WORKBENCH_SETTINGS">
 		<list key="ENABLED_TRANSFERS">
 		</list>
+<<<<<<< HEAD
+=======
+>>>>>>> 56629a1ff9a40a07b1789cdc684c053707801bad
+>>>>>>> 4b2609019d81af640e84249e696946d1deba0335
 	</section>
 </section>

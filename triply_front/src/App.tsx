@@ -15,17 +15,17 @@ function App() {
   function submit(e : React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
 
-    const method = (document.getElementById("method") as HTMLInputElement).value;
+    // const method = (document.getElementById("method") as HTMLInputElement).value;
     const loginIdValue = (document.getElementById("loginId") as HTMLInputElement).value;
     const loginPwValue = (document.getElementById("loginPw") as HTMLInputElement).value;
     const userNameValue = (document.getElementById("userName") as HTMLInputElement).value;
     const userPhoneValue = (document.getElementById("userPhone") as HTMLInputElement).value;
 
     const data = {
-      loginIdValue : loginIdValue,
-      loginPwValue : loginPwValue,
-      userNameValue : userNameValue,
-      userPhoneValue : userPhoneValue
+      loginId : loginIdValue,
+      loginPw : loginPwValue,
+      userName : userNameValue,
+      userPhone : userPhoneValue
     }
     if (!loginIdValue || !loginPwValue || !userNameValue || !userPhoneValue) {
       setMsg("모든 필드를 입력해주세요");
@@ -37,18 +37,25 @@ function App() {
       console.log(response.data);
       setMsg("회원가입이 완료되었습니다");
       setResult(true);
-      setResponseData(JSON.stringify(response.data));
-    });
+      setResponseData(JSON.stringify(response.data.msg));
+    })
+     .catch((error) => {
+    console.error(error);
+    setMsg(error.response?.data?.msg ?? "회원가입에 실패했습니다");
+    setResult(false);
+  });
+
   }
   return (
     <>
         <p>안녕</p>
         
         <label htmlFor="method">method </label>
-        <input id="method" type="text" placeholder="method" />
+        <p>POST</p>
+        {/* <input id="method" type="text" placeholder="method" /> */}
         
-        <br /><br />
-        
+        <br />
+
         <label>data </label>
         <br />
         <label>id </label>

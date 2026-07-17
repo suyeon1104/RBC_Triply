@@ -40,4 +40,15 @@ yarn-error.log*
 .project
 .classpath
 *.log
+<<<<<<< HEAD
 /.metadata/
+=======
+.metadata/
+.metadata/
+.classpath
+.project
+.settings/
+bin/
+build/
+.gradle/
+>>>>>>> 4b2609019d81af640e84249e696946d1deba0335
