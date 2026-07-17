@@ -35,3 +35,14 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Eclipse
+.metadata/
+.classpath
+.project
+.settings/
+
+# Build
+/build/
+.gradle/
+bin/

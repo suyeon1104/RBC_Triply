@@ -1,0 +1,46 @@
+package com.triply.group;
+
+import com.triply.user.UserEntity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class GroupMemberEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer memberId;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private GroupRole role;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id", nullable = false)
+	private UserEntity user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "group_id", nullable = false)
+	private GroupEntity group;
+
+}

@@ -49,4 +49,21 @@ public class UserService {
 		return userRepo.save(updateUser);
 	}
 
+	public UserEntity getByCredentialsPw(String userPw, Long userId) {
+		UserEntity user = userRepo.findByUserId(userId);
+
+		if (user != null && bCryptPasswordEncoder.matches(userPw, user.getLoginPw())) {
+			return user;
+		} else
+			return null;
+	}
+
+	public UserEntity updateUserPw(UserDto user, Long userId) {
+		UserEntity userEntity = userRepo.findByUserId(userId);
+
+		userEntity.setLoginPw(user.getLoginPw());
+
+		return userRepo.save(userEntity);
+	}
+
 }
