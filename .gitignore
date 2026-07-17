@@ -48,3 +48,6 @@ yarn-error.log*
 bin/
 build/
 .gradle/
+
+.metadata/
+**/.metadata/
