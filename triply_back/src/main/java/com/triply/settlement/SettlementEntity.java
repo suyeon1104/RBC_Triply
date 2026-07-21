@@ -41,10 +41,12 @@ public class SettlementEntity {
 	@JoinColumn(name = "payment_id", nullable = false)
 	private PaymentEntity payment;
 
+	// 정산금액을 지불하는 사람
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "from_user_id", nullable = false)
 	private UserEntity fromUser;
 
+	// 정산금액을 받는 사람
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "to_user_id", nullable = false)
 	private UserEntity toUser;

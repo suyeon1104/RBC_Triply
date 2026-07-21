@@ -1,5 +1,7 @@
 package com.triply.user;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -111,6 +113,31 @@ public class UserController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 
+	}
+
+	@Operation(summary = "비밀번호 변경")
+	@PatchMapping("/patchPw")
+	public ResponseEntity<?> patchPw(@RequestBody PatchPwDto patchPwDto, @AuthenticationPrincipal Long userId) {
+		try {
+
+			userService.patchPw(patchPwDto, userId);
+
+			UserDto responseUserDTO = UserDto.builder().result(true).msg("비밀번호 수정이 완료되었습니다").build();
+
+			return ResponseEntity.ok(responseUserDTO);
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@Operation(summary = "전화번호 인증 코드 발급 (Mock)")
+	@GetMapping("/auth/phoneCheck")
+	public ResponseEntity<?> phoneCheck() {
+
+		int code = (int) (Math.random() * 900000) + 100000;
+
+		return ResponseEntity.ok(Map.of("code", code));
 	}
 
 }
