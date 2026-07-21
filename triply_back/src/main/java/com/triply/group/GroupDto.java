@@ -1,4 +1,6 @@
-package com.triply.user;
+package com.triply.group;
+
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,24 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class UserDto {
+public class GroupDto {
 
-	private Integer userId;
-
-	private String loginId;
-
-	private String loginPw;
-
-	private String userName;
-
-	private String userPhone;
-
-	private String userImg;
+	private Integer groupId;
+	private String groupTitle;
+	private LocalDateTime createdAt;
 
 	// response
 	private boolean result;
 	private String msg;
-
-	// token
-	private String token;
 }
