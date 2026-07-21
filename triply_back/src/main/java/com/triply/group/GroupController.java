@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "그룹", description = "그룹 CRUD API")
 @RestController
-@RequestMapping("/api-server/v1")
+@RequestMapping("/api/v1/group")
 public class GroupController {
 
 	private final GroupService groupService;

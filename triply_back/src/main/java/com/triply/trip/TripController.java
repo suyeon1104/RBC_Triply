@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "여행", description = "여행 CRUD API")
 @RestController
-@RequestMapping("/api-server/v1")
+@RequestMapping("/api/v1/trip")
 public class TripController {
 
 	private final TripService tripService;

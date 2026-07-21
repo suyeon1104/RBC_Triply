@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "회원", description = "회원 CRUD API")
 @RestController
-@RequestMapping("/api-server/v1")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
 	private final PasswordEncoder passwordEncoder;
