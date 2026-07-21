@@ -10,4 +10,6 @@ public interface UserService {
 	UserEntity getUser(Long userId);
 
 	UserEntity updateUser(UserDto userDto, Long userId);
+
+	void patchPw(PatchPwDto patchPwDto, Long userId);
 }

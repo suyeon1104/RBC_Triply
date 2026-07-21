@@ -49,4 +49,21 @@ public class UserServiceImpl implements UserService {
 		return userRepo.save(updateUser);
 	}
 
+	public void patchPw(PatchPwDto patchPwDto, Long userId) {
+
+		UserEntity user = userRepo.findByUserId(userId);
+
+		if (user == null) {
+			throw new RuntimeException("사용자를 찾을 수 없습니다.");
+		}
+
+		if (!bCryptPasswordEncoder.matches(patchPwDto.getUserPw(), user.getLoginPw())) {
+			throw new RuntimeException("기존 비밀번호가 일치하지 않습니다.");
+		}
+
+		user.setLoginPw(bCryptPasswordEncoder.encode(patchPwDto.getNewUserPw()));
+
+		userRepo.save(user);
+	}
+
 }
