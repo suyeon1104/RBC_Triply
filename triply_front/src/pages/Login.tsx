@@ -35,10 +35,17 @@ export default function Login() {
       const res = await axiosInstance.post("user/auth/signin", {
         loginId,
         loginPw,
-        rememberMe, // API 명세에 맞춰 필요한 경우 함께 전송
+        rememberMe,
       });
 
       const token = res.data.token;
+
+      // 로그인 실패 응답 처리
+      if (!token) {
+        setErrorMsg(res.data.msg ?? "로그인에 실패했습니다");
+        return;
+      }
+
       login(token);
       navigate("/main", { replace: true });
     } catch (err: any) {
