@@ -22,6 +22,8 @@ public class WalletDto {
 	private Long balance;
 	private LocalDateTime updatedAt;
 
+	private Boolean exists; // 지갑 유무
+
 	// response
 	private boolean result;
 	private String msg;

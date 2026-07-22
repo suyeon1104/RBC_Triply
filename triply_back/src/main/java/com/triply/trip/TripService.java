@@ -47,10 +47,15 @@ public class TripService {
 
 	public TripEntity createTrip(TripDto tripDto, Long userId) {
 
-		// 로그인한 사용자 조회
 		UserEntity user = userRepo.findByUserId(userId);
 
-		// 여행 생성
+		// 여행 날짜 중복 검사
+		boolean overlap = tripRepo.existsOverlappingTrip(userId, tripDto.getStartDate(), tripDto.getEndDate());
+
+		if (overlap) {
+			throw new RuntimeException("기존 여행과 날짜가 겹칩니다.");
+		}
+
 		GroupEntity group = null;
 
 		if (tripDto.getGroupId() != null) {

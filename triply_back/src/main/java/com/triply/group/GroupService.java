@@ -150,4 +150,25 @@ public class GroupService {
 		// 추후 알림 삭제까지 구현할지 고민필요
 	}
 
+	@Transactional(readOnly = true)
+	public List<GroupMemberDto> getGroupMembers(Integer groupId, Long userId) {
+
+		GroupEntity group = groupRepo.findById(groupId).orElseThrow(() -> new RuntimeException("그룹이 존재하지 않습니다."));
+
+		// 로그인한 사용자가 그룹원인지 확인
+		boolean isMember = groupMemberRepo.existsByGroupAndUser_UserId(group, userId);
+
+		if (!isMember) {
+			throw new RuntimeException("그룹 멤버만 조회할 수 있습니다.");
+		}
+
+		List<GroupMemberEntity> members = groupMemberRepo.findByGroup(group);
+
+		return members.stream()
+				.map(member -> GroupMemberDto.builder().userId(member.getUser().getUserId())
+						.userName(member.getUser().getUserName()).userImg(member.getUser().getUserImg())
+						.role(member.getRole()).me(member.getUser().getUserId().equals(userId.intValue())).build())
+				.toList();
+	}
+
 }
