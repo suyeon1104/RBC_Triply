@@ -77,13 +77,14 @@ public class PaymentController {
 		}
 	}
 
-	@Operation(summary = "결제 목록 조회")
-	@GetMapping
-	public ResponseEntity<?> getPaymentList(@AuthenticationPrincipal Long userId) {
+	@Operation(summary = "여행별 결제 목록 조회")
+	@GetMapping("/trip/{tripId}")
+	public ResponseEntity<?> getPaymentListByTrip(@PathVariable("tripId") Integer tripId,
+			@AuthenticationPrincipal Long userId) {
 
 		try {
 
-			List<PaymentDto> response = paymentService.getPaymentList(userId);
+			List<PaymentDto> response = paymentService.getPaymentListByTrip(tripId, userId);
 
 			return ResponseEntity.ok(response);
 

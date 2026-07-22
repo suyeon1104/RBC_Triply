@@ -1,8 +1,12 @@
 package com.triply.wallet;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.triply.payment.PaymentEntity;
+import com.triply.settlement.SettlementEntity;
 import com.triply.user.UserEntity;
 import com.triply.user.UserRepository;
 
@@ -32,15 +36,20 @@ public class WalletService {
 		return walletRepo.save(wallet);
 	}
 
-	public WalletEntity getWallet(Long userId) {
+	@Transactional(readOnly = true)
+	public WalletDto getWallet(Long userId) {
 
 		WalletEntity wallet = walletRepo.findByUser_UserId(userId);
 
+		// 지갑 없음
 		if (wallet == null) {
-			throw new RuntimeException("생성된 지갑이 없습니다.");
+
+			return WalletDto.builder().exists(false).result(true).msg("생성된 지갑이 없습니다.").build();
 		}
 
-		return wallet;
+		// 지갑 있음
+		return WalletDto.builder().walletId(wallet.getWalletId()).balance(wallet.getBalance())
+				.updatedAt(wallet.getUpdatedAt()).exists(true).result(true).build();
 	}
 
 	@Transactional
@@ -65,5 +74,57 @@ public class WalletService {
 		walletTransactionRepo.save(transaction);
 
 		return wallet;
+	}
+
+	@Transactional(readOnly = true)
+	public List<WalletTransactionDto> getWalletHistory(Long userId) {
+
+		// 1. 지갑 조회
+		WalletEntity wallet = walletRepo.findByUser_UserId(userId);
+
+		if (wallet == null) {
+			throw new RuntimeException("생성된 지갑이 없습니다.");
+		}
+
+		// 2. 거래내역 조회
+		List<WalletTransactionEntity> transactions = walletTransactionRepo
+				.findByWalletOrderByTransactionAtDescTransactionIdDesc(wallet);
+
+		// 3. DTO 변환
+		return transactions.stream().map(transaction -> {
+
+			PaymentEntity payment = transaction.getPayment();
+			SettlementEntity settlement = transaction.getSettlement();
+
+			return WalletTransactionDto.builder()
+
+					// 거래 정보
+					.transactionId(transaction.getTransactionId()).type(transaction.getType())
+					.amount(transaction.getAmount()).balanceAfter(transaction.getBalanceAfter())
+					.transactionAt(transaction.getTransactionAt())
+
+					// 결제 정보
+					.paymentId(payment != null ? payment.getPaymentId() : null)
+
+					.merchantName(payment != null ? payment.getMerchantName() : null)
+
+					.tripTitle(payment != null && payment.getTrip() != null ? payment.getTrip().getTripTitle() : null)
+
+					.currency(payment != null ? payment.getCurrency() : null)
+
+					// 정산 정보
+					.settlementId(settlement != null ? settlement.getSettlementId() : null)
+
+					.counterpartyId(settlement != null ? (settlement.getFromUser().getUserId().equals(userId.intValue())
+							? settlement.getToUser().getUserId()
+							: settlement.getFromUser().getUserId()) : null)
+
+					.counterpartyName(
+							settlement != null ? (settlement.getFromUser().getUserId().equals(userId.intValue())
+									? settlement.getToUser().getUserName()
+									: settlement.getFromUser().getUserName()) : null)
+
+					.build();
+		}).toList();
 	}
 }

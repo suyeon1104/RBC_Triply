@@ -1,6 +1,7 @@
 package com.triply.wallet;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,18 +27,10 @@ public class WalletController {
 	@Operation(summary = "지갑 조회")
 	@GetMapping
 	public ResponseEntity<?> getWallet(@AuthenticationPrincipal Long userId) {
-		try {
 
-			WalletEntity wallet = walletService.getWallet(userId);
+		WalletDto response = walletService.getWallet(userId);
 
-			WalletDto response = WalletDto.builder().walletId(wallet.getWalletId()).balance(wallet.getBalance())
-					.updatedAt(wallet.getUpdatedAt()).result(true).build();
-
-			return ResponseEntity.ok(response);
-
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
+		return ResponseEntity.ok(response);
 	}
 
 	@Operation(summary = "가짜 계좌 인증 요청")
@@ -86,6 +79,23 @@ public class WalletController {
 
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@Operation(summary = "지갑 거래 내역 조회")
+	@GetMapping("/history")
+	public ResponseEntity<?> getWalletHistory(@AuthenticationPrincipal Long userId) {
+
+		try {
+
+			List<WalletTransactionDto> response = walletService.getWalletHistory(userId);
+
+			return ResponseEntity.ok(response);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+
 		}
 	}
 

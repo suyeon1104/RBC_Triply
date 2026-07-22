@@ -1,6 +1,8 @@
 package com.triply.trip;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +24,18 @@ public interface TripRepository extends JpaRepository<TripEntity, Integer> {
 			       )
 			""")
 	List<TripEntity> findMyTrips(@Param("userId") Long userId);
+
+	@Query("""
+			    SELECT COUNT(t) > 0
+			    FROM TripEntity t
+			    WHERE t.user.userId = :userId
+			      AND t.startDate <= :endDate
+			      AND t.endDate >= :startDate
+			""")
+	boolean existsOverlappingTrip(@Param("userId") Long userId, @Param("startDate") LocalDate startDate,
+			@Param("endDate") LocalDate endDate);
+
+	Optional<TripEntity> findByUser_UserIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long userId,
+			LocalDate startDate, LocalDate endDate);
 
 }
