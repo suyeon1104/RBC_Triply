@@ -40,7 +40,7 @@ export default function Join() {
       return;
     }
 
-    if (isLoginIdChecked !== "confirmedValue") {
+    if (isLoginIdChecked === "beforeChecked") {
       setMsg("아이디 중복 확인을 진행해주세요.");
       return;
     }
@@ -83,7 +83,7 @@ export default function Join() {
 
   const handleCheckId = async () => {
     // loginId = null 로 초기화
-    if (!loginId) {
+    if (loginId === "") {
       setMsg("아이디를 입력해주세요.");
       return;
     }
@@ -92,7 +92,6 @@ export default function Join() {
       const res = await idCheck(loginId);
       
       if (!res.data) return;
-
       if (res.data.result) {
         setIsLoginIdChecked("confirmedValue");
         setMsg("사용 가능한 아이디입니다.");
@@ -113,7 +112,7 @@ const handleRequestPhoneAuth = async () => {
     return;
   }
   try {
-    const res = await phoneCheck(userPhone);
+    const res = await phoneCheck();
 
     if (!res.data) return;
     
