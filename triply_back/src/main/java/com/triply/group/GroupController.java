@@ -50,8 +50,13 @@ public class GroupController {
 		List<GroupEntity> groups = groupService.getGroup(userId);
 
 		// 가져 온 리스트를 dto에 담아 전달
-		List<GroupDto> response = groups.stream().map(group -> GroupDto.builder().groupId(group.getGroupId())
-				.groupTitle(group.getGroupTitle()).createdAt(group.getCreatedAt()).result(true).build()).toList();
+		List<GroupDto> response = groups.stream().map(group -> {
+
+			List<GroupMemberDto> members = groupService.getGroupMembers(group.getGroupId(), userId);
+
+			return GroupDto.builder().groupId(group.getGroupId()).groupTitle(group.getGroupTitle())
+					.createdAt(group.getCreatedAt()).memberCount(members.size()).members(members).result(true).build();
+		}).toList();
 
 		return ResponseEntity.ok(response);
 	}
@@ -135,6 +140,16 @@ public class GroupController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
+	}
+
+	@Operation(summary = "그룹 상세 조회")
+	@GetMapping("/{groupId}")
+	public ResponseEntity<?> getGroupDetail(@PathVariable("groupId") Integer groupId,
+			@AuthenticationPrincipal Long userId) {
+
+		GroupDetailDto response = groupService.getGroupDetail(groupId, userId);
+
+		return ResponseEntity.ok(response);
 	}
 
 }

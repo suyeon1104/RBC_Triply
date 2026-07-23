@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.triply.notification.NotificationService;
+import com.triply.notification.NotificationType;
+import com.triply.trip.TripRepository;
 import com.triply.user.UserEntity;
 import com.triply.user.UserRepository;
 
@@ -17,6 +20,8 @@ public class GroupService {
 	private final GroupMemberRepository groupMemberRepo;
 	private final GroupInvitationRepository inviteRepo;
 	private final UserRepository userRepo;
+	private final TripRepository tripRepo;
+	private final NotificationService notificationService;
 
 	@Transactional
 	public GroupEntity createGroup(GroupDto groupDto, Long userId) {
@@ -78,7 +83,12 @@ public class GroupService {
 		GroupInvitationEntity invite = GroupInvitationEntity.builder().sender(sender).receiver(receiver).group(group)
 				.status(InvitationStatus.PENDING).build();
 
-		return inviteRepo.save(invite);
+		invite = inviteRepo.save(invite);
+
+		// 알림 생성
+		notificationService.createGroupInviteNotification(invite);
+
+		return invite;
 	}
 
 	@Transactional
@@ -110,7 +120,13 @@ public class GroupService {
 			invite.setStatus(InvitationStatus.REJECTED);
 		}
 
-		return inviteRepo.save(invite);
+		invite = inviteRepo.save(invite);
+
+		// 그룹 초대 알림 삭제
+		notificationService.deleteNotification(invite.getInvitationId(), NotificationType.GROUP_INVITE,
+				invite.getReceiver().getUserId());
+
+		return invite;
 	}
 
 	public void leaveGroup(Integer groupId, Long userId) {
@@ -169,6 +185,38 @@ public class GroupService {
 						.userName(member.getUser().getUserName()).userImg(member.getUser().getUserImg())
 						.role(member.getRole()).me(member.getUser().getUserId().equals(userId.intValue())).build())
 				.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public GroupDetailDto getGroupDetail(Integer groupId, Long userId) {
+
+		// 그룹 존재 여부
+		GroupEntity group = groupRepo.findById(groupId).orElseThrow(() -> new RuntimeException("그룹이 존재하지 않습니다."));
+
+		// 로그인한 사용자가 그룹원인지 확인
+		boolean isMember = groupMemberRepo.existsByGroupAndUser_UserId(group, userId);
+
+		if (!isMember) {
+			throw new RuntimeException("그룹 멤버만 조회할 수 있습니다.");
+		}
+
+		// 그룹 멤버 조회 (기존 메서드 재사용)
+		List<GroupMemberDto> members = getGroupMembers(groupId, userId);
+
+		// 초대 중인 멤버 조회
+		List<PendingMemberDto> pendingMembers = inviteRepo.findByGroupAndStatus(group, InvitationStatus.PENDING)
+				.stream()
+				.map(invitation -> PendingMemberDto.builder().invitationId(invitation.getInvitationId())
+						.userId(invitation.getReceiver().getUserId()).userName(invitation.getReceiver().getUserName())
+						.userImg(invitation.getReceiver().getUserImg()).status(invitation.getStatus()).build())
+				.toList();
+
+		// 연결된 플래너 개수
+		Integer plannerCount = tripRepo.countByGroup(group);
+
+		return GroupDetailDto.builder().groupId(group.getGroupId()).groupTitle(group.getGroupTitle())
+				.createdAt(group.getCreatedAt()).plannerCount(plannerCount).members(members)
+				.pendingMembers(pendingMembers).result(true).build();
 	}
 
 }

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.triply.group.GroupEntity;
+
 public interface TripRepository extends JpaRepository<TripEntity, Integer> {
 
 	@Query("""
@@ -37,5 +39,7 @@ public interface TripRepository extends JpaRepository<TripEntity, Integer> {
 
 	Optional<TripEntity> findByUser_UserIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Long userId,
 			LocalDate startDate, LocalDate endDate);
+
+	Integer countByGroup(GroupEntity group);
 
 }
