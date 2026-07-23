@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.triply.notification.GroupInviteNotificationCreator;
+import com.triply.notification.NotificationEntity;
 import com.triply.notification.NotificationService;
 import com.triply.notification.NotificationType;
 import com.triply.trip.TripRepository;
@@ -22,6 +24,7 @@ public class GroupService {
 	private final UserRepository userRepo;
 	private final TripRepository tripRepo;
 	private final NotificationService notificationService;
+	private final GroupInviteNotificationCreator groupInviteCreator;
 
 	@Transactional
 	public GroupEntity createGroup(GroupDto groupDto, Long userId) {
@@ -86,7 +89,10 @@ public class GroupService {
 		invite = inviteRepo.save(invite);
 
 		// 알림 생성
-		notificationService.createGroupInviteNotification(invite);
+		NotificationEntity notification = groupInviteCreator.create(invite);
+
+		// 알림 저장
+		notificationService.save(notification);
 
 		return invite;
 	}

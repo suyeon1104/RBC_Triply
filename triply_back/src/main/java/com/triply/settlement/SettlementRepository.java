@@ -35,4 +35,6 @@ public interface SettlementRepository extends JpaRepository<SettlementEntity, In
 			      )
 			""")
 	List<SettlementEntity> findByGroupIdAndUserId(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
+
+	List<SettlementEntity> findByPayment_PaymentId(Integer paymentId);
 }
