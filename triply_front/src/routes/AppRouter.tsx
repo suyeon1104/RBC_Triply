@@ -5,6 +5,7 @@ import Join from "../pages/Join";
 import SplashStandard from "../pages/SplashStandard";
 import SplashFun from "../pages/SplashFun";
 import Main from "../pages/Main";
+import MyPage from "../pages/MyPage";
 
 export default function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export default function AppRouter() {
         <Route path="/join" element={<Join />} />
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/mypage" element={<MyPage />} />
         {/* <Route path="/api-test" element={<ApiTester />} /> */}
       </Routes>
     </BrowserRouter>
