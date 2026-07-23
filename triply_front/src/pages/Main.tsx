@@ -7,13 +7,13 @@ export default function Main() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("main"); // 하단 네비게이션 상태
 
-const {logout } = useAuth();
-  function handleLogout() {
-    logout();
-     console.log("navigate 실행 직전");
-  navigate("/login");
-  console.log("navigate 실행 직후");
-  }
+  // const {logout } = useAuth();
+  // function handleLogout() {
+  //   logout();
+  //    console.log("navigate 실행 직전");
+  //   navigate("/login");
+  //   console.log("navigate 실행 직후");
+  // }
 
   return (
     <div style={styles.container}>
@@ -24,12 +24,12 @@ const {logout } = useAuth();
           <button style={styles.iconButton} aria-label="알림">
             🔔
           </button>
-          <button style={styles.iconButton} aria-label="프로필">
+          <button onClick={() => navigate("/mypage")} style={styles.iconButton} aria-label="프로필">
             👤
           </button>
-          <button onClick={handleLogout} style={styles.iconButton} aria-label="로그아웃">
+          {/* <button onClick={handleLogout} style={styles.iconButton} aria-label="로그아웃">
             ❌
-          </button>
+          </button> */}
         </div>
       </header>
 
