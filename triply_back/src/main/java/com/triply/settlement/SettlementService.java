@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.triply.group.GroupEntity;
 import com.triply.group.GroupMemberRepository;
 import com.triply.group.GroupRepository;
+import com.triply.notification.NotificationEntity;
 import com.triply.notification.NotificationService;
 import com.triply.notification.NotificationType;
+import com.triply.notification.SettlementNotificationCreator;
 import com.triply.payment.PaymentEntity;
 import com.triply.payment.PaymentRepository;
 import com.triply.trip.TripEntity;
@@ -38,6 +40,7 @@ public class SettlementService {
 	private final SettlementRepository settlementRepo;
 	private final UserRepository userRepo;
 	private final NotificationService notificationService;
+	private final SettlementNotificationCreator settlementCreator;
 
 	@Transactional
 	public SettlementDto requestSettlement(SettlementDto settlementDto, Long userId) {
@@ -124,7 +127,9 @@ public class SettlementService {
 			settlement = settlementRepo.save(settlement);
 
 			// 알림 생성
-			notificationService.createSettlementRequestNotification(settlement);
+			NotificationEntity notification = settlementCreator.create(settlement);
+
+			notificationService.save(notification);
 		}
 
 		// 10. 응답
@@ -296,6 +301,58 @@ public class SettlementService {
 				.completedAt(settlement.getCompletedAt())
 				.myRole(settlement.getFromUser().getUserId().equals(userId.intValue()) ? "SENDER" : "RECEIVER").build())
 				.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<SettlementResponseDto> getSettlementByPayment(Integer paymentId, Long userId) {
+
+		// 결제별 정산 조회
+		List<SettlementEntity> settlements = settlementRepo.findByPayment_PaymentId(paymentId);
+
+		if (settlements.isEmpty()) {
+			throw new RuntimeException("정산 내역이 존재하지 않습니다.");
+		}
+
+		return settlements.stream().map(settlement -> {
+
+			String myRole = null;
+
+			// 로그인 유저 기준 역할 확인
+			if (settlement.getFromUser().getUserId().equals(userId.intValue())) {
+
+				// 돈 보내는 사람
+				myRole = "SENDER";
+
+			} else if (settlement.getToUser().getUserId().equals(userId.intValue())) {
+
+				// 돈 받는 사람
+				myRole = "RECEIVER";
+			}
+
+			return SettlementResponseDto.builder()
+
+					.settlementId(settlement.getSettlementId())
+
+					.paymentId(settlement.getPayment().getPaymentId())
+
+					.fromUserId(settlement.getFromUser().getUserId())
+					.fromUserName(settlement.getFromUser().getUserName())
+
+					.toUserId(settlement.getToUser().getUserId()).toUserName(settlement.getToUser().getUserName())
+
+					.amount(settlement.getAmount())
+
+					.status(settlement.getStatus())
+
+					.requestedAt(settlement.getRequestedAt())
+
+					.completedAt(settlement.getCompletedAt())
+
+					.myRole(myRole)
+
+					.build();
+
+		}).toList();
 	}
 
 }

@@ -106,4 +106,21 @@ public class SettlementController {
 		return ResponseEntity.ok(response);
 	}
 
+	@Operation(summary = "결제별 정산 조회")
+	@GetMapping("/payment/{paymentId}")
+	public ResponseEntity<?> getSettlementByPayment(@PathVariable("paymentId") Integer paymentId,
+			@AuthenticationPrincipal Long userId) {
+
+		try {
+
+			List<SettlementResponseDto> response = settlementService.getSettlementByPayment(paymentId, userId);
+
+			return ResponseEntity.ok(response);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }
