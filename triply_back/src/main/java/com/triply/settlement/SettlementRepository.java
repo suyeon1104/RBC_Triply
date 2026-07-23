@@ -22,4 +22,17 @@ public interface SettlementRepository extends JpaRepository<SettlementEntity, In
 	List<SettlementEntity> findMySettlementsByTrip(@Param("tripId") Integer tripId, @Param("userId") Long userId);
 
 	List<SettlementEntity> findByPayment_Trip_TripIdOrderByRequestedAtDesc(Integer tripId);
+
+	@Query("""
+			    SELECT s
+			    FROM SettlementEntity s
+			    JOIN s.payment p
+			    JOIN p.trip t
+			    WHERE t.group.groupId = :groupId
+			      AND (
+			            s.fromUser.userId = :userId
+			         OR s.toUser.userId = :userId
+			      )
+			""")
+	List<SettlementEntity> findByGroupIdAndUserId(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
 }

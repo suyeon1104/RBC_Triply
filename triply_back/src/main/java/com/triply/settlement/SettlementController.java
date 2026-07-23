@@ -96,4 +96,14 @@ public class SettlementController {
 		}
 	}
 
+	@Operation(summary = "그룹 정산 조회")
+	@GetMapping("/group/{groupId}")
+	public ResponseEntity<?> getGroupSettlement(@PathVariable("groupId") Integer groupId,
+			@AuthenticationPrincipal Long userId) {
+
+		List<SettlementResponseDto> response = settlementService.getGroupSettlement(groupId, userId);
+
+		return ResponseEntity.ok(response);
+	}
+
 }

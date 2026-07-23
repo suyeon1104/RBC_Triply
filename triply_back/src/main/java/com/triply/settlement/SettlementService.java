@@ -6,8 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.triply.exchange.ExchangeRateRepository;
+import com.triply.group.GroupEntity;
 import com.triply.group.GroupMemberRepository;
+import com.triply.group.GroupRepository;
+import com.triply.notification.NotificationService;
+import com.triply.notification.NotificationType;
 import com.triply.payment.PaymentEntity;
 import com.triply.payment.PaymentRepository;
 import com.triply.trip.TripEntity;
@@ -29,11 +32,12 @@ public class SettlementService {
 	private final WalletRepository walletRepo;
 	private final PaymentRepository paymentRepo;
 	private final WalletTransactionRepository walletTransactionRepo;
-	private final ExchangeRateRepository exchangeRateRepo;
 	private final TripRepository tripRepo;
 	private final GroupMemberRepository groupMemberRepo;
+	private final GroupRepository groupRepo;
 	private final SettlementRepository settlementRepo;
 	private final UserRepository userRepo;
+	private final NotificationService notificationService;
 
 	@Transactional
 	public SettlementDto requestSettlement(SettlementDto settlementDto, Long userId) {
@@ -117,7 +121,10 @@ public class SettlementService {
 			SettlementEntity settlement = SettlementEntity.builder().payment(payment).fromUser(fromUser)
 					.toUser(payment.getUser()).amount(request.getAmount()).status(SettlementStatus.PENDING).build();
 
-			settlementRepo.save(settlement);
+			settlement = settlementRepo.save(settlement);
+
+			// 알림 생성
+			notificationService.createSettlementRequestNotification(settlement);
 		}
 
 		// 10. 응답
@@ -243,7 +250,11 @@ public class SettlementService {
 		settlement.setStatus(SettlementStatus.COMPLETED);
 		settlement.setCompletedAt(LocalDateTime.now());
 
-		// 11. 응답
+		// 11. 정산 요청 알림 삭제
+		notificationService.deleteNotification(settlement.getSettlementId(), NotificationType.SETTLEMENT_REQUEST,
+				settlement.getFromUser().getUserId());
+
+		// 12. 응답
 		return SettlementResponseDto.builder().settlementId(settlement.getSettlementId())
 
 				.paymentId(settlement.getPayment().getPaymentId())
@@ -259,6 +270,32 @@ public class SettlementService {
 				.requestedAt(settlement.getRequestedAt()).completedAt(settlement.getCompletedAt())
 
 				.build();
+	}
+
+	@Transactional(readOnly = true)
+	public List<SettlementResponseDto> getGroupSettlement(Integer groupId, Long userId) {
+
+		// 그룹 존재 여부
+		GroupEntity group = groupRepo.findById(groupId).orElseThrow(() -> new RuntimeException("그룹이 존재하지 않습니다."));
+
+		// 그룹 멤버인지 확인
+		boolean isMember = groupMemberRepo.existsByGroupAndUser_UserId(group, userId);
+
+		if (!isMember) {
+			throw new RuntimeException("그룹 멤버만 조회할 수 있습니다.");
+		}
+
+		// 해당 그룹 + 로그인 사용자의 정산만 조회
+		List<SettlementEntity> settlements = settlementRepo.findByGroupIdAndUserId(groupId, userId.intValue());
+
+		return settlements.stream().map(settlement -> SettlementResponseDto.builder()
+				.settlementId(settlement.getSettlementId()).paymentId(settlement.getPayment().getPaymentId())
+				.fromUserId(settlement.getFromUser().getUserId()).fromUserName(settlement.getFromUser().getUserName())
+				.toUserId(settlement.getToUser().getUserId()).toUserName(settlement.getToUser().getUserName())
+				.amount(settlement.getAmount()).status(settlement.getStatus()).requestedAt(settlement.getRequestedAt())
+				.completedAt(settlement.getCompletedAt())
+				.myRole(settlement.getFromUser().getUserId().equals(userId.intValue()) ? "SENDER" : "RECEIVER").build())
+				.toList();
 	}
 
 }

@@ -9,19 +9,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-public class GroupDto {
+public class GroupDetailDto {
 
+	// 그룹 정보
 	private Integer groupId;
 	private String groupTitle;
 	private LocalDateTime createdAt;
 
-	private Integer memberCount;
+	// 연결된 플래너 개수
+	private Integer plannerCount;
+
+	// 그룹 멤버
 	private List<GroupMemberDto> members;
+
+	// 초대 중인 멤버
+	private List<PendingMemberDto> pendingMembers;
 
 	// response
 	private boolean result;
