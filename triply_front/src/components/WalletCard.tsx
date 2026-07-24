@@ -26,12 +26,9 @@ export default function WalletCard() {
     <section className="wallet-card">
       <div className="wallet-header">
         <h3 className="wallet-title">나의 지갑</h3>
-
-        {wallet?.exists && (
-          <button className="more-button" onClick={() => navigate("/wallet")}>
-            전체보기 &gt;
-          </button>
-        )}
+        <button className="more-button" onClick={() => navigate("/wallet")}>
+          전체보기 &gt;
+        </button>
       </div>
 
       <div className="wallet-body">
