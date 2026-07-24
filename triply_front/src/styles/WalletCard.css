@@ -79,3 +79,10 @@
   background: #5b86e5;
   color: white;
 }
+.wallet-warning {
+  margin-top: 6px;
+
+  color: #ff4d4f;
+  font-size: 12px;
+  font-weight: 500;
+}

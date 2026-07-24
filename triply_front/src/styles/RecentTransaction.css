@@ -1,0 +1,191 @@
+.recent-transaction {
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 14px 16px;
+}
+
+/* 헤더 */
+.recent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 12px;
+}
+
+.recent-header h3 {
+  margin: 0;
+
+  font-size: 16px;
+
+  font-weight: bold;
+}
+
+.recent-header button {
+  border: none;
+
+  background: none;
+
+  color: #777;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+/* 리스트 */
+.transaction-list {
+  display: flex;
+
+  flex-direction: column;
+}
+
+/* 한 줄 */
+.transaction-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px 0;
+}
+
+.transaction-item:not(:last-child) {
+  border-bottom: 1px solid #f3f3f3;
+}
+
+/* 아이콘 */
+.transaction-icon {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  font-size: 18px;
+}
+
+.transaction-icon.charge {
+  background: #fff5d8;
+}
+
+.transaction-icon.payment {
+  background: #eef3ff;
+}
+
+.transaction-icon.settlement {
+  background: #eaf8ee;
+}
+
+/* 내용 */
+.transaction-info {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.transaction-amount {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 14px;
+
+  font-weight: bold;
+}
+
+/* 입금 */
+.transaction-amount.plus {
+  color: #2d74ff;
+}
+
+/* 결제 */
+.transaction-amount.minus {
+  color: #222;
+}
+
+.krw-amount {
+  font-size: 15px;
+}
+
+.foreign-amount {
+  color: #888;
+
+  font-size: 11px;
+
+  font-weight: normal;
+}
+
+.transaction-title {
+  margin-top: 2px;
+
+  color: #555;
+
+  font-size: 12px;
+}
+
+.transaction-subtitle {
+  margin-top: 1px;
+
+  color: #999;
+
+  font-size: 11px;
+}
+
+/* 날짜 */
+.transaction-date {
+  color: #999;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+}
+
+/* 정산 버튼 */
+.recent-settlement-btn {
+  border: 1px solid #d8d8d8;
+
+  background: white;
+
+  color: #888;
+
+  border-radius: 5px;
+
+  padding: 3px 7px;
+
+  font-size: 10px;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+/* 빈 내역 */
+.recent-empty {
+  text-align: center;
+
+  padding: 20px 0;
+
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 28px;
+
+  margin-bottom: 8px;
+}
+
+.recent-empty p {
+  margin: 0;
+
+  font-size: 13px;
+}

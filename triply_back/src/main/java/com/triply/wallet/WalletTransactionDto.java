@@ -43,4 +43,8 @@ public class WalletTransactionDto {
 	private Integer counterpartyId;
 
 	private String counterpartyName;
+
+	// 결제 정보
+	private Long foreignAmount; // 실제 결제 금액
+	private String tripPlace; // 여행 지역
 }
