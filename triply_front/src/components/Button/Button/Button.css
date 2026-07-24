@@ -1,0 +1,91 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ==========================================
+   2. Button Sizes (L, M, S)
+   ========================================== */
+/* Large (L) */
+.button.l {
+  height: 48px;
+  padding: 12px 14px;
+  font-size: var(--body1);
+  border-radius: 16px;
+  gap: 6px;
+}
+
+/* Medium (M) - Default */
+.button.m {
+  height: 40px;
+  padding: 8px 14px;
+  font-size: var(--label1);
+  border-radius: 16px;
+  gap: 4px;
+}
+
+/* Small (S) */
+.button.s {
+  height: 32px;
+  padding: 8px 14px;
+  font-size: var(--label2);
+  border-radius: 12px;
+  gap: 4px;
+}
+
+/* ==========================================
+   3. Button Variants (Primary, Assistive, Outlined, Subtle)
+   ========================================== */
+/* Primary */
+.button.primary {
+  background-color: var(--main-400);
+  color: var(--white);
+}
+
+/* Assistive */
+.button.assistive {
+  background-color: var(--gray-50);
+  color: var(--gray-600);
+}
+
+/* Outlined */
+.button.outlined {
+  background-color: transparent;
+  border-color: var(--gray-200);
+  color: var(--gray-600);
+}
+
+/* Subtle */
+.button.subtle {
+  background-color: transparent;
+  color: var(--gray-600);
+}
+
+.button-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* 크기별 내부 아이콘 SVG 규격 자동 조정 */
+.button.l .button-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.button.m .button-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.button.s .button-icon svg {
+  width: 16px;
+  height: 16px;
+}
