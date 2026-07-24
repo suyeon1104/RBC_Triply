@@ -8,6 +8,10 @@ import Main from '../pages/Main';
 import MyPage from '../pages/MyPage';
 import Wallets from '../pages/Wallets';
 import WalletHistory from '../pages/WalletHistory';
+import WalletCreate from "../pages/WalletCreate";
+import WalletAuth from "../pages/WalletAuth";
+import WalletCharge from "../pages/WalletCharge";
+import PaymentPay from "../pages/PaymentPay";
 import Group from '../pages/Group';
 import ButtonTest from '../pages/ButtonTest';
 
@@ -28,6 +32,10 @@ export default function AppRouter() {
         <Route path="/group" element={<Group />} />
         {/* 테스트 */}
         <Route path="/button" element={<ButtonTest />} />
+        <Route path="/wallet/create" element={<WalletCreate />} />
+        <Route path="/wallet/auth" element={<WalletAuth />} />
+        <Route path="/wallet/charge" element={<WalletCharge />} />
+        <Route path="/payment/pay" element={<PaymentPay />} />
       </Routes>
     </BrowserRouter>
   );
