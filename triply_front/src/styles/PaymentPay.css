@@ -1,0 +1,216 @@
+.payment-pay {
+  flex: 1;
+
+  background: #f8f9fa;
+}
+
+.payment-content {
+  display: flex;
+
+  justify-content: center;
+  align-items: flex-start;
+
+  height: calc(100vh - 64px);
+
+  padding: 20px;
+
+  box-sizing: border-box;
+}
+
+.qr-card {
+  width: 100%;
+
+  height: 80%;
+
+  padding: 40px 20px;
+
+  background: white;
+
+  border-radius: 24px;
+
+  text-align: center;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fake-qr {
+  width: 180px;
+  height: 180px;
+
+  margin: 0 auto 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-card p {
+  margin: 0;
+
+  color: #888;
+
+  font-size: 11px;
+}
+/* ================= 결제 완료 모달 ================= */
+
+.payment-modal-overlay {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 100;
+}
+
+.payment-modal {
+  position: relative;
+
+  width: calc(100% - 50px);
+
+  padding: 35px 25px 25px;
+
+  background: white;
+
+  border-radius: 24px;
+
+  text-align: center;
+
+  box-sizing: border-box;
+}
+
+/* 우측 상단 X */
+
+.modal-close {
+  position: absolute;
+
+  top: 15px;
+  right: 18px;
+
+  border: none;
+
+  background: none;
+
+  color: #999;
+
+  font-size: 24px;
+
+  cursor: pointer;
+}
+
+/* 결제 완료 */
+
+.payment-modal h4 {
+  margin: 0 0 15px;
+
+  color: #5b86e5;
+}
+
+/* 금액 */
+
+.payment-modal h3 {
+  margin: 0 0 12px;
+
+  color: #333;
+}
+
+/* 가게명 */
+
+.merchant-name {
+  margin: 0;
+
+  color: #aaa;
+}
+
+/* 구분선 */
+
+.payment-modal hr {
+  margin: 25px 0;
+
+  border: none;
+
+  border-top: 1px solid #eee;
+}
+
+/* 정산 질문 */
+
+.settlement-title {
+  margin: 0 0 8px;
+
+  color: #565656;
+}
+
+.settlement-desc {
+  margin: 0 0 25px;
+
+  color: #aaa;
+  font-size: 11px;
+}
+
+/* 버튼 영역 */
+
+.modal-buttons {
+  display: flex;
+
+  gap: 10px;
+}
+
+.modal-buttons > button {
+  flex: 1;
+
+  height: 42px;
+
+  border-radius: 14px;
+
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.modal-buttons .settlement-btn {
+  background: #5b86e5;
+
+  border: none;
+
+  color: white;
+}
+
+/* 나중에 하기 */
+
+.later-btn {
+  border: 1px solid #ddd;
+
+  background: white;
+
+  color: #888;
+}
+.payment-modal .payment-fail {
+  color: #e74c3c;
+}
+.charge-btn {
+  flex: 1;
+
+  height: 42px;
+
+  border-radius: 14px;
+
+  border: none;
+
+  background: #5b86e5;
+
+  color: white;
+
+  cursor: pointer;
+}
