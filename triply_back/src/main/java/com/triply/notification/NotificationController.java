@@ -1,6 +1,7 @@
 package com.triply.notification;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +30,22 @@ public class NotificationController {
 			List<NotificationDto> response = notificationService.getNotifications(userId);
 
 			return ResponseEntity.ok(response);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@Operation(summary = "알림 개수 조회")
+	@GetMapping("/count")
+	public ResponseEntity<?> getNotificationCount(@AuthenticationPrincipal Long userId) {
+
+		try {
+
+			long count = notificationService.getNotificationCount(userId);
+
+			return ResponseEntity.ok(Map.of("count", count));
 
 		} catch (Exception e) {
 
