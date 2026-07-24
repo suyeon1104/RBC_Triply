@@ -8,6 +8,8 @@ import Main from "../pages/Main";
 import MyPage from "../pages/MyPage";
 import Wallets from "../pages/Wallets";
 import WalletHistory from "../pages/WalletHistory";
+import WalletCreate from "../pages/WalletCreate";
+import WalletAuth from "../pages/WalletAuth";
 
 export default function AppRouter() {
   return (
@@ -22,6 +24,8 @@ export default function AppRouter() {
         {/* 주희 작업 page */}
         <Route path="/wallet" element={<Wallets />} />
         <Route path="/wallet/history" element={<WalletHistory />} />
+        <Route path="/wallet/create" element={<WalletCreate />} />
+        <Route path="/wallet/auth" element={<WalletAuth />} />
       </Routes>
     </BrowserRouter>
   );
