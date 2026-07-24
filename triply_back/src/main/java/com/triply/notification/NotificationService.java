@@ -37,4 +37,9 @@ public class NotificationService {
 
 	}
 
+	public long getNotificationCount(Long userId) {
+
+		return notificationRepo.countByReceiver_UserId(userId);
+	}
+
 }
