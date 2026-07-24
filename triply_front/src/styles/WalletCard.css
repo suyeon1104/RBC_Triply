@@ -1,0 +1,81 @@
+.wallet-card {
+  padding: 20px;
+  margin-bottom: 16px;
+
+  background: white;
+  border-radius: 16px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.wallet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 12px;
+}
+
+.wallet-title {
+  margin: 0;
+
+  color: #222;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.more-button {
+  border: none;
+  background: none;
+
+  color: #8c8c8c;
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.wallet-body {
+  margin-bottom: 16px;
+}
+
+.balance {
+  margin-bottom: 4px;
+
+  color: #111;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.account-info {
+  color: #8c8c8c;
+  font-size: 13px;
+}
+
+.wallet-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.charge-button,
+.pay-button {
+  flex: 1;
+  padding: 12px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.charge-button {
+  background: white;
+  border: 1px solid #e0e0e0;
+}
+
+.pay-button {
+  border: none;
+  background: #5b86e5;
+  color: white;
+}
