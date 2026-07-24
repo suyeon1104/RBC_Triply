@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/WalletCreate.css";
 import { chargeWallet, getWallet } from "../api/walletApi";
+import PageHeader from "../components/PageHeader";
 
 const WalletCharge = () => {
   const navigate = useNavigate();
@@ -61,13 +62,7 @@ const WalletCharge = () => {
   return (
     <div className="container">
       <main className="wallet-create">
-        <div className="create-top">
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            ←
-          </button>
-
-          <h2>충전하기</h2>
-        </div>
+        <PageHeader title="충전하기" />
 
         <div className="create-content">
           <div className="account-form">

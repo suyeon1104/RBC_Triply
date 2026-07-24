@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../styles/WalletCreate.css";
+import PageHeader from "../components/PageHeader";
 
 const WalletCreate = () => {
   const navigate = useNavigate();
@@ -39,13 +40,7 @@ const WalletCreate = () => {
   return (
     <div className="container">
       <main className="wallet-create">
-        <div className="create-top">
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            ←
-          </button>
-
-          <h2>계좌 인증</h2>
-        </div>
+        <PageHeader title="계좌 인증" />
 
         <div className="create-content">
           <div className="account-form">

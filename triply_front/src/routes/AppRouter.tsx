@@ -11,6 +11,7 @@ import WalletHistory from "../pages/WalletHistory";
 import WalletCreate from "../pages/WalletCreate";
 import WalletAuth from "../pages/WalletAuth";
 import WalletCharge from "../pages/WalletCharge";
+import PaymentPay from "../pages/PaymentPay";
 
 export default function AppRouter() {
   return (
@@ -28,6 +29,7 @@ export default function AppRouter() {
         <Route path="/wallet/create" element={<WalletCreate />} />
         <Route path="/wallet/auth" element={<WalletAuth />} />
         <Route path="/wallet/charge" element={<WalletCharge />} />
+        <Route path="/payment/pay" element={<PaymentPay />} />
       </Routes>
     </BrowserRouter>
   );

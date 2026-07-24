@@ -51,7 +51,10 @@ export default function WalletCard() {
               충전하기
             </button>
 
-            <button className="pay-button" onClick={() => navigate("/payment")}>
+            <button
+              className="pay-button"
+              onClick={() => navigate("/payment/pay")}
+            >
               결제하기
             </button>
           </>
