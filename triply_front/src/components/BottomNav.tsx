@@ -13,7 +13,10 @@ export default function BottomNav({ activeTab, setActiveTab }: Props) {
     <nav className="bottom-nav">
       <button
         className={activeTab === "main" ? "active" : ""}
-        onClick={() => setActiveTab("main")}
+        onClick={() => {
+          setActiveTab("main");
+          navigate("/main");
+        }}
       >
         🏠
         <span>홈</span>

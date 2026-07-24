@@ -6,6 +6,8 @@ import SplashStandard from "../pages/SplashStandard";
 import SplashFun from "../pages/SplashFun";
 import Main from "../pages/Main";
 import MyPage from "../pages/MyPage";
+import Wallets from "../pages/Wallets";
+import WalletHistory from "../pages/WalletHistory";
 
 export default function AppRouter() {
   return (
@@ -17,6 +19,9 @@ export default function AppRouter() {
         <Route path="/main" element={<Main />} />
         <Route path="/mypage" element={<MyPage />} />
         {/* <Route path="/api-test" element={<ApiTester />} /> */}
+        {/* 주희 작업 page */}
+        <Route path="/wallet" element={<Wallets />} />
+        <Route path="/wallet/history" element={<WalletHistory />} />
       </Routes>
     </BrowserRouter>
   );

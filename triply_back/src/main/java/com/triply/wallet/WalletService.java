@@ -124,6 +124,10 @@ public class WalletService {
 									? settlement.getToUser().getUserName()
 									: settlement.getFromUser().getUserName()) : null)
 
+					.tripPlace(payment != null && payment.getTrip() != null ? payment.getTrip().getTripPlace() : null)
+
+					.foreignAmount(payment != null ? payment.getAmount() : null)
+
 					.build();
 		}).toList();
 	}
