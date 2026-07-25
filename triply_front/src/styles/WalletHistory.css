@@ -1,0 +1,207 @@
+.wallet-history {
+  padding: 20px;
+  padding-bottom: 90px;
+}
+
+/* 상단 헤더 */
+.history-top {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 64px;
+
+  background: white;
+
+  margin: -20px -20px 24px;
+}
+
+.history-top h2 {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.back-btn {
+  position: absolute;
+  left: 20px;
+
+  border: none;
+  background: none;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+/* 월 선택 */
+.month-selector {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.month-selector button {
+  border: none;
+
+  background: none;
+
+  font-size: 14px;
+
+  color: #777;
+
+  cursor: pointer;
+}
+
+.month-selector span {
+  font-size: 16px;
+
+  font-weight: bold;
+}
+
+/* 필터 버튼 */
+.filter-row {
+  display: flex;
+
+  gap: 8px;
+
+  margin-bottom: 18px;
+}
+
+.filter-row button {
+  flex: none;
+
+  padding: 5px 12px;
+
+  border: 1px solid #ddd;
+
+  border-radius: 18px;
+
+  background: white;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.filter-row .selected {
+  background: #5b86e5;
+
+  color: white;
+
+  border-color: #5b86e5;
+}
+
+/* 날짜 */
+.history-date {
+  margin-top: 18px;
+
+  margin-bottom: 10px;
+
+  font-size: 14px;
+
+  font-weight: bold;
+}
+
+/* 거래 카드 */
+.history-card {
+  background: white;
+
+  border-radius: 18px;
+
+  padding: 8px 14px;
+}
+
+/* 거래 한 줄 */
+.history-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px 0;
+}
+
+.history-item:not(:last-child) {
+  border-bottom: 1px solid #f3f3f3;
+}
+
+/* 아이콘 */
+.history-icon {
+  font-size: 24px;
+}
+
+/* 거래 내용 */
+.history-info {
+  flex: 1;
+}
+
+.history-amount {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  font-size: 15px;
+
+  font-weight: bold;
+}
+
+.plus {
+  color: #2d74ff;
+}
+
+.minus {
+  color: #222;
+}
+
+.foreign {
+  color: #888;
+
+  font-size: 11px;
+
+  font-weight: normal;
+}
+
+.history-title {
+  margin-top: 2px;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
+/* 정산하기 버튼 */
+.settlement-btn {
+  border: 1px solid #d8d8d8;
+
+  background: white;
+
+  color: #888;
+
+  border-radius: 5px;
+
+  padding: 3px 7px;
+
+  font-size: 10px;
+
+  cursor: pointer;
+}
+
+/* 내역 없음 */
+.empty-history {
+  text-align: center;
+
+  padding: 70px 0;
+
+  color: #999;
+}
