@@ -6,6 +6,7 @@ import SplashStandard from "../pages/SplashStandard";
 import SplashFun from "../pages/SplashFun";
 import Main from "../pages/Main";
 import MyPage from "../pages/MyPage";
+import MyPageEditProfile from "../pages/MyPageEditProfile";
 
 export default function AppRouter() {
   return (
@@ -16,6 +17,7 @@ export default function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/editprofile" element={<MyPageEditProfile />} />        
         {/* <Route path="/api-test" element={<ApiTester />} /> */}
       </Routes>
     </BrowserRouter>
