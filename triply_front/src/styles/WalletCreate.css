@@ -62,30 +62,13 @@
   box-sizing: border-box;
 }
 
-.account-form {
-  flex: 1;
-}
-
 /* ================= 설명 ================= */
 
-.account-description h3 {
-  margin: 0 0 12px;
-
-  font-size: 22px;
-
-  font-weight: bold;
-
-  line-height: 1.4;
-}
-
-.account-description p {
-  margin: 0 0 35px;
-
-  color: #888;
-
-  font-size: 13px;
-
-  line-height: 1.5;
+.title-content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 /* ================= 입력 영역 ================= */
