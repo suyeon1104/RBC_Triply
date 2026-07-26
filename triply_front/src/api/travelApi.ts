@@ -15,3 +15,6 @@ export const updateTravelPlan = (planId, data) =>
 // 여행계획 삭제
 export const deleteTravelPlan = (planId) =>
   axiosInstance.delete(`/travel/plan/${planId}`);
+// 여행계획 상세 조회
+export const getTravelPlanDetail = (tripId) =>
+  axiosInstance.get(`/trip/${tripId}`);

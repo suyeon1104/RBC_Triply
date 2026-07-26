@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { checkSettlement } from "../api/settlementApi";
 
 interface Props {
   paymentId: number;
@@ -7,9 +8,25 @@ interface Props {
 export default function SettlementButton({ paymentId }: Props) {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    // 대충 정산하는 곳 페이지로 전달예정
-    navigate(`/settlement/create/${paymentId}`);
+  const handleClick = async () => {
+    try {
+      const res = await checkSettlement(paymentId);
+
+      if (res.data.result) {
+        navigate(`/settlement/create/${paymentId}`);
+        return;
+      }
+
+      alert(res.data.msg);
+
+      navigate("/wallet");
+    } catch (e) {
+      console.error(e);
+
+      alert("정산 가능 여부 확인 중 오류가 발생했습니다.");
+
+      navigate(-1);
+    }
   };
 
   return (

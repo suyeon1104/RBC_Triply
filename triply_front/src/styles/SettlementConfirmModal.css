@@ -1,0 +1,138 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+.settlement-modal {
+  position: relative;
+
+  background: #ffffff;
+  width: 90%;
+  max-width: 380px;
+
+  border-radius: 24px;
+  padding: 28px 24px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  animation: modal-open 0.2s ease-out;
+}
+
+/* 모달 등장 애니메이션 */
+@keyframes modal-open {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  background: #f3f4f6;
+
+  border-radius: 50%;
+
+  font-size: 16px;
+  color: #666;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  background: #e5e7eb;
+}
+
+.settlement-modal h3 {
+  margin: 8px 0 24px;
+
+  text-align: center;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #222;
+}
+
+/* 정산 목록 */
+.settlement-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+.settlement-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 16px;
+
+  background: #f8f9fb;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+}
+
+.settlement-item span:first-child {
+  color: #555;
+  font-weight: 500;
+}
+
+.settlement-item span:last-child {
+  color: #111;
+  font-weight: 700;
+}
+
+/* 정산 버튼 */
+.settlement-submit {
+  width: 100%;
+
+  height: 52px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.settlement-submit:hover {
+  background: #1d4ed8;
+}
+
+.settlement-submit:active {
+  transform: scale(0.98);
+}
