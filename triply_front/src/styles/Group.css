@@ -1,0 +1,12 @@
+.group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.floating-button {
+  position: fixed;
+  right: 24px;
+  bottom: 100px; /* BottomNav 높이에 맞게 조절 */
+  z-index: 100;
+}
