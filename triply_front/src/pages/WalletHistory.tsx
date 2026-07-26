@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import BottomNav from "../components/BottomNav";
-import { getWalletHistory } from "../api/walletApi";
+import BottomNav from '../components/BottomNav';
+import { getWalletHistory } from '../api/walletApi';
 
-import "../styles/WalletHistory.css";
-import SettlementButton from "../components/SettlementButton";
+import '../styles/WalletHistory.css';
+import SettlementButton from '../components/SettlementButton';
 
 export default function WalletHistory() {
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState("wallet");
-  const [filter, setFilter] = useState("ALL");
+  const [activeTab, setActiveTab] = useState('wallet');
+  const [filter, setFilter] = useState('ALL');
   const [transactions, setTransactions] = useState<any[]>([]);
 
   const [month, setMonth] = useState(new Date().getMonth() + 1);
@@ -36,16 +36,14 @@ export default function WalletHistory() {
       if (itemMonth !== month) return false;
 
       switch (filter) {
-        case "PAYMENT":
-          return item.type === "PAYMENT";
+        case 'PAYMENT':
+          return item.type === 'PAYMENT';
 
-        case "CHARGE":
-          return item.type === "CHARGE";
+        case 'CHARGE':
+          return item.type === 'CHARGE';
 
-        case "SETTLEMENT":
-          return (
-            item.type === "SETTLEMENT_IN" || item.type === "SETTLEMENT_OUT"
-          );
+        case 'SETTLEMENT':
+          return item.type === 'SETTLEMENT_IN' || item.type === 'SETTLEMENT_OUT';
 
         default:
           return true;
@@ -69,40 +67,39 @@ export default function WalletHistory() {
 
   const getTitle = (item: any) => {
     switch (item.type) {
-      case "CHARGE":
-        return "지갑 충전";
+      case 'CHARGE':
+        return '지갑 충전';
 
-      case "PAYMENT":
+      case 'PAYMENT':
         return `결제 | ${item.merchantName}`;
 
-      case "SETTLEMENT_IN":
+      case 'SETTLEMENT_IN':
         return `정산받음 | ${item.counterpartyName}`;
 
-      case "SETTLEMENT_OUT":
+      case 'SETTLEMENT_OUT':
         return `정산보냄 | ${item.counterpartyName}`;
 
       default:
-        return "";
+        return '';
     }
   };
 
   const getAmount = (item: any) => {
-    const sign =
-      item.type === "CHARGE" || item.type === "SETTLEMENT_IN" ? "+" : "-";
+    const sign = item.type === 'CHARGE' || item.type === 'SETTLEMENT_IN' ? '+' : '-';
 
     return `${sign}${item.amount.toLocaleString()}원`;
   };
 
   const getIcon = (type: string) => {
     switch (type) {
-      case "PAYMENT":
-        return "🛍️";
+      case 'PAYMENT':
+        return '🛍️';
 
-      case "CHARGE":
-        return "💰";
+      case 'CHARGE':
+        return '💰';
 
       default:
-        return "🤝";
+        return '🤝';
     }
   };
 
@@ -122,37 +119,23 @@ export default function WalletHistory() {
 
           <span>{month}월</span>
 
-          <button onClick={() => month < 12 && setMonth(month + 1)}>
-            &gt;
-          </button>
+          <button onClick={() => month < 12 && setMonth(month + 1)}>&gt;</button>
         </div>
 
         <div className="filter-row">
-          <button
-            className={filter === "ALL" ? "selected" : ""}
-            onClick={() => setFilter("ALL")}
-          >
+          <button className={filter === 'ALL' ? 'selected' : ''} onClick={() => setFilter('ALL')}>
             전체
           </button>
 
-          <button
-            className={filter === "PAYMENT" ? "selected" : ""}
-            onClick={() => setFilter("PAYMENT")}
-          >
+          <button className={filter === 'PAYMENT' ? 'selected' : ''} onClick={() => setFilter('PAYMENT')}>
             결제
           </button>
 
-          <button
-            className={filter === "CHARGE" ? "selected" : ""}
-            onClick={() => setFilter("CHARGE")}
-          >
+          <button className={filter === 'CHARGE' ? 'selected' : ''} onClick={() => setFilter('CHARGE')}>
             충전
           </button>
 
-          <button
-            className={filter === "SETTLEMENT" ? "selected" : ""}
-            onClick={() => setFilter("SETTLEMENT")}
-          >
+          <button className={filter === 'SETTLEMENT' ? 'selected' : ''} onClick={() => setFilter('SETTLEMENT')}>
             정산
           </button>
         </div>
@@ -162,7 +145,7 @@ export default function WalletHistory() {
         ) : (
           grouped.map(([date, items]) => (
             <div key={date}>
-              <div className="history-date">{date.replaceAll("-", ".")}</div>
+              <div className="history-date">{date.replaceAll('-', '.')}</div>
 
               <div className="history-card">
                 {items.map((item) => (
@@ -171,16 +154,7 @@ export default function WalletHistory() {
 
                     <div className="history-info">
                       <div className="history-amount">
-                        <span
-                          className={
-                            item.type === "CHARGE" ||
-                            item.type === "SETTLEMENT_IN"
-                              ? "plus"
-                              : "minus"
-                          }
-                        >
-                          {getAmount(item)}
-                        </span>
+                        <span className={item.type === 'CHARGE' || item.type === 'SETTLEMENT_IN' ? 'plus' : 'minus'}>{getAmount(item)}</span>
 
                         {item.foreignAmount && (
                           <span className="foreign">
@@ -193,9 +167,7 @@ export default function WalletHistory() {
                       <div className="history-title">{getTitle(item)}</div>
                     </div>
 
-                    {item.type === "PAYMENT" && (
-                      <SettlementButton paymentId={item.paymentId} />
-                    )}
+                    {item.type === 'PAYMENT' && <SettlementButton paymentId={item.paymentId} />}
                   </div>
                 ))}
               </div>

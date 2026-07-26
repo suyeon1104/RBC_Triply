@@ -15,6 +15,7 @@ import WalletCharge from "../pages/WalletCharge";
 import PaymentPay from "../pages/PaymentPay";
 import Group from "../pages/Group";
 import ButtonTest from "../pages/ButtonTest";
+import MakeGroup from '../pages/MakeGroup';
 import SettlementCreate from "../pages/SettlementCreate";
 
 export default function AppRouter() {
@@ -31,6 +32,11 @@ export default function AppRouter() {
         {/* 주희 작업 page */}
         <Route path="/wallet" element={<Wallets />} />
         <Route path="/wallet/history" element={<WalletHistory />} />
+        {/* 재현 */}
+        <Route path="/group" element={<Group />} />
+        <Route path="/group/makegroup" element={<MakeGroup />} />
+        {/* 테스트 */}
+        <Route path="/button" element={<ButtonTest />} />
         <Route path="/wallet/create" element={<WalletCreate />} />
         <Route path="/wallet/auth" element={<WalletAuth />} />
         <Route path="/wallet/charge" element={<WalletCharge />} />
@@ -41,6 +47,7 @@ export default function AppRouter() {
         />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
+        <Route path="/group/makegroup" element={<MakeGroup />} />
         {/* 테스트 */}
         <Route path="/button" element={<ButtonTest />} />
       </Routes>

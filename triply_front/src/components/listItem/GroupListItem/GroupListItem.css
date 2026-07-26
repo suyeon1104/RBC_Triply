@@ -9,22 +9,21 @@
 }
 
 .group-title {
-  font-size: var(--body1);
-  font-weight: 700;
+  font: var(--font-body1-bold);
   color: var(--black);
 }
 
 .group-member {
-  font-size: var(--label1);
+  font: var(--font-label1-regular);
   color: var(--gray-600);
 }
 
 .group-settlement {
-  font-size: var(--body2);
+  font: var(--font-body2-regular);
   color: var(--gray-700);
 }
 
 .group-settlement-count {
   color: var(--main-500);
-  font-weight: 700;
+  font: var(--font-body2-regular);
 }

@@ -1,14 +1,16 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import "../styles/WalletCreate.css";
-import PageHeader from "../components/PageHeader";
+import '../styles/WalletCreate.css';
+import PageHeader from '../components/PageHeader';
+import TopNav from '../components/Navigation/TopNav/TopNav';
+import Button from '../components/Button/Button/Button';
 
 const WalletCreate = () => {
   const navigate = useNavigate();
 
-  const [bank, setBank] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
+  const [bank, setBank] = useState('');
+  const [accountNumber, setAccountNumber] = useState('');
 
   const bankRef = useRef<HTMLSelectElement>(null);
   const accountRef = useRef<HTMLInputElement>(null);
@@ -26,11 +28,11 @@ const WalletCreate = () => {
 
     if (accountNumber.length < 10 || accountNumber.length > 14) {
       accountRef.current?.focus();
-      alert("계좌번호는 10~14자리 숫자로 입력해주세요.");
+      alert('계좌번호는 10~14자리 숫자로 입력해주세요.');
       return;
     }
 
-    navigate("/wallet/auth", {
+    navigate('/wallet/auth', {
       state: {
         accountNumber,
       },
@@ -38,36 +40,36 @@ const WalletCreate = () => {
   };
 
   return (
-    <div className="container">
-      <main className="wallet-create">
-        <PageHeader title="계좌 인증" />
+    <>
+      <header>
+        <TopNav title="그룹 만들기" />
+      </header>
 
-        <div className="create-content">
-          <div className="account-form">
-            <div className="account-description">
+      <main className="page">
+        <div className="container">
+          <section>
+            <div className="title-content">
               <h3>
                 은행 계좌 인증을
                 <br />
                 진행해 주세요.
               </h3>
 
-              <p>
+              <p className="body1">
                 회원님의 실명과 계좌에 등록된 이름이
                 <br />
                 일치해야만 인증이 가능합니다.
               </p>
             </div>
+          </section>
 
+          <section>
             <div className="form-group">
               <label>
                 은행<span>*</span>
               </label>
 
-              <select
-                ref={bankRef}
-                value={bank}
-                onChange={(e) => setBank(e.target.value)}
-              >
+              <select ref={bankRef} value={bank} onChange={(e) => setBank(e.target.value)}>
                 <option value="">은행을 선택해주세요</option>
 
                 <option value="국민은행">국민은행</option>
@@ -99,7 +101,7 @@ const WalletCreate = () => {
                 inputMode="numeric"
                 value={accountNumber}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, "");
+                  const value = e.target.value.replace(/[^0-9]/g, '');
 
                   if (value.length <= 14) {
                     setAccountNumber(value);
@@ -108,14 +110,16 @@ const WalletCreate = () => {
                 placeholder="계좌번호를 입력해주세요"
               />
             </div>
-          </div>
+          </section>
 
-          <button className="account-btn" onClick={handleNext}>
-            계좌 연결하기
-          </button>
+          <div className="bottom-action-container">
+            <Button variant="primary" size="l" onClick={handleNext}>
+              계좌 연결하기
+            </Button>
+          </div>
         </div>
       </main>
-    </div>
+    </>
   );
 };
 

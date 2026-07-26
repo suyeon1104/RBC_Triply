@@ -8,6 +8,7 @@ import '../styles/Main.css';
 import { getMyTravelPlans } from '../api/travelApi';
 import TravelBanner from '../components/TravelBanner';
 import WalletCard from '../components/WalletCard';
+import GNB from '../components/Navigation/GNB/GNB';
 
 export default function Main() {
   const navigate = useNavigate();
@@ -43,27 +44,37 @@ export default function Main() {
   };
 
   return (
-    <div className="container">
-      <Header />
+    <>
+      <header>
+        <GNB />
+      </header>
 
-      <main className="main-content">
-        {/* 여행 배너 */}
-        <TravelBanner trip={nearestTrip} todayString={todayString} />
+      <main className="page">
+        <div className="container">
+          <section>
+            <div className="hero-banner">
+              {/* 여행 배너 */}
+              <TravelBanner trip={nearestTrip} todayString={todayString} />
+            </div>
+          </section>
 
-        {/* 지갑 */}
-        <WalletCard />
+          <section>
+            {/* 지갑 */}
+            <WalletCard />
+          </section>
 
-        {/* 정산 */}
-        {/* <section className="settlement-banner">
+          {/* 정산 */}
+          {/* <section className="settlement-banner">
           <div className="settlement-text">
             <span className="highlight-text">2건</span>의 정산이 남아 있어요~~
           </div>
 
           <button className="settlement-more-button">확인하기 &gt;</button>
         </section> */}
+        </div>
       </main>
 
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
-    </div>
+    </>
   );
 }
