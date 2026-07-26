@@ -12,6 +12,7 @@ import WalletCreate from "../pages/WalletCreate";
 import WalletAuth from "../pages/WalletAuth";
 import WalletCharge from "../pages/WalletCharge";
 import PaymentPay from "../pages/PaymentPay";
+import SettlementCreate from "../pages/SettlementCreate";
 
 export default function AppRouter() {
   return (
@@ -30,6 +31,10 @@ export default function AppRouter() {
         <Route path="/wallet/auth" element={<WalletAuth />} />
         <Route path="/wallet/charge" element={<WalletCharge />} />
         <Route path="/payment/pay" element={<PaymentPay />} />
+        <Route
+          path="/settlement/create/:paymentId"
+          element={<SettlementCreate />}
+        />
       </Routes>
     </BrowserRouter>
   );

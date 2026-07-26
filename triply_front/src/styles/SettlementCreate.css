@@ -1,0 +1,206 @@
+.settlement-container {
+  min-height: 100vh;
+  background: #fff;
+}
+
+.settlement-content {
+  padding: 10px 16px 16px;
+}
+
+.settlement-content h4 {
+  margin: 12px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.split-type {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.split-type button {
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.split-type button.active {
+  background: #333;
+  color: white;
+  border-color: #333;
+}
+
+.member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.member-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.member-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #efefef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.member-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.member-desc {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #999;
+}
+
+.member-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: #666;
+}
+
+.summary-card {
+  margin-top: 16px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  padding: 14px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+}
+
+.summary-row.last {
+  color: #666;
+}
+
+.detail-btn {
+  width: 100%;
+  margin-top: 18px;
+  height: 46px;
+  border: none;
+  border-radius: 10px;
+  background: #333;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.detail-btn:hover {
+  background: #222;
+}
+
+.payment-id {
+  margin-top: 10px;
+  text-align: center;
+  color: #aaa;
+  font-size: 11px;
+}
+/* 추가 */
+.ratio-input {
+  width: 55px;
+  margin: 0 6px;
+  padding: 3px 6px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.amount-input {
+  width: 90px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-align: right;
+  font-size: 14px;
+}
+/* 에러 메시지 */
+.error-message {
+  position: fixed;
+
+  top: 80px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  /* width: fit-content; */
+  width: 80%;
+  max-width: 90%;
+
+  padding: 14px 18px;
+
+  background: #fff5f5;
+
+  border: 1px solid #ffcdd2;
+
+  border-radius: 14px;
+
+  color: #d32f2f;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+  animation: toast-show 0.3s ease;
+}
+
+.error-message::before {
+  content: "⚠️";
+  font-size: 17px;
+}
+
+@keyframes toast-show {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
