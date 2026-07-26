@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import "../styles/Header.css";
-import { useEffect, useState } from "react";
-import { getNotiCount } from "../api/notiApi";
+import { useNavigate } from 'react-router-dom';
+import '../styles/Header.css';
+import { useEffect, useState } from 'react';
+import { getNotiCount } from '../api/notiApi';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -26,26 +26,14 @@ export default function Header() {
 
       <div className="header-icons">
         <div className="notification-wrapper">
-          <button
-            className="icon-button"
-            aria-label="알림"
-            onClick={() => navigate("/notification")}
-          >
+          <button className="icon-button" aria-label="알림" onClick={() => navigate('/notification')}>
             🔔
           </button>
 
-          {notificationCount > 0 && (
-            <span className="notification-badge">
-              {notificationCount > 99 ? "99+" : notificationCount}
-            </span>
-          )}
+          {notificationCount > 0 && <span className="notification-badge">{notificationCount > 99 ? '99+' : notificationCount}</span>}
         </div>
 
-        <button
-          className="icon-button"
-          aria-label="프로필"
-          onClick={() => navigate("/mypage")}
-        >
+        <button className="icon-button" aria-label="프로필" onClick={() => navigate('/mypage')}>
           👤
         </button>
       </div>

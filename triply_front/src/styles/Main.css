@@ -1,10 +1,26 @@
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-}
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+#root {
+  width: 100%;
+  max-width: 440px;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
 :root {
   /* Main */
   --main-50: #eff4ff;
@@ -40,44 +56,142 @@ body,
   --warning: #ffa90a;
 
   /* Shadow */
-  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-1: 0 3px 6px rgba(0, 0, 0, 0.2);
+  --shadow-2: 0 3px 6px rgba(0, 0, 0, 0.28);
 
-  /* Font Size */
-  --title1: 36px;
-  --title2: 28px;
+  /* Font */
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 
-  --header1: 22px;
-  --header2: 20px;
+  /* Title (700 = Bold) */
+  --font-title1: 700 36px/1.3 var(--font-family);
+  --font-title2: 700 28px/1.3 var(--font-family);
 
-  --body1: 16px;
-  --body2: 15px;
+  /* Header (400 = Regular / 600 = SemiBold) */
+  --font-header1: 600 22px/1.4 var(--font-family);
+  --font-header2: 600 20px/1.4 var(--font-family);
 
-  --label1: 13px;
-  --label2: 11px;
+  /* Body (400 = Regular / 600 = SemiBold) */
+  --font-body1-regular: 400 16px/1.5 var(--font-family);
+  --font-body1-bold: 600 16px/1.5 var(--font-family);
+  --font-body2-regular: 400 15px/1.5 var(--font-family);
+  --font-body2-bold: 600 15px/1.5 var(--font-family);
 
-  --caption: 9px;
+  /* Label (400 = Regular / 600 = SemiBold) */
+  --font-label1-regular: 400 13px/1.4 var(--font-family);
+  --font-label1-bold: 600 13px/1.4 var(--font-family);
+  --font-label2-regular: 400 11px/1.4 var(--font-family);
+  --font-label2-bold: 600 11px/1.4 var(--font-family);
+
+  /* Caption (400 = Regular / 600 = SemiBold) */
+  --font-caption1-regular: 400 9px/1.3 var(--font-family);
+  --font-caption1-bold: 600 9px/1.3 var(--font-family);
+}
+
+h1 {
+  font: var(--font-title1);
+  margin: 0;
+}
+h2 {
+  font: var(--font-title2);
+  margin: 0;
+}
+h3 {
+  font: var(--font-header1);
+  margin: 0;
+}
+h4 {
+  font: var(--font-header2);
+  margin: 0;
+}
+
+.body1 {
+  font: var(--font-body1-regular);
+  margin: 0;
+}
+.body1-bold {
+  font: var(--font-body1-bold);
+  margin: 0;
+}
+
+.body2 {
+  font: var(--font-body2-regular);
+  margin: 0;
+}
+.body2-bold {
+  font: var(--font-body2-bold);
+  margin: 0;
+}
+
+.label1 {
+  font: var(--font-label1-regular);
+  margin: 0;
+}
+.label1-bold {
+  font: var(--font-label1-bold);
+  margin: 0;
+}
+
+.label2 {
+  font: var(--font-label2-regular);
+  margin: 0;
+}
+.label2-bold {
+  font: var(--font-label2-bold);
+  margin: 0;
+}
+
+.caption1 {
+  font: var(--font-caption1-regular);
+  margin: 0;
+}
+.caption1-bold {
+  font: var(--font-caption1-bold);
+  margin: 0;
+}
+
+header {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background: var(--white);
+  box-sizing: border-box;
+  padding: 0;
+  z-index: 10;
+  position: relative;
 }
 
 .page {
-  padding-top: 64px;
+  flex: 1;
+  width: 100%;
+  padding: 0;
+  overflow-y: auto;
+  background: var(--gray-50);
+  box-sizing: border-box;
+  -ms-overflow-style: none;
 }
+
+/* .page::-webkit-scrollbar {
+  display: none;
+} */
 
 .container {
   display: flex;
   flex-direction: column;
-
-  min-height: calc(100vh - 68px);
-  margin: 0 auto;
-
-  background: #f8f9fa;
-  position: relative;
+  padding: 20px 0;
+  gap: 24px;
   box-sizing: border-box;
+  position: relative;
 }
 
 section {
-  flex: 1;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  width: auto;
+  height: auto;
+  gap: 12px;
 }
 
 .main-content {
@@ -86,17 +200,49 @@ section {
   overflow-y: auto;
 }
 
+/* ================= Scroll Bar ================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  margin-top: 20px;
+  margin-bottom: 80px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--gray-300);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gray-300);
+}
+
 /* ================= Banner ================= */
+.hero-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px 12px 12px;
+  box-sizing: border-box;
+}
 
 .banner {
   position: relative;
-  width: 100%;
-  height: 360px;
+  height: 468px;
+  width: 360px;
   background-color: #1c2833;
   background-image: linear-gradient(rgba(28, 40, 51, 0.75), rgba(28, 40, 51, 0.75)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80');
   background-size: cover;
   background-position: center;
-  border-radius: 200px 200px 24px 24px;
+  border-radius: 152px;
 
   display: flex;
   flex-direction: column;
@@ -108,8 +254,7 @@ section {
 
   color: white;
   text-align: center;
-
-  margin-bottom: 20px;
+  margin: 8px;
   overflow: hidden;
 }
 
@@ -118,7 +263,6 @@ section {
 }
 
 .banner-date {
-  display: block;
   margin-bottom: 8px;
 
   color: #e0e0e0;

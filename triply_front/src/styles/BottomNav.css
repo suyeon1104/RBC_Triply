@@ -4,7 +4,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  max-width: 480px;
+  max-width: 440px;
   height: 70px;
   display: flex;
   justify-content: space-around;

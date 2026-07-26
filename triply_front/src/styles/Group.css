@@ -1,12 +1,19 @@
 .group-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .floating-button {
   position: fixed;
-  right: 24px;
-  bottom: 100px; /* BottomNav 높이에 맞게 조절 */
+  left: min(calc(50% + 220px - 24px), calc(100% - 24px));
+  transform: translateX(-100%);
+
+  bottom: 100px;
   z-index: 100;
+}
+
+.floating-button Button {
+  width: 164px;
+  box-shadow: var(--shadow-2);
 }

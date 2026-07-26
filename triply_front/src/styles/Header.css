@@ -1,14 +1,18 @@
-.header {
+header {
   position: fixed;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
 
   z-index: 1000;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 440px;
 
   padding: 16px 20px;
 
@@ -24,6 +28,7 @@
 
 .header-icons {
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 

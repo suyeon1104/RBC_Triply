@@ -1,83 +1,114 @@
 import Button from '../components/Button/Button/Button';
-import { Plus } from 'lucide-react';
+import IconButton from '../components/Button/IconButton/IconButton';
+import { Plus, ChevronLeft } from 'lucide-react';
 
 const ButtonTest = () => {
   return (
     <div
       style={{
         display: 'flex',
-        gap: '40px',
+        gap: '48px',
         padding: '24px',
       }}
     >
-      {/* 텍스트 버튼 */}
+      {/* Button (아이콘 포함) */}
       <div
         style={{
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
           gap: '16px',
-          flex: 1,
         }}
       >
-        <h3>Text</h3>
+        <h3>Button + Icon</h3>
 
-        <Button variant="primary" size="s">
+        <Button variant="primary" size="s" leadingIcon={<Plus />} trailingIcon={<ChevronLeft />}>
           Primary S
         </Button>
-        <Button variant="primary" size="m">
+
+        <Button variant="primary" leadingIcon={<Plus />} trailingIcon={<ChevronLeft />}>
           Primary M
         </Button>
-        <Button variant="primary" size="l">
+
+        <Button variant="primary" size="l" leadingIcon={<Plus />} trailingIcon={<ChevronLeft />}>
           Primary L
         </Button>
 
-        <Button variant="assistive" size="m">
+        <Button variant="assistive" leadingIcon={<Plus />} trailingIcon={<ChevronLeft />}>
           Assistive
         </Button>
 
-        <Button variant="outlined" size="m">
+        <Button variant="outlined" leadingIcon={<Plus />} trailingIcon={<ChevronLeft />}>
           Outlined
         </Button>
 
-        <Button variant="subtle" size="m">
+        <Button variant="subtle" leadingIcon={<Plus />} trailingIcon={<ChevronLeft />}>
           Subtle
         </Button>
       </div>
 
-      {/* 아이콘 버튼 */}
+      {/* IconButton - Horizontal */}
       <div
         style={{
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
           gap: '16px',
-          flex: 1,
         }}
       >
-        <h3>Icon + Text</h3>
+        <h3>IconButton (Horizontal)</h3>
 
-        <Button variant="primary" size="s" leadingIcon={<Plus size={16} />}>
-          Primary S
-        </Button>
+        <IconButton variant="primary" size="s" shape="horizontal">
+          <Plus />
+        </IconButton>
 
-        <Button variant="primary" size="m" leadingIcon={<Plus size={18} />}>
-          Primary M
-        </Button>
+        <IconButton variant="primary" size="l" shape="horizontal">
+          <Plus />
+        </IconButton>
 
-        <Button variant="primary" size="l" leadingIcon={<Plus size={20} />}>
-          Primary L
-        </Button>
+        <IconButton variant="assistive" shape="horizontal">
+          <ChevronLeft />
+        </IconButton>
 
-        <Button variant="assistive" size="m" leadingIcon={<Plus size={18} />}>
-          Assistive
-        </Button>
+        <IconButton variant="outlined" shape="horizontal">
+          <ChevronLeft />
+        </IconButton>
 
-        <Button variant="outlined" size="m" leadingIcon={<Plus size={18} />}>
-          Outlined
-        </Button>
+        <IconButton variant="subtle" shape="horizontal">
+          <ChevronLeft />
+        </IconButton>
+      </div>
 
-        <Button variant="subtle" size="m" leadingIcon={<Plus size={18} />}>
-          Subtle
-        </Button>
+      {/* IconButton - Vertical */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+        }}
+      >
+        <h3>IconButton (Vertical)</h3>
+
+        <IconButton variant="primary" size="s" shape="vertical">
+          <Plus />
+        </IconButton>
+
+        <IconButton variant="primary" size="l" shape="vertical">
+          <Plus />
+        </IconButton>
+
+        <IconButton variant="assistive" shape="vertical">
+          <ChevronLeft />
+        </IconButton>
+
+        <IconButton variant="outlined" shape="vertical">
+          <ChevronLeft />
+        </IconButton>
+
+        <IconButton variant="subtle" shape="vertical">
+          <ChevronLeft />
+        </IconButton>
       </div>
     </div>
   );

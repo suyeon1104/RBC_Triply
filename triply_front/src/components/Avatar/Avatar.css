@@ -1,0 +1,20 @@
+.Avatar {
+  display: inline-flex;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+/* ImageFrame 내부 요소 바닥 밀착 */
+.Avatar-frame {
+  align-items: flex-end;
+}
+
+.Avatar-frame .frame-img {
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+/* 기본 svg 적용 시 50% 투명도 */
+.Avatar-frame--default .frame-img {
+  opacity: 0.9;
+}

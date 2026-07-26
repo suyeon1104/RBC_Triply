@@ -3,10 +3,11 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  border: 1px solid transparent;
+  border: 0;
   background-color: transparent;
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 }
 
 /* ==========================================
@@ -16,7 +17,7 @@
 .button.l {
   height: 48px;
   padding: 12px 14px;
-  font-size: var(--body1);
+  font: var(--font-body1-regular);
   border-radius: 16px;
   gap: 6px;
 }
@@ -25,7 +26,7 @@
 .button.m {
   height: 40px;
   padding: 8px 14px;
-  font-size: var(--label1);
+  font: var(--font-label1-regular);
   border-radius: 16px;
   gap: 4px;
 }
@@ -34,7 +35,7 @@
 .button.s {
   height: 32px;
   padding: 8px 14px;
-  font-size: var(--label2);
+  font: var(--font-label2-regular);
   border-radius: 12px;
   gap: 4px;
 }

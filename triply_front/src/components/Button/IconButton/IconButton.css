@@ -1,0 +1,98 @@
+/* ==========================================
+   1. Base Style
+   ========================================== */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+  line-height: 0;
+
+  /* 너비/높이가 밖으로 늘어나지 않고 내용물(패딩)만큼만 감싸도록 설정 */
+  width: fit-content;
+  height: fit-content;
+}
+
+/* 내부 span 및 svg 인라인 여백 제거 (18.4px 오차 해결) */
+.icon-button .button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+}
+
+.icon-button .button-icon svg,
+.icon-button svg {
+  display: block;
+}
+
+/* ==========================================
+   2. Corner Radius & Gap
+   ========================================== */
+.icon-button.l {
+  border-radius: 16px;
+}
+
+.icon-button.s {
+  border-radius: 12px;
+}
+
+/* ==========================================
+   3. Shape & Padding (순서 및 조합 정밀화)
+   ========================================== */
+/* 가로형 (Horizontal) */
+.icon-button.horizontal:not(.subtle) {
+  padding: 8px 14px;
+}
+.icon-button.vertical:not(.subtle) {
+  padding: 14px 8px;
+}
+
+/* ==========================================
+   4. Icon Size 강제 고정 (Exact 24px / 16px)
+   ========================================== */
+.icon-button.l .button-icon svg,
+.icon-button.l svg {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+}
+
+.icon-button.s .button-icon svg,
+.icon-button.s svg {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+/* ==========================================
+   5. Variants
+   ========================================== */
+.icon-button.primary {
+  background-color: var(--main-400);
+  color: var(--white);
+}
+
+.icon-button.assistive {
+  background-color: var(--gray-50);
+  color: var(--gray-600);
+}
+
+.icon-button.outlined {
+  background-color: transparent;
+  border-color: var(--gray-200);
+  color: var(--gray-600);
+}
+
+.icon-button.subtle {
+  background-color: transparent;
+  color: var(--gray-600);
+  padding: 8px;
+}

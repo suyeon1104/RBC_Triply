@@ -9,12 +9,13 @@ import MyPage from '../pages/MyPage';
 import MyPageEditProfile from "../pages/MyPageEditProfile";
 import Wallets from '../pages/Wallets';
 import WalletHistory from '../pages/WalletHistory';
-import WalletCreate from "../pages/WalletCreate";
-import WalletAuth from "../pages/WalletAuth";
-import WalletCharge from "../pages/WalletCharge";
-import PaymentPay from "../pages/PaymentPay";
+import WalletCreate from '../pages/WalletCreate';
+import WalletAuth from '../pages/WalletAuth';
+import WalletCharge from '../pages/WalletCharge';
+import PaymentPay from '../pages/PaymentPay';
 import Group from '../pages/Group';
 import ButtonTest from '../pages/ButtonTest';
+import MakeGroup from '../pages/MakeGroup';
 
 export default function AppRouter() {
   return (
@@ -32,6 +33,7 @@ export default function AppRouter() {
         <Route path="/wallet/history" element={<WalletHistory />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
+        <Route path="/group/makegroup" element={<MakeGroup />} />
         {/* 테스트 */}
         <Route path="/button" element={<ButtonTest />} />
         <Route path="/wallet/create" element={<WalletCreate />} />
