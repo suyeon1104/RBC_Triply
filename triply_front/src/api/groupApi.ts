@@ -19,3 +19,6 @@ export const deleteGroup = (groupId) =>
 // 그룹 멤버 조회
 export const getGroupMembers = (groupId) =>
   axiosInstance.get(`/group/${groupId}/members`);
+// 그룹 초대 답변 (수락/거절)
+export const respondGroupInvitation = (invitationId, status) =>
+  axiosInstance.patch(`/group/inviteAnswer`, { invitationId, status });

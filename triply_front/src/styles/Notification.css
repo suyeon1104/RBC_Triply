@@ -58,7 +58,8 @@
 }
 
 .notification-modal {
-  width: 300px;
+  min-width: 300px;
+  max-width: 95%;
   background: white;
   border-radius: 16px;
   padding: 24px;
