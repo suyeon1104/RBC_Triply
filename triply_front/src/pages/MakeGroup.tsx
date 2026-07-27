@@ -85,7 +85,7 @@ const MakeGroup = () => {
       if (members.length > 0 && newGroupId) {
         await Promise.all(
           members.map((member) =>
-            instance.post('/group/inviteGroupwjdqh', {
+            instance.post('/group/inviteGroup', {
               groupId: newGroupId,
               loginId: member.loginId,
             }),
@@ -136,7 +136,7 @@ const MakeGroup = () => {
               <label className="body2">
                 그룹 이름<span className="required">*</span>
               </label>
-              <input type="text" placeholder="플래너의 제목을 입력해주세요." value={groupTitle} onChange={(e) => setGroupTitle(e.target.value)} />
+              <input type="text" placeholder="그룹 이름을 지어주세요." value={groupTitle} onChange={(e) => setGroupTitle(e.target.value)} />
             </div>
 
             <div className="input-content">

@@ -1,0 +1,29 @@
+.trip-item {
+  padding: 12px;
+  background: var(--white);
+  border-radius: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trip-title {
+  font: var(--font-body1-bold);
+  color: var(--black);
+}
+
+.trip-member {
+  font: var(--font-label1-regular);
+  color: var(--gray-600);
+}
+
+.trip-settlement {
+  font: var(--font-body2-regular);
+  color: var(--gray-700);
+}
+
+.trip-settlement-count {
+  color: var(--main-500);
+  font: var(--font-body2-regular);
+}

@@ -1,0 +1,93 @@
+.page {
+  padding-bottom: 120px;
+}
+
+.title-Content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.body1 {
+  color: var(--gray-500);
+}
+
+.required {
+  color: var(--main-500);
+}
+
+.input-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+input, select {
+  box-sizing: border-box;
+  height: 48px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 12px;
+  background-color: var(--white);
+  border: 1px solid var(--gray-200);
+}
+
+input::placeholder {
+  color: var(--gray-300);
+  font: var(--font-body1-regular);
+}
+
+/* .invite-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.invite-input-wrapper input {
+  padding-right: 52px;
+}
+
+.invite-input-wrapper > *:last-child {
+  position: absolute;
+  right: 0;
+}
+
+.memberList {
+  gap: 12px;
+}
+.memberList > * {
+  position: relative;
+}
+
+.memberList > *::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: var(--gray-200);
+}
+
+.memberList > *:last-child::after {
+  display: none;
+} */
+
+.bottom-action-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.bottom-action-container Button {
+  width: 100%;
+}

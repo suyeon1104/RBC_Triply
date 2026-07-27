@@ -1,0 +1,19 @@
+.trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.floating-button {
+  position: fixed;
+  left: min(calc(50% + 220px - 24px), calc(100% - 24px));
+  transform: translateX(-100%);
+
+  bottom: 100px;
+  z-index: 100;
+}
+
+.floating-button Button {
+  width: 164px;
+  box-shadow: var(--shadow-2);
+}
