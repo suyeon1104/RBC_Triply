@@ -16,3 +16,6 @@ export const getSettlementSummary = (groupId) =>
 // 정산 가능 여부 확인 (결제 완료 후, 정산하기 버튼 클릭 시)
 export const checkSettlement = (paymentId: number) =>
   axiosInstance.get(`/settlement/check/${paymentId}`);
+// 정산 완료 처리 (정산하기 버튼 클릭 시)
+export const completeSettlement = (settlementId: number) =>
+  axiosInstance.patch(`/settlement/${settlementId}/complete`);

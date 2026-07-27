@@ -1,17 +1,14 @@
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
 
 import '../styles/Main.css';
-import { getMyTravelPlans } from '../api/travelApi';
+import { getTripList } from '../api/tripApi';
 import TravelBanner from '../components/TravelBanner';
 import WalletCard from '../components/WalletCard';
 import GNB from '../components/Navigation/GNB/GNB';
 
 export default function Main() {
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('main');
   const [nearestTrip, setNearestTrip] = useState<any>(null);
   const now = new Date();
@@ -24,7 +21,7 @@ export default function Main() {
 
   const fetchNearestTrip = async () => {
     try {
-      const res = await getMyTravelPlans();
+      const res = await getTripList();
 
       const trips = res.data;
       console.log(res.data);

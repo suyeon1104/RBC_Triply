@@ -23,7 +23,8 @@ export default function MyPageEditProfile() {
   // const [id, setId] = useState<string>(initialData?.loginId ?? "");
   const [name, setName] = useState<string>(initialData?.userName ?? '');
   const [phoneNum, setPhoneNum] = useState<string>(initialData?.userPhone ?? '');
-  const [newPhoneNum, setNewPhoneNum] = useState<string>('');
+  // 새 전화번호로 변경 ()
+  // const [newPhoneNum, setNewPhoneNum] = useState<string>("");
 
   const [pw, setPw] = useState<string>('');
   const [newPw, setNewPw] = useState<string>('');
@@ -64,7 +65,14 @@ export default function MyPageEditProfile() {
     if (pn === phoneNum) {
       alert('정확한 휴대전화 번호입니다.');
     } else {
-      alert('정확한 휴대전화 번호를 입력해주세요.');
+      alert('정확한 휴대전화번호를 입력해주세요.');
+    }
+  }
+
+  async function editPw() {
+    if (!pw || !newPw) {
+      alert('현재 비밀번호와 새 비밀번호를 모두 입력해주세요');
+      return;
     }
     try {
       const res = await patchPw({ userPw: pw, newUserPw: newPw });
@@ -78,7 +86,7 @@ export default function MyPageEditProfile() {
   return (
     <>
       <div className="flex flex-col w-full max-w-[440px] h-[956px] bg-white mb-5 min-h-screen">
-        <Header page={'textOnly'}></Header>
+        <Header />
         {/* 전체 화면 */}
         <div className="flex flex-col flex-1 w-[400px] h-[892px] mt-6 gap-2 p-5 items-center">
           {/* 프로필 이미지 설정 */}

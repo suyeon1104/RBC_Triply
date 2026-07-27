@@ -1,16 +1,15 @@
-import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import '../styles/WalletCreate.css';
-import PageHeader from '../components/PageHeader';
-import TopNav from '../components/Navigation/TopNav/TopNav';
-import Button from '../components/Button/Button/Button';
+import "../styles/WalletCreate.css";
+import TopNav from "../components/Navigation/TopNav/TopNav";
+import Button from "../components/Button/Button/Button";
 
 const WalletCreate = () => {
   const navigate = useNavigate();
 
-  const [bank, setBank] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
+  const [bank, setBank] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
 
   const bankRef = useRef<HTMLSelectElement>(null);
   const accountRef = useRef<HTMLInputElement>(null);
@@ -28,11 +27,11 @@ const WalletCreate = () => {
 
     if (accountNumber.length < 10 || accountNumber.length > 14) {
       accountRef.current?.focus();
-      alert('계좌번호는 10~14자리 숫자로 입력해주세요.');
+      alert("계좌번호는 10~14자리 숫자로 입력해주세요.");
       return;
     }
 
-    navigate('/wallet/auth', {
+    navigate("/wallet/auth", {
       state: {
         accountNumber,
       },
@@ -42,7 +41,7 @@ const WalletCreate = () => {
   return (
     <>
       <header>
-        <TopNav title="그룹 만들기" />
+        <TopNav title="계좌 연결" />
       </header>
 
       <main className="page">
@@ -69,7 +68,11 @@ const WalletCreate = () => {
                 은행<span>*</span>
               </label>
 
-              <select ref={bankRef} value={bank} onChange={(e) => setBank(e.target.value)}>
+              <select
+                ref={bankRef}
+                value={bank}
+                onChange={(e) => setBank(e.target.value)}
+              >
                 <option value="">은행을 선택해주세요</option>
 
                 <option value="국민은행">국민은행</option>
@@ -101,7 +104,7 @@ const WalletCreate = () => {
                 inputMode="numeric"
                 value={accountNumber}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/[^0-9]/g, '');
+                  const value = e.target.value.replace(/[^0-9]/g, "");
 
                   if (value.length <= 14) {
                     setAccountNumber(value);

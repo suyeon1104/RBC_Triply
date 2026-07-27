@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Join from '../pages/Join';
 import Login from '../pages/Login';
 // import ApiTester from "../pages/ApiTester";
-import SplashStandard from '../pages/SplashStandard';
+// import SplashStandard from '../pages/SplashStandard';
 import SplashFun from '../pages/SplashFun';
 import Main from '../pages/Main';
 import MyPage from '../pages/MyPage';
@@ -18,6 +18,9 @@ import ButtonTest from '../pages/ButtonTest';
 import MakeGroup from '../pages/MakeGroup';
 import SettlementCreate from '../pages/SettlementCreate';
 import GroupDetail from '../pages/GroupDetail';
+import Planner from '../pages/Planner';
+import CreateTrip from '../pages/CreateTrip';
+import Notification from '../pages/Notification';
 
 export default function AppRouter() {
   return (
@@ -38,6 +41,11 @@ export default function AppRouter() {
         <Route path="/wallet/charge" element={<WalletCharge />} />
         <Route path="/payment/pay" element={<PaymentPay />} />
         <Route path="/settlement/create/:paymentId" element={<SettlementCreate />} />
+        <Route path="/settlement/create/:paymentId" element={<SettlementCreate />} />
+        {/* 수연 */}
+        <Route path="/planner" element={<Planner />} />
+        <Route path="/trip/createTrip" element={<CreateTrip />} />
+        <Route path="/notification" element={<Notification />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
         <Route path="/group/makegroup" element={<MakeGroup />} />

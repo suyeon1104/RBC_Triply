@@ -47,3 +47,6 @@ out/
 /build/
 .gradle/
 bin/
+
+# Spring Boot config
+src/main/resources/application*.properties

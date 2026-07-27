@@ -5,7 +5,7 @@ import "../styles/SettlementCreate.css";
 import PageHeader from "../components/PageHeader";
 
 import { paymentGet } from "../api/paymentApi";
-import { getTravelPlanDetail } from "../api/travelApi";
+import { getTripDetail } from "../api/tripApi";
 import { getGroupMembers } from "../api/groupApi";
 import SettlementMemberList from "../components/SettlementMemberList";
 import SettlementConfirmModal from "../components/SettlementConfirmModal";
@@ -49,7 +49,7 @@ const SettlementCreate = () => {
 
       setPayment(paymentData);
 
-      const tripRes = await getTravelPlanDetail(paymentData.tripId);
+      const tripRes = await getTripDetail(paymentData.tripId);
       const tripData = tripRes.data;
 
       setTrip(tripData);
