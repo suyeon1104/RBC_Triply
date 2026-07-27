@@ -1,22 +1,23 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Join from "../pages/Join";
-import Login from "../pages/Login";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Join from '../pages/Join';
+import Login from '../pages/Login';
 // import ApiTester from "../pages/ApiTester";
-import SplashStandard from "../pages/SplashStandard";
-import SplashFun from "../pages/SplashFun";
-import Main from "../pages/Main";
-import MyPage from "../pages/MyPage";
-import MyPageEditProfile from "../pages/MyPageEditProfile";
-import Wallets from "../pages/Wallets";
-import WalletHistory from "../pages/WalletHistory";
-import WalletCreate from "../pages/WalletCreate";
-import WalletAuth from "../pages/WalletAuth";
-import WalletCharge from "../pages/WalletCharge";
-import PaymentPay from "../pages/PaymentPay";
-import Group from "../pages/Group";
-import ButtonTest from "../pages/ButtonTest";
-import MakeGroup from "../pages/MakeGroup";
-import SettlementCreate from "../pages/SettlementCreate";
+import SplashStandard from '../pages/SplashStandard';
+import SplashFun from '../pages/SplashFun';
+import Main from '../pages/Main';
+import MyPage from '../pages/MyPage';
+import MyPageEditProfile from '../pages/MyPageEditProfile';
+import Wallets from '../pages/Wallets';
+import WalletHistory from '../pages/WalletHistory';
+import WalletCreate from '../pages/WalletCreate';
+import WalletAuth from '../pages/WalletAuth';
+import WalletCharge from '../pages/WalletCharge';
+import PaymentPay from '../pages/PaymentPay';
+import Group from '../pages/Group';
+import ButtonTest from '../pages/ButtonTest';
+import MakeGroup from '../pages/MakeGroup';
+import SettlementCreate from '../pages/SettlementCreate';
+import GroupDetail from '../pages/GroupDetail';
 
 export default function AppRouter() {
   return (
@@ -36,13 +37,11 @@ export default function AppRouter() {
         <Route path="/wallet/auth" element={<WalletAuth />} />
         <Route path="/wallet/charge" element={<WalletCharge />} />
         <Route path="/payment/pay" element={<PaymentPay />} />
-        <Route
-          path="/settlement/create/:paymentId"
-          element={<SettlementCreate />}
-        />
+        <Route path="/settlement/create/:paymentId" element={<SettlementCreate />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
         <Route path="/group/makegroup" element={<MakeGroup />} />
+        <Route path="/group/:groupId" element={<GroupDetail />} />
         {/* 테스트 */}
         <Route path="/button" element={<ButtonTest />} />
       </Routes>

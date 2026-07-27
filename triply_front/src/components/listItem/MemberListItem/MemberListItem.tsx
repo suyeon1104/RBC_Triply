@@ -5,6 +5,7 @@ import './MemberListItem.css';
 import Avatar from '../../Avatar/Avatar';
 
 export interface InvitedMember {
+  userId?: number | string;
   invitationId?: number;
   receiverName: string;
   profileUrl?: string;
@@ -25,7 +26,7 @@ const MemberListItem = ({ member, onDelete }: MemberListItemProps) => {
   return (
     <div className="member-item">
       <div className="leading">
-        <Avatar src={member?.profileUrl} />
+        <Avatar src={member?.profileUrl} userId={member?.userId || member?.receiverName} />
         <div className="name-wrapper">
           <p className="body1-bold">{name}</p>
 

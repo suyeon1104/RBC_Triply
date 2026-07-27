@@ -10,11 +10,13 @@ interface ButtonProps {
   children: React.ReactNode;
 
   onClick?: () => void;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
-const Button = ({ variant = 'primary', size = 'm', leadingIcon, trailingIcon, children, onClick }: ButtonProps) => {
+const Button = ({ variant = 'primary', size = 'm', leadingIcon, trailingIcon, children, onClick, style, className = '' }: ButtonProps) => {
   return (
-    <button className={`button ${variant} ${size}`} onClick={onClick}>
+    <button className={`button ${variant} ${size} ${className}`} onClick={onClick} style={style}>
       {leadingIcon && <span className="button-icon">{leadingIcon}</span>}
 
       <span>{children}</span>

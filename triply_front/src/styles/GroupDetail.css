@@ -1,0 +1,93 @@
+.group-description {
+  .top-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .created-time {
+    display: flex;
+  }
+
+  .accompany-planner {
+    display: flex;
+    justify-content: space-between;
+
+    .leading span {
+      color: var(--main-500);
+    }
+  }
+}
+
+.member {
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .member-content {
+    background-color: var(--white);
+    border-radius: 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0;
+
+    /* 멤버 리스트 및 아이템 간 구분선 스타일 */
+    .member-list {
+      display: flex;
+      flex-direction: column;
+
+      > * {
+        position: relative;
+      }
+
+      > *::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: var(--gray-200);
+      }
+
+      > *:last-child::after {
+        display: none;
+      }
+    }
+  }
+
+  .action-area {
+    padding: 0 12px;
+  }
+  .action-area Button {
+    width: 100%;
+  }
+}
+
+.settlement {
+  .title {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .settlement-content {
+    background-color: var(--white);
+    border-radius: 16px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .action-area {
+    padding: 0 12px;
+  }
+  .action-area Button {
+    width: 100%;
+  }
+}

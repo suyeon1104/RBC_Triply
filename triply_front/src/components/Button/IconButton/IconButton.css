@@ -87,7 +87,7 @@
 
 .icon-button.outlined {
   background-color: transparent;
-  border-color: var(--gray-200);
+  border: 1px solid var(--gray-200);
   color: var(--gray-600);
 }
 
