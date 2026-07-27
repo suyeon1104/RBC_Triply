@@ -5,6 +5,8 @@ import { getNotiList } from "../api/notiApi";
 import Button from "../components/Button/Button/Button";
 import { ChevronRight, Users, Wallet } from "lucide-react";
 import "../styles/Notification.css";
+import { completeSettlement } from "../api/settlementApi";
+import { respondGroupInvitation } from "../api/groupApi";
 
 interface Notification {
   notificationId: number;
@@ -38,22 +40,51 @@ const Notification = () => {
   }, []);
 
   // 버튼에 걸릴 이벤트 핸들러
-  const handleAccept = async () => {
+  const handleAccept = async (invitationId: number) => {
     // 그룹 초대 수락 API 호출
-    // 모달 닫기
-    // 알림 목록 새로고침
+    try {
+      const res = await respondGroupInvitation(invitationId, "ACCEPTED");
+      console.log("그룹 초대 수락:", res.data);
+
+      // 모달 닫기
+      setSelectedNotification(null);
+
+      // 목록 새로고침
+      await fetchNotiList();
+    } catch (error) {
+      console.error("초대 수락 실패:", error);
+    }
   };
 
-  const handleReject = async () => {
+  const handleReject = async (invitationId: number) => {
     // 그룹 초대 거절 API 호출
-    // 모달 닫기
-    // 알림 목록 새로고침
+    try {
+      const res = await respondGroupInvitation(invitationId, "REJECTED");
+      console.log("그룹 초대 거절:", res.data);
+
+      // 모달 닫기
+      setSelectedNotification(null);
+
+      // 목록 새로고침
+      await fetchNotiList();
+    } catch (error) {
+      console.error("초대 거절 실패:", error);
+    }
   };
 
-  const handleSettlement = async () => {
-    // 정산 처리(또는 정산 페이지 이동)
-    // 필요하면 모달 닫기
-    // 알림 목록 새로고침
+  const handleSettlement = async (settlementId: number) => {
+    try {
+      const res = await completeSettlement(settlementId);
+      console.log("정산 완료:", res.data);
+
+      // 모달 닫기
+      setSelectedNotification(null);
+
+      // 목록 새로고침
+      await fetchNotiList();
+    } catch (error) {
+      console.error("정산 완료 실패:", error);
+    }
   };
   return (
     <>
@@ -111,14 +142,25 @@ const Notification = () => {
 
             {selectedNotification.type === "GROUP_INVITE" ? (
               <div className="modal-buttons">
-                <Button variant="assistive" onClick={handleReject}>
+                <Button
+                  variant="assistive"
+                  onClick={() => handleReject(selectedNotification.targetId)}
+                >
                   거절
                 </Button>
 
-                <Button onClick={handleAccept}>수락</Button>
+                <Button
+                  onClick={() => handleAccept(selectedNotification.targetId)}
+                >
+                  수락
+                </Button>
               </div>
             ) : (
-              <Button onClick={handleSettlement}>정산하기</Button>
+              <Button
+                onClick={() => handleSettlement(selectedNotification.targetId)}
+              >
+                정산하기
+              </Button>
             )}
           </div>
         </div>

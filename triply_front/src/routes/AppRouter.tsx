@@ -28,7 +28,7 @@ export default function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
         <Route path="/mypage" element={<MyPage />} />
-        {/* <Route path="/editprofile" element={<MyPageEditProfile />} /> */}
+        <Route path="/editprofile" element={<MyPageEditProfile />} />
         {/* <Route path="/api-test" element={<ApiTester />} /> */}
         {/* 주희 작업 page */}
         <Route path="/wallet" element={<Wallets />} />
