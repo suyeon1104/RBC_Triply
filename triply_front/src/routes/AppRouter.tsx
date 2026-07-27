@@ -17,6 +17,7 @@ import Group from "../pages/Group";
 import ButtonTest from "../pages/ButtonTest";
 import MakeGroup from "../pages/MakeGroup";
 import SettlementCreate from "../pages/SettlementCreate";
+import Notification from "../pages/Notification";
 
 export default function AppRouter() {
   return (
@@ -27,7 +28,7 @@ export default function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/main" element={<Main />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/editprofile" element={<MyPageEditProfile />} />
+        {/* <Route path="/editprofile" element={<MyPageEditProfile />} /> */}
         {/* <Route path="/api-test" element={<ApiTester />} /> */}
         {/* 주희 작업 page */}
         <Route path="/wallet" element={<Wallets />} />
@@ -40,6 +41,7 @@ export default function AppRouter() {
           path="/settlement/create/:paymentId"
           element={<SettlementCreate />}
         />
+        <Route path="/notification" element={<Notification />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
         <Route path="/group/makegroup" element={<MakeGroup />} />
