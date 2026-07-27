@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Join from "../pages/Join";
 import Login from "../pages/Login";
 // import ApiTester from "../pages/ApiTester";
-import SplashStandard from "../pages/SplashStandard";
+// import SplashStandard from "../pages/SplashStandard";
 import SplashFun from "../pages/SplashFun";
 import Main from "../pages/Main";
 import MyPage from "../pages/MyPage";
@@ -17,6 +17,8 @@ import Group from "../pages/Group";
 import ButtonTest from "../pages/ButtonTest";
 import MakeGroup from "../pages/MakeGroup";
 import SettlementCreate from "../pages/SettlementCreate";
+import Planner from "../pages/Planner";
+import CreateTrip from "../pages/CreateTrip";
 
 export default function AppRouter() {
   return (
@@ -40,6 +42,9 @@ export default function AppRouter() {
           path="/settlement/create/:paymentId"
           element={<SettlementCreate />}
         />
+        {/* 수연 */}
+        <Route path="/planner" element={<Planner />} />
+        <Route path="/trip/createTrip" element={<CreateTrip />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
         <Route path="/group/makegroup" element={<MakeGroup />} />
