@@ -7,6 +7,7 @@ import {
   LuCheck,
   LuCopy,
 } from "react-icons/lu";
+import "../styles/globals.css";
 
 export interface UserData {
   loginId: string;
@@ -66,7 +67,7 @@ export default function MyPage() {
   return (
     <>
       <div className="flex flex-col w-full max-w-[440px] h-[956px] bg-gray-50 mb-5 min-h-screen">
-        <Header page={"textIcon"}></Header>
+        <Header />
         {/* 전체 화면 */}
         <div className="flex flex-col flex-1 w-[400px] h-[892px] justify-content items-center gap-4 p-4">
           {/* 사용자 정보 */}
