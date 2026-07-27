@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import { LuUpload } from "react-icons/lu";
-import { useLocation } from "react-router-dom";
-import { getProfile, patchProfile, patchPw } from "../api/authApi";
+import { useEffect, useState } from 'react';
+import Header from '../components/Header';
+import { LuUpload } from 'react-icons/lu';
+import { useLocation } from 'react-router-dom';
+import { getProfile, patchProfile, patchPw } from '../api/authApi';
 
 interface UserData {
   loginId: string;
@@ -21,15 +21,13 @@ export default function MyPageEditProfile() {
 
   // userData라는 별도 state 없이, 폼 필드 state를 바로 초기값으로 채움
   // const [id, setId] = useState<string>(initialData?.loginId ?? "");
-  const [name, setName] = useState<string>(initialData?.userName ?? "");
-  const [phoneNum, setPhoneNum] = useState<string>(
-    initialData?.userPhone ?? "",
-  );
+  const [name, setName] = useState<string>(initialData?.userName ?? '');
+  const [phoneNum, setPhoneNum] = useState<string>(initialData?.userPhone ?? '');
   // 새 전화번호로 변경 ()
   // const [newPhoneNum, setNewPhoneNum] = useState<string>("");
-  
-  const [pw, setPw] = useState<string>("");
-  const [newPw, setNewPw] = useState<string>("");
+
+  const [pw, setPw] = useState<string>('');
+  const [newPw, setNewPw] = useState<string>('');
 
   useEffect(() => {
     // location.state로 이미 데이터를 받은 경우엔 API 재호출 불필요
@@ -52,38 +50,35 @@ export default function MyPageEditProfile() {
 
   async function editProfile() {
     if (!name || !phoneNum) {
-      alert("이름과 휴대전화번호를 모두 입력해주세요");
+      alert('이름과 휴대전화번호를 모두 입력해주세요');
       return;
     }
     try {
-      await patchProfile({ userName: name, userPhone: phoneNum }).then(
-        (res) => {
-          alert(res.data.userName);
-        },
-      );
+      await patchProfile({ userName: name, userPhone: phoneNum }).then((res) => {
+        alert(res.data.userName);
+      });
     } catch (err: any) {
       console.log(err);
     }
   }
-
   async function confirmPhoneNum(pn: string) {
     if (pn === phoneNum) {
-      alert("정확한 휴대전화 번호입니다.");
+      alert('정확한 휴대전화 번호입니다.');
     } else {
-      alert("정확한 휴대전화번호를 입력해주세요.");
+      alert('정확한 휴대전화번호를 입력해주세요.');
     }
   }
 
   async function editPw() {
     if (!pw || !newPw) {
-      alert("현재 비밀번호와 새 비밀번호를 모두 입력해주세요");
+      alert('현재 비밀번호와 새 비밀번호를 모두 입력해주세요');
       return;
     }
     try {
       const res = await patchPw({ userPw: pw, newUserPw: newPw });
-      alert(res.data.msg ?? "비밀번호가 변경되었습니다");
+      alert(res.data.msg ?? '비밀번호가 변경되었습니다');
     } catch (err: any) {
-      const message = err.response?.data?.msg ?? "비밀번호 변경에 실패했습니다";
+      const message = err.response?.data?.msg ?? '비밀번호 변경에 실패했습니다';
       alert(message);
     }
   }
@@ -113,14 +108,7 @@ export default function MyPageEditProfile() {
             <label htmlFor="name" className="focus-within:text-[#5D94FD]">
               <div className="flex flex-col gap-2">
                 <span>이름</span>
-                <input
-                  id="name"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                  placeholder="여행자"
-                ></input>
+                <input id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5" placeholder="여행자"></input>
               </div>
             </label>
             {/* 인증용 폰 번호 */}
@@ -130,19 +118,8 @@ export default function MyPageEditProfile() {
                 <div className="flex flex-col gap-2">
                   <span>휴대폰 번호</span>
                   <div className="flex flex-row gap-2">
-                    <input
-                      id="phoneNum"
-                      name="phoneNum"
-                      value={phoneNum}
-                      onChange={(e) => setPhoneNum(e.target.value)}
-                      className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                      placeholder="전화번호"
-                      type="tel"
-                    ></input>
-                    <button
-                      onClick={() => confirmPhoneNum(phoneNum)}
-                      className="bg-[#F4F4F4] rounded-2xl p-1.5 text-[#7C7C7C]"
-                    >
+                    <input id="phoneNum" name="phoneNum" value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)} className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5" placeholder="전화번호" type="tel"></input>
+                    <button onClick={() => confirmPhoneNum(phoneNum)} className="bg-[#F4F4F4] rounded-2xl p-1.5 text-[#7C7C7C]">
                       휴대폰 번호 인증
                     </button>
                   </div>
@@ -160,10 +137,7 @@ export default function MyPageEditProfile() {
               </label>
             </div>
             <div className="flex flex-col items-center">
-              <button
-                onClick={editProfile}
-                className="bg-[#5D94FD] text-white rounded-2xl white w-80 h-12 mt-2.5"
-              >
+              <button onClick={editProfile} className="bg-[#5D94FD] text-white rounded-2xl white w-80 h-12 mt-2.5">
                 프로필 편집하기
               </button>
             </div>
@@ -173,15 +147,7 @@ export default function MyPageEditProfile() {
               <label htmlFor="pw">
                 <div className="flex flex-col gap-2">
                   <span>현재 비밀번호</span>
-                  <input
-                    id="pw"
-                    name="pw"
-                    value={pw}
-                    onChange={(e) => setPw(e.target.value)}
-                    className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                    placeholder="현재 비밀번호를 입력하세요"
-                    type="password"
-                  ></input>
+                  <input id="pw" name="pw" value={pw} onChange={(e) => setPw(e.target.value)} className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5" placeholder="현재 비밀번호를 입력하세요" type="password"></input>
                 </div>
               </label>
             </div>
@@ -191,26 +157,13 @@ export default function MyPageEditProfile() {
               <label htmlFor="newPw">
                 <div className="flex flex-col gap-2">
                   <span>비밀번호 수정</span>
-                  <input
-                    id="newPw"
-                    name="newPw"
-                    value={pw}
-                    onChange={(e) => setPw(e.target.value)}
-                    className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                    placeholder="수정할 비밀번호를 입력해주세요"
-                    type="password"
-                  ></input>
-                  <span className="text-xs text-gray-400">
-                    기존 비밀번호를 입력하신 후 새 비밀번호를 입력하세요.
-                  </span>
+                  <input id="newPw" name="newPw" value={pw} onChange={(e) => setPw(e.target.value)} className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5" placeholder="수정할 비밀번호를 입력해주세요" type="password"></input>
+                  <span className="text-xs text-gray-400">기존 비밀번호를 입력하신 후 새 비밀번호를 입력하세요.</span>
                 </div>
               </label>
             </div>
             <div className="flex flex-col items-center">
-              <button
-                onClick={editPw}
-                className="bg-red-600 text-white rounded-2xl white w-80 h-12 mt-2.5"
-              >
+              <button onClick={editPw} className="bg-red-600 text-white rounded-2xl white w-80 h-12 mt-2.5">
                 비밀번호 편집하기
               </button>
             </div>

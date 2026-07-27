@@ -53,6 +53,7 @@ const Group = () => {
     fetchGroupList();
   }, [location.state]);
 
+  const [activeTab, setActiveTab] = useState('group');
   return (
     <>
       <header>
@@ -77,7 +78,7 @@ const Group = () => {
         </div>
       </main>
 
-      <BottomNav />
+      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
     </>
   );
 };

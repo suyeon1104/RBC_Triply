@@ -30,7 +30,7 @@ const AVATAR_COLORS = {
 
 const COLOR_NAMES = Object.keys(AVATAR_COLORS) as (keyof typeof AVATAR_COLORS)[];
 
-const getMappedColor = (id?: string | number): string => {
+export const getMappedColor = (id?: string | number): string => {
   const targetId = id !== undefined && id !== null && id !== '' ? String(id) : String(Math.random());
 
   let hash = 0;
@@ -49,12 +49,7 @@ export default function Avatar({ size = 's', src, userId, onClick, className = '
 
   return (
     <div className={`Avatar ${className}`} onClick={onClick}>
-      <ImageFrame
-        size={size}
-        src={avatarSrc}
-        style={{ backgroundColor }} // 배경색을 ImageFrame 자체에 적용
-        className={`Avatar-frame ${!src ? 'Avatar-frame--default' : ''}`}
-      />
+      <ImageFrame size={size} src={avatarSrc} style={{ backgroundColor }} className={`Avatar-frame ${!src ? 'Avatar-frame--default' : ''}`} />
     </div>
   );
 }

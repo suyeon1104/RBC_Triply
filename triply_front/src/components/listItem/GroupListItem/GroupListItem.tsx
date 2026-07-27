@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import './GroupListItem.css';
 
 interface Member {
@@ -23,8 +24,14 @@ interface GroupListItemProps {
 }
 
 const GroupListItem = ({ group }: GroupListItemProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/group/${group.groupId}`);
+  };
+
   return (
-    <div className="group-item">
+    <div className="group-item" onClick={handleClick}>
       <div>
         <div className="group-title">
           {group.groupTitle}
