@@ -19,6 +19,7 @@ import MakeGroup from "../pages/MakeGroup";
 import SettlementCreate from "../pages/SettlementCreate";
 import Planner from "../pages/Planner";
 import CreateTrip from "../pages/CreateTrip";
+import Notification from "../pages/Notification";
 
 export default function AppRouter() {
   return (
@@ -45,6 +46,7 @@ export default function AppRouter() {
         {/* 수연 */}
         <Route path="/planner" element={<Planner />} />
         <Route path="/trip/createTrip" element={<CreateTrip />} />
+        <Route path="/notification" element={<Notification />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
         <Route path="/group/makegroup" element={<MakeGroup />} />

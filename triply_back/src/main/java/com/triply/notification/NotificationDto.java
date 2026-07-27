@@ -26,4 +26,8 @@ public class NotificationDto {
 	private Integer targetId;
 
 	private LocalDateTime createdAt;
+
+	// 추가
+	private String title; // 그룹명 또는 결제처
+	private String subTitle; // 여행명(필요하면)
 }
