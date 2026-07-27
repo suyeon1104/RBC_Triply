@@ -1,0 +1,99 @@
+/* 알림 */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px;
+
+  border-bottom: 1px solid #b7b7b7;
+  cursor: pointer;
+  /* background-color: var(--white); */
+}
+/* .notification-item:last-child {
+  border-bottom: none;
+} */
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notification-title {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-950);
+}
+
+.notification-content-text {
+  margin: 0;
+
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.4;
+}
+
+.notification-item svg {
+  flex-shrink: 0;
+}
+.notification-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* 모달 */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.notification-modal {
+  width: 300px;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notification-modal h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.notification-subtitle {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.notification-message {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.modal-button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-button-group > * {
+  flex: 1;
+}
+
+.modal-button-single {
+  display: flex;
+  justify-content: flex-end;
+}
