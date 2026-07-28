@@ -5,20 +5,20 @@ import axiosInstance from "./axiosInstance";
 export const createGroup = (data) => axiosInstance.post("/group/create", data);
 // 그룹 조회 (내 그룹 목록, 대시보드 "그룹" 카드용)
 export const getGroups = () => axiosInstance.get("/group/list");
-export const getGroupDetail = (groupId) =>
+export const getGroupDetail = (groupId : number) =>
   axiosInstance.get(`/group/${groupId}`);
 // 멤버 추가 (userId로 초대)
-export const addGroupMember = (groupId, userId) =>
+export const addGroupMember = (groupId : number, userId : number) =>
   axiosInstance.post(`/group/${groupId}/member`, { userId });
 // 멤버 탈퇴
-export const leaveGroupMember = (groupId, memberId) =>
+export const leaveGroupMember = (groupId : number, memberId : number) =>
   axiosInstance.delete(`/group/${groupId}/member/${memberId}`);
 // 그룹 삭제
-export const deleteGroup = (groupId) =>
+export const deleteGroup = (groupId : number) =>
   axiosInstance.delete(`/group/${groupId}`);
 // 그룹 멤버 조회
-export const getGroupMembers = (groupId) =>
+export const getGroupMembers = (groupId : number) =>
   axiosInstance.get(`/group/${groupId}/members`);
 // 그룹 초대 답변 (수락/거절)
-export const respondGroupInvitation = (invitationId, status) =>
+export const respondGroupInvitation = (invitationId : number, status) =>
   axiosInstance.patch(`/group/inviteAnswer`, { invitationId, status });

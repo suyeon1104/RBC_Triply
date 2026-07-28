@@ -7,8 +7,15 @@ export const createTrip = (data: {
   tripPlace: string;
   startDate: string;
   endDate: string;
-  groupId: number;
-}) => axiosInstance.post("trip/createTrip", data);
+  groupId: number | undefined;
+}) => axiosInstance.post("/trip/createTrip", data);
+
+export const createTripWithOutGroupId = (data: {
+  tripTitle: string;
+  tripPlace: string;
+  startDate: string;
+  endDate: string;
+}) => axiosInstance.post("/trip/createTrip", data);
 
 // 여행목록 조회 ("플래너" 탭 렌더링)
 export const getTripList = () => axiosInstance.get(`trip/getTripList`);
