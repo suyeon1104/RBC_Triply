@@ -83,7 +83,7 @@ public class WalletService {
 		WalletEntity wallet = walletRepo.findByUser_UserId(userId);
 
 		if (wallet == null) {
-			throw new RuntimeException("생성된 지갑이 없습니다.");
+			return List.of();
 		}
 
 		// 2. 거래내역 조회
