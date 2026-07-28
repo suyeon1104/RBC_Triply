@@ -127,7 +127,10 @@ public class UserController {
 			return ResponseEntity.ok(responseUserDTO);
 
 		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
+
+			UserDto responseUserDTO = UserDto.builder().result(false).msg(e.getMessage()).build();
+
+			return ResponseEntity.badRequest().body(responseUserDTO);
 		}
 	}
 

@@ -167,7 +167,7 @@ public class PaymentService {
 
 		// 3. 여행 연결 여부 확인
 		if (payment.getTrip() == null) {
-			return PaymentDto.builder().result(false).msg("결제를 먼저 여행에 연결해주세요.").build();
+			return PaymentDto.builder().result(false).msg("결제일에 해당하는 여행 정보가 없어 정산 요청이 불가능합니다.").build();
 		}
 
 		// 4. 그룹 연결 여부 확인
