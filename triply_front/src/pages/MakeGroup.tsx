@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import instance from '../api/axiosInstance';
 import Button from '../components/Button/Button/Button';
 import TopNav from '../components/Navigation/TopNav/TopNav';
-import { Check, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import '../styles/MakeGroup.css';
 import IconButton from '../components/Button/IconButton/IconButton';
-import MemberListItem, { type InvitedMember } from '../components/listItem/MemberList/MemberListItem';
+import MemberListItem, { type InvitedMember } from '../components/listItem/MemberListItem/MemberListItem';
 
 interface ExtendedInvitedMember extends InvitedMember {
   loginId: string;
@@ -27,31 +27,10 @@ const MakeGroup = () => {
       return;
     }
 
-    // -------------------------------------------------------------
-    // [주석 처리된 백엔드 아이디 검증 로직]
-    // try {
-    //   const res = await instance.post('/group/inviteGroupwjdqh', {
-    //     groupId: 0,
-    //     loginId: trimmedId,
-    //   });
-    //   const newMember: ExtendedInvitedMember = {
-    //     loginId: trimmedId,
-    //     receiverName: res.data.receiverName,
-    //     status: 'INVITING',
-    //   };
-    //   setMembers((prev) => [...prev, newMember]);
-    //   setInviteInput('');
-    // } catch (error) {
-    //   console.error('유저 조회 실패:', error);
-    //   alert('존재하지 않는 아이디입니다.');
-    // }
-    // -------------------------------------------------------------
-
-    // 임시))입력받은 아이디 그대로 검증 없이 즉시 목록에 추가
     const newMember: ExtendedInvitedMember = {
       loginId: trimmedId,
       receiverName: trimmedId,
-      status: 'INVITING',
+      status: 'INVITING', // ⭕ INVITING 일 때만 우측 삭제(Trash) 버튼 표시
     };
 
     setMembers((prev) => [...prev, newMember]);
@@ -115,14 +94,14 @@ const MakeGroup = () => {
   return (
     <>
       <header>
-        <TopNav title="그룹 만들기" rightButtonIcon={<Check />} onRightButtonClick={handleCreateGroup} />
+        <TopNav title="그룹 만들기" />
       </header>
 
       <main className="page">
         <div className="container">
           <section>
-            <div className="title-Content">
-              <h3>그룹을 만들어보세요.</h3>
+            <div className="title-content">
+              <h2>그룹을 만들어보세요.</h2>
               <p className="body1">
                 그룹을 통해 함께 여행 일정을 확인하고
                 <br />

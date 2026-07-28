@@ -66,6 +66,7 @@
 .button.subtle {
   background-color: transparent;
   color: var(--gray-600);
+  padding: 0;
 }
 
 .button-icon {

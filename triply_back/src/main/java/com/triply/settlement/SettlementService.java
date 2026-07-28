@@ -56,7 +56,7 @@ public class SettlementService {
 
 		// 3. 여행 연결 여부
 		if (payment.getTrip() == null) {
-			throw new RuntimeException("결제를 먼저 여행에 연결해주세요.");
+			throw new RuntimeException("결제일에 해당하는 여행 정보가 없어 정산 요청이 불가능합니다.");
 		}
 
 		// 4. 그룹 연결 여부

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
 import { LuUpload } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
-import { getProfile, patchProfile, patchPw } from "../api/authApi";
+import { getProfile, patchProfile, patchPw, phoneCheck } from "../api/authApi";
+import TopNav from "../components/Navigation/TopNav/TopNav";
+import "../styles/MyPageEditProfile.css";
+import Button from "../components/Button/Button/Button";
+import { ChevronRight } from "lucide-react";
 
 interface UserData {
   loginId: string;
@@ -18,6 +21,15 @@ interface LocationState {
 export default function MyPageEditProfile() {
   const location = useLocation();
   const initialData = (location.state as LocationState)?.userData ?? null;
+  const [originPhoneNum, setOriginPhoneNum] = useState<string>(
+    initialData?.userPhone ?? "",
+  );
+  const [phoneVerified, setPhoneVerified] = useState(true);
+  const [authCode, setAuthCode] = useState<number | null>(null);
+  const [inputCode, setInputCode] = useState("");
+  const [pwModalOpen, setPwModalOpen] = useState(false);
+  const [showPhonePopup, setShowPhonePopup] = useState(false);
+  const [phoneCode, setPhoneCode] = useState<number | null>(null);
 
   // userData라는 별도 state 없이, 폼 필드 state를 바로 초기값으로 채움
   // const [id, setId] = useState<string>(initialData?.loginId ?? "");
@@ -27,7 +39,7 @@ export default function MyPageEditProfile() {
   );
   // 새 전화번호로 변경 ()
   // const [newPhoneNum, setNewPhoneNum] = useState<string>("");
-  
+
   const [pw, setPw] = useState<string>("");
   const [newPw, setNewPw] = useState<string>("");
 
@@ -39,9 +51,12 @@ export default function MyPageEditProfile() {
 
     getProfile().then((res) => {
       if (cancelled) return;
-      // .then 콜백 안에서 호출 → "비동기 응답에 대한 setState"라 정상 패턴
+
       setName(res.data.userName);
       setPhoneNum(res.data.userPhone);
+      setOriginPhoneNum(res.data.userPhone);
+      setPhoneVerified(true);
+
       console.log(res.data);
     });
 
@@ -55,22 +70,41 @@ export default function MyPageEditProfile() {
       alert("이름과 휴대전화번호를 모두 입력해주세요");
       return;
     }
+
+    if (phoneNum !== originPhoneNum && !phoneVerified) {
+      alert("휴대폰 인증을 완료해주세요.");
+      return;
+    }
+
     try {
-      await patchProfile({ userName: name, userPhone: phoneNum }).then(
-        (res) => {
-          alert(res.data.userName);
-        },
-      );
-    } catch (err: any) {
+      const res = await patchProfile({
+        userName: name,
+        userPhone: phoneNum,
+      });
+
+      alert("프로필이 수정되었습니다.");
+
+      setOriginPhoneNum(phoneNum);
+      setPhoneVerified(true);
+    } catch (err) {
       console.log(err);
     }
   }
 
-  async function confirmPhoneNum(pn: string) {
-    if (pn === phoneNum) {
-      alert("정확한 휴대전화 번호입니다.");
-    } else {
-      alert("정확한 휴대전화번호를 입력해주세요.");
+  async function confirmPhoneNum() {
+    try {
+      const res = await phoneCheck();
+
+      setAuthCode(res.data.code);
+      setPhoneCode(res.data.code);
+
+      setShowPhonePopup(true);
+
+      setTimeout(() => {
+        setShowPhonePopup(false);
+      }, 5000);
+    } catch {
+      alert("인증번호 발송에 실패했습니다.");
     }
   }
 
@@ -81,142 +115,174 @@ export default function MyPageEditProfile() {
     }
     try {
       const res = await patchPw({ userPw: pw, newUserPw: newPw });
+
       alert(res.data.msg ?? "비밀번호가 변경되었습니다");
+
+      setPw("");
+      setNewPw("");
+      setPwModalOpen(false);
     } catch (err: any) {
       const message = err.response?.data?.msg ?? "비밀번호 변경에 실패했습니다";
       alert(message);
     }
   }
 
+  // 모달 닫음
+  function closePwModal() {
+    setPw("");
+    setNewPw("");
+    setPwModalOpen(false);
+  }
+
   return (
     <>
-      <div className="flex flex-col w-full max-w-[440px] h-[956px] bg-white mb-5 min-h-screen">
-        <Header />
-        {/* 전체 화면 */}
-        <div className="flex flex-col flex-1 w-[400px] h-[892px] mt-6 gap-2 p-5 items-center">
-          {/* 프로필 이미지 설정 */}
-          <span>프로필 이미지</span>
-          <div className="w-30 h-39 bg-[#FFA90A] rounded-4xl relative">
-            <button
-              onClick={() => {
-                // 프로필 이미지 설정 코드
-              }}
-              className="absolute -bottom-2.5 -right-1.5 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
-            >
-              <LuUpload />
+      <header>
+        <TopNav title="프로필 편집" />
+      </header>
+
+      <main className="edit-profile-page">
+        {/* 팝업 */}
+        {showPhonePopup && (
+          <div className="phone-popup">
+            <div className="popup-title">🔔 인증번호 도착</div>
+
+            <div className="popup-content">
+              인증번호
+              <strong>{phoneCode}</strong>를 입력해주세요.
+            </div>
+          </div>
+        )}
+        {/* 프로필 */}
+        <section className="edit-profile-card">
+          <label className="section-label">프로필 이미지</label>
+
+          <div className="edit-profile-image-wrapper">
+            <div className="edit-profile-image">
+              <img src="/image/Profile.png" alt="프로필" />
+            </div>
+
+            <button className="edit-profile-upload-btn">
+              <LuUpload
+                size={16}
+                onClick={() => {
+                  alert("이미지 업로드 기능은 추구 구현예정입니다.");
+                }}
+              />
             </button>
           </div>
-          {/* 사용자 정보 수정 폼 */}
-          {/* 프로필 이미지 적용은 보류 */}
-          <form className="flex flex-col gap-3 mt-3">
-            {/* 이름 */}
-            <label htmlFor="name" className="focus-within:text-[#5D94FD]">
-              <div className="flex flex-col gap-2">
-                <span>이름</span>
-                <input
-                  id="name"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                  placeholder="여행자"
-                ></input>
-              </div>
-            </label>
-            {/* 인증용 폰 번호 */}
-            {/* 전화번호 확인으로만 일단 진행 */}
-            <div className="flex flex-col gap-2 focus-within:text-[#5D94FD]">
-              <label htmlFor="phoneNum">
-                <div className="flex flex-col gap-2">
-                  <span>휴대폰 번호</span>
-                  <div className="flex flex-row gap-2">
-                    <input
-                      id="phoneNum"
-                      name="phoneNum"
-                      value={phoneNum}
-                      onChange={(e) => setPhoneNum(e.target.value)}
-                      className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                      placeholder="전화번호"
-                      type="tel"
-                    ></input>
-                    <button
-                      onClick={() => confirmPhoneNum(phoneNum)}
-                      className="bg-[#F4F4F4] rounded-2xl p-1.5 text-[#7C7C7C]"
-                    >
-                      휴대폰 번호 인증
-                    </button>
-                  </div>
-                  <input
-                    id="newPhoneNum"
-                    name="newPhoneNum"
-                    onChange={(e) => {
-                      setPhoneNum(e.target.value);
-                    }}
-                    className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                    placeholder="새 전화번호"
-                    type="tel"
-                  ></input>
-                </div>
-              </label>
-            </div>
-            <div className="flex flex-col items-center">
-              <button
-                onClick={editProfile}
-                className="bg-[#5D94FD] text-white rounded-2xl white w-80 h-12 mt-2.5"
-              >
-                프로필 편집하기
-              </button>
-            </div>
 
-            {/* 현재 비번 */}
-            <div className="flex flex-col gap-2 mt-5 focus-within:text-[#5D94FD]">
-              <label htmlFor="pw">
-                <div className="flex flex-col gap-2">
-                  <span>현재 비밀번호</span>
-                  <input
-                    id="pw"
-                    name="pw"
-                    value={pw}
-                    onChange={(e) => setPw(e.target.value)}
-                    className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                    placeholder="현재 비밀번호를 입력하세요"
-                    type="password"
-                  ></input>
-                </div>
-              </label>
-            </div>
+          <div className="edit-form-group">
+            <label>이름</label>
+            <input
+              className="edit-form-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
 
-            {/* 새 비밀번호 */}
-            <div className="flex flex-col gap-2 focus-within:text-[#5D94FD]">
-              <label htmlFor="newPw">
-                <div className="flex flex-col gap-2">
-                  <span>비밀번호 수정</span>
-                  <input
-                    id="newPw"
-                    name="newPw"
-                    value={pw}
-                    onChange={(e) => setPw(e.target.value)}
-                    className="border border-[#DCDCDC] rounded-2xl focus:outline-none focus:border-[#5D94FD] p-1.5"
-                    placeholder="수정할 비밀번호를 입력해주세요"
-                    type="password"
-                  ></input>
-                  <span className="text-xs text-gray-400">
-                    기존 비밀번호를 입력하신 후 새 비밀번호를 입력하세요.
-                  </span>
-                </div>
-              </label>
+          <div className="edit-form-group">
+            <label>휴대폰 번호</label>
+
+            <div className="phone-group">
+              <input
+                className="edit-form-input"
+                value={phoneNum}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setPhoneNum(value);
+
+                  if (value === originPhoneNum) {
+                    setPhoneVerified(true);
+                    setInputCode("");
+                    setAuthCode(null);
+                  } else {
+                    setPhoneVerified(false);
+                    setInputCode("");
+                    setAuthCode(null);
+                  }
+                }}
+              />
+              {phoneVerified ? (
+                <Button variant="assistive">인증 완료</Button>
+              ) : (
+                <Button onClick={confirmPhoneNum}>휴대폰 번호 인증</Button>
+              )}
             </div>
-            <div className="flex flex-col items-center">
-              <button
-                onClick={editPw}
-                className="bg-red-600 text-white rounded-2xl white w-80 h-12 mt-2.5"
-              >
-                비밀번호 편집하기
-              </button>
-            </div>
-          </form>
+          </div>
+
+          <div className="edit-form-group">
+            <label>인증번호</label>
+
+            <input
+              className="edit-form-input"
+              value={inputCode}
+              onChange={(e) => {
+                const value = e.target.value;
+                setInputCode(value);
+
+                if (Number(value) === authCode) {
+                  setPhoneVerified(true);
+                } else {
+                  setPhoneVerified(false);
+                }
+              }}
+              placeholder="인증번호 입력"
+            />
+          </div>
+          {/* 비밀번호 수정, 화살표 아이콘 */}
+          <div
+            className="password-edit-link"
+            onClick={() => setPwModalOpen(true)}
+          >
+            <span>비밀번호 수정</span>
+            <ChevronRight size={20} />
+          </div>
+        </section>
+
+        <div className="edit-profile-bottom">
+          <Button className="edit-profile-submit" onClick={editProfile}>
+            프로필 수정하기
+          </Button>
         </div>
-      </div>
+      </main>
+      {pwModalOpen && (
+        <div className="modal-overlay">
+          <div className="password-modal">
+            <h3>비밀번호 수정</h3>
+
+            <div className="edit-form-group">
+              <label>현재 비밀번호</label>
+
+              <input
+                className="edit-form-input"
+                type="password"
+                value={pw}
+                onChange={(e) => setPw(e.target.value)}
+              />
+            </div>
+
+            <div className="edit-form-group">
+              <label>새 비밀번호</label>
+
+              <input
+                className="edit-form-input"
+                type="password"
+                value={newPw}
+                onChange={(e) => setNewPw(e.target.value)}
+              />
+            </div>
+
+            <div className="modal-button-group">
+              <Button variant="assistive" onClick={closePwModal}>
+                취소
+              </Button>
+
+              <Button onClick={editPw}>변경</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

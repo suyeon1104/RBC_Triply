@@ -1,0 +1,134 @@
+.settlmentlist-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  gap: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+
+/* 행 공통 (결제한 금액, 소비한 금액, 총 정산 금액) */
+.settlement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: auto; /* 고정 높이 제거 */
+}
+
+.settlement-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--gray-900, #1e293b);
+}
+
+.settlement-label .icon {
+  color: var(--gray-500, #64748b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settlement-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gray-950, #0f172a);
+}
+
+/* 구분선 */
+.settlement-divider {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed var(--gray-200, #e2e8f0);
+  margin: 4px 0;
+}
+
+/* 합계 영역 (받을/보낼 금액) */
+.total-row.receive .settlement-label,
+.total-value.receive {
+  color: var(--primary-500, #3b82f6);
+}
+
+.total-row.send .settlement-label,
+.total-value.send {
+  color: var(--red-500, #ef4444);
+}
+
+.total-row .icon {
+  color: inherit !important;
+}
+
+/* 멤버별 상세 리스트 영역 (오재현, 홍주희...) */
+.settlement-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* 멤버 항목 간 간격 */
+  margin-top: 4px;
+  width: 100%;
+  height: auto; /* 리스트 개수에 맞춰 자연스럽게 늘어남 */
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.detail-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--gray-600, #475569);
+}
+
+.bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--gray-800, #1e293b);
+}
+
+.action-text {
+  color: var(--gray-600, #64748b);
+}
+
+.detail-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700, #334155);
+}
+
+/* Empty 상태 */
+.settlement-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  gap: 8px;
+  width: 100%;
+}
+
+.empty-icon {
+  color: var(--gray-300, #cbd5e1);
+}
+
+.empty-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--gray-500, #64748b);
+  margin: 0;
+}
