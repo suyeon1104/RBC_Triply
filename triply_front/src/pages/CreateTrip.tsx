@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import instance from "../api/axiosInstance";
 import Button from "../components/Button/Button/Button";
 import TopNav from "../components/Navigation/TopNav/TopNav";
 import { Check } from "lucide-react";
 import "../styles/CreateTrip.css";
 import type Group from "./Group";
-import { getTripList } from "../api/tripApi";
-// import IconButton from '../components/Button/IconButton/IconButton';
-// import MemberListItem, { type InvitedMember } from '../components/listItem/MemberList/MemberListItem';
-
-// interface ExtendedInvitedMember extends InvitedMember {
-//   loginId: string;
-// }
+import { createTrip, createTripWithOutGroupId } from "../api/tripApi";
 
 const tripPlaceList: string[] = [
   "한국",
@@ -29,13 +23,14 @@ const tripPlaceList: string[] = [
 ];
 
 const CreateTrip = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [tripTitle, setTripTitle] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [tripPlace, setTripPlace] = useState("");
-  const [connectedGroup, setConnectedGroup] = useState<Group | null>(null);
+  const [tripPlace, setTripPlace] = useState(tripPlaceList[0]);
+  const [connectedGroup, setConnectedGroup] = useState<Group | undefined>(undefined);
   const [connectGroupList, setConnectGroupList] = useState<Group[]>([]);
+  // const [newTripId, setNewTripId] = useState("");
 
   // 사용자가 등록해둔 그룹 목록 불러오기
   useEffect(() => {
@@ -43,6 +38,7 @@ const CreateTrip = () => {
       try {
         const res = await instance.get<Group[]>("/group/getGroupList");
         setConnectGroupList(res.data);
+        console.log(res.data);
       } catch (error) {
         console.error("그룹 목록 조회 실패:", error);
       }
@@ -55,14 +51,14 @@ const CreateTrip = () => {
     const selectedId = e.target.value;
 
     if (!selectedId) {
-      setConnectedGroup(null);
+      setConnectedGroup(undefined);
       return;
     }
 
     const selected = connectGroupList.find(
       (group) => String(group.groupId) === selectedId,
     );
-    setConnectedGroup(selected ?? null);
+    setConnectedGroup(selected ?? undefined);
   }
 
   const handleCreateTrip = async () => {
@@ -73,9 +69,37 @@ const CreateTrip = () => {
 
     try {
       console.log("try");
-      // const res = getTripList();
+      // if (connectedGroup?.groupId == undefined) return;
+      let createTripRes
+      console.log("cG : " + connectedGroup);
+      if (connectedGroup?.groupId == undefined) {
+        createTripRes = await createTripWithOutGroupId({
+          tripTitle : tripTitle,
+          tripPlace : tripPlace,
+          startDate : startDate,
+          endDate : endDate,
+        });
+      } else {
+        createTripRes = await createTrip({
+          tripTitle : tripTitle,
+          tripPlace : tripPlace,
+          startDate : startDate,
+          endDate : endDate,
+          groupId : connectedGroup?.groupId,
+        });
+      }
+
+      // setNewTripId(createTripRes.data.tripId);
+
+      if (connectedGroup) {
+        console.log("");
+      }
+
+      // pass newTripId via navigation state instead of nonexistent 'params'
+      navigate('/planner', { state: { tripId: createTripRes.data.tripId } });
+      
     } catch (error) {
-      console.error("그룹 생성 및 멤버 초대 실패:", error);
+      console.error("여행 생성 실패:", error);
       alert("여행 생성 중 오류가 발생했습니다.");
     }
   };
@@ -164,7 +188,7 @@ const CreateTrip = () => {
               </label>
               <select
                 id="connectedGroup"
-                value={connectedGroup?.groupId ?? ""}
+                value={connectedGroup?.groupId ?? undefined}
                 onChange={handleGroupChange}
               >
                 <option value="">미선택 시 개인 여행 계획으로 추가돼요.</option>

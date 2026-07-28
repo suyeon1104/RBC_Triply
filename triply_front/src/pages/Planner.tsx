@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import instance from "../api/axiosInstance";
-import TripListItem from "../components/listItem/TripListItem/TripLIstItem";
+import TripListItem from "../components/listItem/TripListItem/TripListItem";
 
 import BottomNav from "../components/BottomNav";
 import Button from "../components/Button/Button/Button";
@@ -32,20 +32,21 @@ export default function Planner() {
       try {
         const res = await instance.get<Trip[]>("/trip/getTripList");
 
-        let sortedList = res.data.sort((a, b) => b.tripId - a.tripId);
+        const sortedList = res.data.sort((a, b) => b.tripId - a.tripId);
 
-        const newTrip = location.state?.newTrip;
-        if (newTrip && !sortedList.some((t) => t.tripId === newTrip.tripId)) {
-          sortedList = [newTrip, ...sortedList];
-        }
+        // const newTrip = location.state?.newTrip;
+        // if (newTrip && !sortedList.some((t) => t.tripId === newTrip.tripId)) {
+        //   sortedList = [newTrip, ...sortedList];
+        // }
         setTrips(sortedList);
+        console.log(sortedList);
       } catch (error) {
         console.error("여행 목록 조회 실패:", error);
       }
     };
 
     fetchTripList();
-  }, [location.state]);
+  }, [location.state?.tripId]);
 
   return (
     <>
