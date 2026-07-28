@@ -46,7 +46,7 @@ const TripListItem = ({ trip }: TripListItemProps) => {
   return (
     <div className="trip-item">
       <div>이미지</div>
-      {/* <ImageFrame src="../../assets/images/maru.png" /> */}
+      <ImageFrame src="/assets/maru.png" />
       {/* 우측 여행 정보 */}
       <div>
         <div className="trip-title">
