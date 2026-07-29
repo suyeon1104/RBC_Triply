@@ -8,11 +8,12 @@ interface IconButtonProps {
   children: React.ReactNode;
 
   onClick?: () => void;
+  className?: string;
 }
 
-const IconButton = ({ variant = 'primary', size = 'l', shape = 'horizontal', children, onClick }: IconButtonProps) => {
+const IconButton = ({ variant = 'primary', size = 'l', shape = 'horizontal', children, onClick, className = '' }: IconButtonProps) => {
   return (
-    <button className={`icon-button ${variant} ${shape} ${size}`} onClick={onClick}>
+    <button className={`icon-button ${variant} ${shape} ${size} ${className}`} onClick={onClick}>
       <span className="button-icon">{children}</span>
     </button>
   );

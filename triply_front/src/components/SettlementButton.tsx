@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { checkSettlement } from "../api/settlementApi";
+import { useNavigate } from 'react-router-dom';
+import { checkSettlement } from '../api/settlementApi';
+import Button from './Button/Button/Button';
 
 interface Props {
   paymentId: number;
@@ -19,19 +20,19 @@ export default function SettlementButton({ paymentId }: Props) {
 
       alert(res.data.msg);
 
-      navigate("/wallet");
+      navigate('/wallet');
     } catch (e) {
       console.error(e);
 
-      alert("정산 가능 여부 확인 중 오류가 발생했습니다.");
+      alert('정산 가능 여부 확인 중 오류가 발생했습니다.');
 
       navigate(-1);
     }
   };
 
   return (
-    <button className="settlement-btn" onClick={handleClick}>
+    <Button variant="outlined" size="s" className="settlement-btn" onClick={handleClick}>
       정산하기
-    </button>
+    </Button>
   );
 }

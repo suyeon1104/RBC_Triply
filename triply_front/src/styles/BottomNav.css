@@ -1,31 +1,52 @@
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
   width: 100%;
   max-width: 440px;
-  height: 70px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background: white;
-  border-top: 1px solid #f1f3f5;
+  height: 80px;
+  background-color: var(--white, #ffffff);
+  border-top: 1px solid var(--gray-100, #f0f0f0);
+  box-sizing: border-box;
+  z-index: 1000;
 }
 
-.bottom-nav button {
-  flex: 1;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #8c8c8c;
+/* 내부 콘텐츠 영역 - 상단 여백(padding-top) 확보 */
+.bottom-nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* center에서 flex-start로 변경하여 상단 여백으로 미세 조절 */
+  width: 100%;
+  height: 60px;
+  padding: 10px 20px 0; /* 상단 10px, 좌우 20px, 하단 0px (상단 여백 넉넉히) */
+  box-sizing: border-box;
+}
 
+/* 개별 탭 버튼 */
+.nav-item {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   gap: 4px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--gray-400, #999999);
+  transition: color 0.15s ease;
 }
 
-.bottom-nav button.active {
-  color: #5b86e5;
+/* 아이콘 */
+.nav-icon {
+  stroke-width: 2px;
+}
+
+/* 라벨 텍스트 */
+.nav-label {
+  font: var(--font-label1-regular);
+}
+
+/* Active 상태 */
+.nav-item.active {
+  color: var(--main-400, #5b86e5);
 }
