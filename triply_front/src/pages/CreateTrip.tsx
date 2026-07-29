@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import instance from "../api/axiosInstance";
 import Button from "../components/Button/Button/Button";
 import TopNav from "../components/Navigation/TopNav/TopNav";
@@ -28,7 +28,9 @@ const CreateTrip = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [tripPlace, setTripPlace] = useState(tripPlaceList[0]);
-  const [connectedGroup, setConnectedGroup] = useState<Group | undefined>(undefined);
+  const [connectedGroup, setConnectedGroup] = useState<Group | undefined>(
+    undefined,
+  );
   const [connectGroupList, setConnectGroupList] = useState<Group[]>([]);
   // const [newTripId, setNewTripId] = useState("");
 
@@ -70,34 +72,41 @@ const CreateTrip = () => {
     try {
       console.log("try");
       // if (connectedGroup?.groupId == undefined) return;
-      let createTripRes
-      console.log("cG : " + connectedGroup);
+      let createTripRes;
+      // console.log("cG : " + connectedGroup);
+      // const pl = {
+      //   tripTitle: tripTitle,
+      //   tripPlace: tripPlace,
+      //   startDate: startDate,
+      //   endDate: endDate,
+      //   groupId: connectedGroup?.groupId,
+      // };
+      // console.dir(pl);
       if (connectedGroup?.groupId == undefined) {
         createTripRes = await createTripWithOutGroupId({
-          tripTitle : tripTitle,
-          tripPlace : tripPlace,
-          startDate : startDate,
-          endDate : endDate,
+          tripTitle: tripTitle,
+          tripPlace: tripPlace,
+          startDate: startDate,
+          endDate: endDate,
         });
       } else {
         createTripRes = await createTrip({
-          tripTitle : tripTitle,
-          tripPlace : tripPlace,
-          startDate : startDate,
-          endDate : endDate,
-          groupId : connectedGroup?.groupId,
+          tripTitle: tripTitle,
+          tripPlace: tripPlace,
+          startDate: startDate,
+          endDate: endDate,
+          groupId: connectedGroup?.groupId,
         });
       }
 
       // setNewTripId(createTripRes.data.tripId);
 
-      if (connectedGroup) {
-        console.log("");
-      }
+      // if (connectedGroup) {
+      //   console.log("");
+      // }
 
       // pass newTripId via navigation state instead of nonexistent 'params'
-      navigate('/planner', { state: { tripId: createTripRes.data.tripId } });
-      
+      navigate("/planner", { state: { tripId: createTripRes.data.tripId } });
     } catch (error) {
       console.error("여행 생성 실패:", error);
       alert("여행 생성 중 오류가 발생했습니다.");
@@ -110,7 +119,7 @@ const CreateTrip = () => {
         <TopNav
           title="플래너 만들기"
           rightButtonIcon={<Check />}
-          onRightButtonClick={handleCreateTrip}
+          // onRightButtonClick={() => {}}
         />
       </header>
 
