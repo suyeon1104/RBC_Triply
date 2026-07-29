@@ -1,7 +1,3 @@
-.page {
-  padding-bottom: 120px;
-}
-
 .title-Content {
   margin-top: 20px;
   display: flex;
@@ -24,7 +20,8 @@
   margin-top: 24px;
 }
 
-input, select {
+input,
+select {
   box-sizing: border-box;
   height: 48px;
   width: 100%;

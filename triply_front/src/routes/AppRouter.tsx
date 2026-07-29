@@ -14,7 +14,6 @@ import WalletAuth from '../pages/WalletAuth';
 import WalletCharge from '../pages/WalletCharge';
 import PaymentPay from '../pages/PaymentPay';
 import Group from '../pages/Group';
-import ButtonTest from '../pages/ButtonTest';
 import MakeGroup from '../pages/MakeGroup';
 import SettlementCreate from '../pages/SettlementCreate';
 import GroupDetail from '../pages/GroupDetail';
@@ -50,8 +49,6 @@ export default function AppRouter() {
         <Route path="/group" element={<Group />} />
         <Route path="/group/makegroup" element={<MakeGroup />} />
         <Route path="/group/:groupId" element={<GroupDetail />} />
-        {/* 테스트 */}
-        <Route path="/button" element={<ButtonTest />} />
       </Routes>
     </BrowserRouter>
   );

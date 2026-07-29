@@ -36,8 +36,8 @@
 
 .GNB-badge {
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 4px;
+  right: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -47,6 +47,6 @@
   border-radius: 99px;
   background-color: var(--main-500);
   color: var(--white);
-  font: var(--font-caption1-bold);
+  font: var(--font-caption1-regular);
   pointer-events: none;
 }

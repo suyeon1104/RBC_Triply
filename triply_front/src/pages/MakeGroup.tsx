@@ -111,17 +111,17 @@ const MakeGroup = () => {
           </section>
 
           <section>
-            <div className="input-content">
+            <div className="makegroup-input-content">
               <label className="body2">
                 그룹 이름<span className="required">*</span>
               </label>
-              <input type="text" placeholder="그룹 이름을 지어주세요." value={groupTitle} onChange={(e) => setGroupTitle(e.target.value)} />
+              <input type="text" placeholder="그룹 이름을 지어주세요." value={groupTitle} onChange={(e) => setGroupTitle(e.target.value)} className="input" />
             </div>
 
-            <div className="input-content">
+            <div className="makegroup-input-content">
               <label className="body2">멤버 초대</label>
               <div className="invite-input-wrapper">
-                <input type="text" placeholder="초대할 멤버의 아이디를 입력해주세요." value={inviteInput} onChange={(e) => setInviteInput(e.target.value)} onKeyDown={handleKeyDown} />
+                <input type="text" placeholder="초대할 멤버의 아이디를 입력해주세요." value={inviteInput} onChange={(e) => setInviteInput(e.target.value)} onKeyDown={handleKeyDown} className="input" />
                 <IconButton variant="subtle" shape="horizontal" onClick={handleAddMember}>
                   <Plus color="var(--gray-950)" />
                 </IconButton>
