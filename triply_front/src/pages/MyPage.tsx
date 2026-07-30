@@ -5,11 +5,11 @@ import { getProfile } from '../api/authApi';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 import '../styles/MyPage.css';
 import TopNav from '../components/Navigation/TopNav/TopNav';
-import { Settings } from 'lucide-react';
 import IconButton from '../components/Button/IconButton/IconButton';
 import Avatar from '../components/Avatar/Avatar';
 
-// ============== 아바타용: Axios 및 Group 타입 정의 추가 ==============
+import { Settings, ChevronRight, WalletCards, Wallet, PiggyBank, DollarSign, Megaphone, HelpCircle, FileText, Code } from 'lucide-react';
+
 import instance from '../api/axiosInstance';
 
 interface Member {
@@ -29,7 +29,6 @@ interface Group {
   msg: string | null;
   result: boolean;
 }
-// =================================================================
 
 export interface UserData {
   loginId: string;
@@ -47,9 +46,7 @@ export default function MyPage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [edPhone, setEdPhone] = useState<string | undefined>(undefined);
 
-  // ============== 아바타용: PK 숫자 userId 저장 상태 추가 ==============
   const [myPkUserId, setMyPkUserId] = useState<number | undefined>(undefined);
-  // =================================================================
 
   useEffect(() => {
     (async () => {
@@ -59,7 +56,6 @@ export default function MyPage() {
       setUserData(res.data);
     })();
 
-    // ============== 아바타용: 백그라운드 그룹 API에서 내 PK(userId)만 추출 ==============
     (async () => {
       try {
         const res = await instance.get<Group[]>('/group/getGroupList');
@@ -69,7 +65,7 @@ export default function MyPage() {
           for (const group of groupList) {
             const me = group.members?.find((m) => m.me === true);
             if (me?.userId) {
-              setMyPkUserId(me.userId); // 예: 23 번 추출 완료
+              setMyPkUserId(me.userId);
               break;
             }
           }
@@ -78,7 +74,6 @@ export default function MyPage() {
         console.error('아바타용 userId 추출 실패:', error);
       }
     })();
-    // ================================================================================
   }, []);
 
   useEffect(() => {
@@ -128,9 +123,7 @@ export default function MyPage() {
               </IconButton>
 
               <div className="profile-image">
-                {/* ============== 아바타용: myPkUserId 전달해서 MakeGroup과 동일 색상 적용 ============== */}
                 <Avatar key={myPkUserId || userData?.loginId || 'loading'} src={userData?.profileUrl} userId={myPkUserId ?? userData?.loginId ?? userData?.userName} size="l" />
-                {/* =================================================================================== */}
               </div>
 
               <h2 className="profile-name">{userData?.userName}</h2>
@@ -143,54 +136,65 @@ export default function MyPage() {
               <p className="profile-phone">{edPhone}</p>
             </div>
           </section>
+
+          {/* 💡 계좌 관리에 WalletCards 적용 */}
           <section>
             <div className="mypage-shortcut-card">
               <button className="shortcut-item">
-                <div className="shortcut-icon">⛶</div>
+                <div className="shortcut-icon">
+                  <WalletCards />
+                </div>
                 <span>계좌 관리</span>
               </button>
 
               <button className="shortcut-item">
-                <div className="shortcut-icon">⛶</div>
-                <span>이용 한도</span>
+                <div className="shortcut-icon">
+                  <Wallet />
+                </div>
+                <span>지갑 내역</span>
               </button>
 
               <button className="shortcut-item">
-                <div className="shortcut-icon">⛶</div>
+                <div className="shortcut-icon">
+                  <PiggyBank />
+                </div>
+                <span>정산 리스트</span>
+              </button>
+
+              <button className="shortcut-item">
+                <div className="shortcut-icon">
+                  <DollarSign />
+                </div>
                 <span>환율 정보</span>
-              </button>
-
-              <button className="shortcut-item">
-                <div className="shortcut-icon">⛶</div>
-                <span>번역기</span>
               </button>
             </div>
           </section>
 
+          {/* 💡 공지사항에 Megaphone 적용 */}
           <section>
             <div className="mypage-menu-card">
               <button className="menu-item">
-                <span>⛶</span>
+                <Megaphone className="menu-icon" />
                 <span>공지사항</span>
-                <span>›</span>
+                <ChevronRight className="menu-arrow" />
               </button>
 
               <button className="menu-item">
-                <span>⛶</span>
+                <HelpCircle className="menu-icon" />
                 <span>FAQ</span>
-                <span>›</span>
+                <ChevronRight className="menu-arrow" />
               </button>
 
               <button className="menu-item">
-                <span>⛶</span>
+                <FileText className="menu-icon" />
                 <span>이용약관</span>
-                <span>›</span>
+                <ChevronRight className="menu-arrow" />
               </button>
 
               <button className="menu-item">
-                <span>⛶</span>
+                <Code className="menu-icon" />
                 <span>오픈소스 라이선스</span>
-                <span>›</span>
+                <ChevronRight className="menu-arrow" />
               </button>
             </div>
           </section>

@@ -1,17 +1,31 @@
 import { useEffect, useState } from 'react';
-import { LuUpload } from 'react-icons/lu';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getProfile, patchProfile, patchPw, phoneCheck } from '../api/authApi';
 import TopNav from '../components/Navigation/TopNav/TopNav';
 import '../styles/MyPageEditProfile.css';
 import Button from '../components/Button/Button/Button';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Upload, X } from 'lucide-react';
+import IconButton from '../components/Button/IconButton/IconButton';
+
+// ============== 아바타 구현용: 컴포넌트 및 Axios 추가 ==============
+import Avatar from '../components/Avatar/Avatar';
+import instance from '../api/axiosInstance';
+
+interface Member {
+  me: boolean;
+  userId: number;
+}
+interface Group {
+  members: Member[];
+}
+// =================================================================
 
 interface UserData {
   loginId: string;
   userName: string;
   userPhone: string;
   result: boolean;
+  profileUrl?: string;
 }
 
 interface LocationState {
@@ -20,7 +34,10 @@ interface LocationState {
 
 export default function MyPageEditProfile() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const initialData = (location.state as LocationState)?.userData ?? null;
+
   const [originPhoneNum, setOriginPhoneNum] = useState<string>(initialData?.userPhone ?? '');
   const [phoneVerified, setPhoneVerified] = useState(true);
   const [authCode, setAuthCode] = useState<number | null>(null);
@@ -29,37 +46,57 @@ export default function MyPageEditProfile() {
   const [showPhonePopup, setShowPhonePopup] = useState(false);
   const [phoneCode, setPhoneCode] = useState<number | null>(null);
 
-  // userData라는 별도 state 없이, 폼 필드 state를 바로 초기값으로 채움
-  // const [id, setId] = useState<string>(initialData?.loginId ?? "");
   const [name, setName] = useState<string>(initialData?.userName ?? '');
   const [phoneNum, setPhoneNum] = useState<string>(initialData?.userPhone ?? '');
-  // 새 전화번호로 변경 ()
-  // const [newPhoneNum, setNewPhoneNum] = useState<string>("");
+
+  // ============== 아바타 구현용: PK 숫자 userId 및 유저 정보 상태 추가 ==============
+  const [myPkUserId, setMyPkUserId] = useState<number | undefined>(undefined);
+  const [profileUrl, setProfileUrl] = useState<string | undefined>(initialData?.profileUrl);
+  const [loginId, setLoginId] = useState<string>(initialData?.loginId ?? '');
+  // =================================================================
 
   const [pw, setPw] = useState<string>('');
   const [newPw, setNewPw] = useState<string>('');
 
   useEffect(() => {
-    // location.state로 이미 데이터를 받은 경우엔 API 재호출 불필요
-    if (initialData) return;
+    // ============== 아바타 구현용: 그룹 API에서 내 PK(userId) 추출 ==============
+    (async () => {
+      try {
+        const res = await instance.get<Group[]>('/group/getGroupList');
+        if (Array.isArray(res.data)) {
+          for (const group of res.data) {
+            const me = group.members?.find((m) => m.me === true);
+            if (me?.userId) {
+              setMyPkUserId(me.userId);
+              break;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('아바타용 userId 추출 실패:', error);
+      }
+    })();
+    // ========================================================================
 
-    let cancelled = false;
+    if (!initialData) {
+      let cancelled = false;
 
-    getProfile().then((res) => {
-      if (cancelled) return;
+      getProfile().then((res) => {
+        if (cancelled) return;
 
-      setName(res.data.userName);
-      setPhoneNum(res.data.userPhone);
-      setOriginPhoneNum(res.data.userPhone);
-      setPhoneVerified(true);
+        setName(res.data.userName);
+        setPhoneNum(res.data.userPhone);
+        setOriginPhoneNum(res.data.userPhone);
+        setProfileUrl(res.data.profileUrl);
+        setLoginId(res.data.loginId);
+        setPhoneVerified(true);
+      });
 
-      console.log(res.data);
-    });
-
-    return () => {
-      cancelled = true; // 언마운트 후 응답 도착 시 setState 방지
-    };
-  }, []);
+      return () => {
+        cancelled = true;
+      };
+    }
+  }, [initialData]);
 
   async function editProfile() {
     if (!name || !phoneNum) {
@@ -73,7 +110,7 @@ export default function MyPageEditProfile() {
     }
 
     try {
-      const res = await patchProfile({
+      await patchProfile({
         userName: name,
         userPhone: phoneNum,
       });
@@ -117,13 +154,13 @@ export default function MyPageEditProfile() {
       setPw('');
       setNewPw('');
       setPwModalOpen(false);
+      navigate('/mypage');
     } catch (err: any) {
       const message = err.response?.data?.msg ?? '비밀번호 변경에 실패했습니다';
       alert(message);
     }
   }
 
-  // 모달 닫음
   function closePwModal() {
     setPw('');
     setNewPw('');
@@ -136,125 +173,140 @@ export default function MyPageEditProfile() {
         <TopNav title="프로필 편집" />
       </header>
 
-      <main className="edit-profile-page">
-        {/* 팝업 */}
-        {showPhonePopup && (
-          <div className="phone-popup">
-            <div className="popup-title">🔔 인증번호 도착</div>
+      <main className="page">
+        <div className="container">
+          {/* 프로필 */}
+          <section className="edit-profile-card">
+            <label className="body2">프로필 이미지</label>
 
-            <div className="popup-content">
-              인증번호
-              <strong>{phoneCode}</strong>를 입력해주세요.
+            <div className="edit-profile-image-wrapper">
+              <div className="edit-profile-image">
+                {/* ============== 아바타 구현용: Avatar 컴포넌트 적용 ============== */}
+                <Avatar key={myPkUserId || loginId || 'loading'} src={profileUrl} userId={myPkUserId ?? loginId ?? name} size="m" />
+                {/* ================================================================ */}
+              </div>
+
+              <IconButton variant="assistive" size="s" shape="horizontal" className="edit-profile-upload-btn" style={{ backgroundColor: 'var(--gray-950)' }}>
+                <Upload
+                  color="white"
+                  onClick={() => {
+                    alert('이미지 업로드 기능은 추후 구현 예정입니다.');
+                  }}
+                />
+              </IconButton>
             </div>
-          </div>
-        )}
-        {/* 프로필 */}
-        <section className="edit-profile-card">
-          <label className="section-label">프로필 이미지</label>
 
-          <div className="edit-profile-image-wrapper">
-            <div className="edit-profile-image">
-              <img src="/image/Profile.png" alt="프로필" />
+            <div className="edit-form-group">
+              <label>이름</label>
+              <input className="edit-form-input" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
 
-            <button className="edit-profile-upload-btn">
-              <LuUpload
-                size={16}
-                onClick={() => {
-                  alert('이미지 업로드 기능은 추구 구현예정입니다.');
-                }}
-              />
-            </button>
-          </div>
+            <div className="edit-form-group">
+              <label>휴대폰 번호</label>
 
-          <div className="edit-form-group">
-            <label>이름</label>
-            <input className="edit-form-input" value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
+              <div className="phone-group">
+                <input
+                  className="edit-form-input"
+                  value={phoneNum}
+                  onChange={(e) => {
+                    const value = e.target.value;
 
-          <div className="edit-form-group">
-            <label>휴대폰 번호</label>
+                    setPhoneNum(value);
 
-            <div className="phone-group">
+                    if (value === originPhoneNum) {
+                      setPhoneVerified(true);
+                      setInputCode('');
+                      setAuthCode(null);
+                    } else {
+                      setPhoneVerified(false);
+                      setInputCode('');
+                      setAuthCode(null);
+                    }
+                  }}
+                />
+                {phoneVerified ? (
+                  <Button variant="outlined" size="l" style={{ backgroundColor: 'var(--white)' }}>
+                    인증 완료
+                  </Button>
+                ) : (
+                  <Button onClick={confirmPhoneNum}>휴대폰 번호 인증</Button>
+                )}
+              </div>
+            </div>
+
+            <div className="edit-form-group">
+              <label>인증번호</label>
+
               <input
                 className="edit-form-input"
-                value={phoneNum}
+                value={inputCode}
                 onChange={(e) => {
                   const value = e.target.value;
+                  setInputCode(value);
 
-                  setPhoneNum(value);
-
-                  if (value === originPhoneNum) {
+                  if (Number(value) === authCode) {
                     setPhoneVerified(true);
-                    setInputCode('');
-                    setAuthCode(null);
                   } else {
                     setPhoneVerified(false);
-                    setInputCode('');
-                    setAuthCode(null);
                   }
                 }}
+                placeholder="인증번호 입력"
               />
-              {phoneVerified ? <Button variant="assistive">인증 완료</Button> : <Button onClick={confirmPhoneNum}>휴대폰 번호 인증</Button>}
             </div>
+
+            <div className="password-edit-link">
+              <Button variant="subtle" size="l" trailingIcon={<ChevronRight />} onClick={() => setPwModalOpen(true)}>
+                비밀번호 수정
+              </Button>
+            </div>
+          </section>
+
+          <div className="bottom-action-container">
+            <Button variant="primary" size="l" className="edit-profile-submit" onClick={editProfile}>
+              프로필 수정하기
+            </Button>
           </div>
-
-          <div className="edit-form-group">
-            <label>인증번호</label>
-
-            <input
-              className="edit-form-input"
-              value={inputCode}
-              onChange={(e) => {
-                const value = e.target.value;
-                setInputCode(value);
-
-                if (Number(value) === authCode) {
-                  setPhoneVerified(true);
-                } else {
-                  setPhoneVerified(false);
-                }
-              }}
-              placeholder="인증번호 입력"
-            />
-          </div>
-          {/* 비밀번호 수정, 화살표 아이콘 */}
-          <div className="password-edit-link" onClick={() => setPwModalOpen(true)}>
-            <span>비밀번호 수정</span>
-            <ChevronRight size={20} />
-          </div>
-        </section>
-
-        <div className="edit-profile-bottom">
-          <Button className="edit-profile-submit" onClick={editProfile}>
-            프로필 수정하기
-          </Button>
         </div>
       </main>
+
       {pwModalOpen && (
-        <div className="modal-overlay">
-          <div className="password-modal">
-            <h3>비밀번호 수정</h3>
-
-            <div className="edit-form-group">
-              <label>현재 비밀번호</label>
-
-              <input className="edit-form-input" type="password" value={pw} onChange={(e) => setPw(e.target.value)} />
+        <div className="pw-modal-overlay">
+          <div className="pw-modal">
+            <div className="modal-header">
+              <h3 className="pw-modal-title">비밀번호 수정</h3>
+              <IconButton variant="subtle" size="l" shape="horizontal" onClick={closePwModal}>
+                <X color="var(--gray-950)" />
+              </IconButton>
             </div>
+            <div className="pw-modal-body">
+              <div className="edit-form-group" style={{ textAlign: 'left', marginTop: '16px' }}>
+                <label>현재 비밀번호</label>
+                <input className="edit-pw-input" type="password" value={pw} onChange={(e) => setPw(e.target.value)} placeholder="현재 비밀번호 입력" />
+              </div>
 
-            <div className="edit-form-group">
-              <label>새 비밀번호</label>
+              <div className="edit-form-group" style={{ textAlign: 'left', marginTop: '12px' }}>
+                <label>새 비밀번호</label>
+                <input className="edit-pw-input" type="password" value={newPw} onChange={(e) => setNewPw(e.target.value)} placeholder="새 비밀번호 입력" />
+              </div>
 
-              <input className="edit-form-input" type="password" value={newPw} onChange={(e) => setNewPw(e.target.value)} />
+              <div className="modal-buttons">
+                <Button variant="outlined" size="l" className="later-btn" onClick={closePwModal}>
+                  취소
+                </Button>
+                <Button variant="primary" size="l" className="charge-btn" onClick={editPw}>
+                  변경하기
+                </Button>
+              </div>
             </div>
+          </div>
+        </div>
+      )}
 
-            <div className="modal-button-group">
-              <Button variant="assistive" onClick={closePwModal}>
-                취소
-              </Button>
-
-              <Button onClick={editPw}>변경</Button>
-            </div>
+      {showPhonePopup && (
+        <div className="phone-popup">
+          <div className="popup-title">🔔 인증번호 도착</div>
+          <div className="popup-content">
+            인증번호 <strong>{phoneCode}</strong>를 입력해주세요.
           </div>
         </div>
       )}

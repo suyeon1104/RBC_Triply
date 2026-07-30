@@ -72,7 +72,7 @@
 .payment-modal {
   position: relative;
 
-  width: 80%;
+  width: 90%;
 
   background: white;
 
@@ -82,7 +82,7 @@
 
   box-sizing: border-box;
 
-  padding: 12px;
+  padding: 16px;
 }
 
 /* 우측 상단 X */

@@ -111,7 +111,7 @@ const Notification = () => {
       {selectedNotification && (
         <div className="modal-overlay" onClick={() => setSelectedNotification(null)}>
           <div className="notification-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>{selectedNotification.title}</h2>
+            <h3>{selectedNotification.title}</h3>
 
             {selectedNotification.subTitle && <p className="notification-subtitle">{selectedNotification.subTitle}</p>}
 
@@ -119,14 +119,18 @@ const Notification = () => {
 
             {selectedNotification.type === 'GROUP_INVITE' ? (
               <div className="modal-buttons">
-                <Button variant="assistive" onClick={() => handleReject(selectedNotification.targetId)}>
+                <Button variant="outlined" size="l" onClick={() => handleReject(selectedNotification.targetId)}>
                   거절
                 </Button>
 
-                <Button onClick={() => handleAccept(selectedNotification.targetId)}>수락</Button>
+                <Button variant="primary" size="l" onClick={() => handleAccept(selectedNotification.targetId)}>
+                  수락
+                </Button>
               </div>
             ) : (
-              <Button onClick={() => handleSettlement(selectedNotification.targetId)}>정산하기</Button>
+              <Button variant="primary" size="l" onClick={() => handleSettlement(selectedNotification.targetId)}>
+                정산하기
+              </Button>
             )}
           </div>
         </div>
