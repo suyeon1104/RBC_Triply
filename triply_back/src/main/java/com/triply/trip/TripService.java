@@ -212,4 +212,20 @@ public class TripService {
 		tripScheduleRepo.delete(schedule);
 	}
 
+	public TripScheduleDto getSchedule(Integer scheduleId, Long userId) {
+
+		// 일정 조회
+		TripScheduleEntity schedule = tripScheduleRepo.findById(scheduleId)
+				.orElseThrow(() -> new IllegalArgumentException("일정이 존재하지 않습니다."));
+
+		// 여행 접근 권한 확인
+		checkTripAccess(schedule.getTrip(), userId);
+
+		return TripScheduleDto.builder().scheduleId(schedule.getScheduleId()).tripId(schedule.getTrip().getTripId())
+				.scheduleDate(schedule.getScheduleDate()).startTime(schedule.getStartTime())
+				.endTime(schedule.getEndTime()).scheduleTitle(schedule.getScheduleTitle())
+				.schedulePlace(schedule.getSchedulePlace()).scheduleDetail(schedule.getScheduleDetail())
+				.category(schedule.getCategory()).result(true).msg("여행 일정 조회가 완료되었습니다.").build();
+	}
+
 }

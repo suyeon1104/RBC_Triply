@@ -1,0 +1,74 @@
+.schedule-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 20px 40px;
+}
+
+.schedule-container label {
+  font-weight: 600;
+  margin-bottom: -10px;
+}
+
+.schedule-container input,
+.schedule-container textarea {
+  width: 100%;
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  padding: 14px;
+  box-sizing: border-box;
+  font-size: 15px;
+  background: transparent;
+}
+
+.schedule-container textarea {
+  resize: none;
+}
+
+.time-row {
+  display: flex;
+  gap: 16px;
+}
+
+.time-row > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.category-item {
+  border: 1px solid var(--gray-300);
+  border-radius: 14px;
+  padding: 14px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.category-item.selected {
+  border-color: var(--primary-500);
+  background: rgba(74, 144, 226, 0.08);
+}
+
+.category-item:disabled {
+  cursor: default;
+}
+
+.schedule-btn {
+  margin-top: 24px;
+}
+.category-emoji {
+  font-size: 22px;
+  line-height: 1;
+}

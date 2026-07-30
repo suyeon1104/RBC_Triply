@@ -30,6 +30,10 @@ export const deleteTrip = (data: { tripId: number }) =>
 export const patchTripGroup = (data: { tripId: number; groupId: number }) =>
   axiosInstance.put(`trip/patchTripGroup`, data);
 
+// 여행 상세(일정 목록 조회)
+export const getTripDetail = (tripId: number) =>
+  axiosInstance.get(`/trip/${tripId}`);
+
 // 일정 생성
 export const createSchedule = (data: {
   tripId: number;
@@ -42,9 +46,9 @@ export const createSchedule = (data: {
   category: string;
 }) => axiosInstance.post("trip/createSchedule", data);
 
-// 여행 상세(일정 조회)
-export const getTripDetail = (tripId: number) =>
-  axiosInstance.get(`/trip/${tripId}`);
+// 일정 단일 조회
+export const getSchedule = (scheduleId: number) =>
+  axiosInstance.get(`/trip/schedule/${scheduleId}`);
 
 // 일정 수정
 export const updateSchedule = (data: {
@@ -56,8 +60,8 @@ export const updateSchedule = (data: {
   schedulePlace: string;
   scheduleDetail: string;
   category: string;
-}) => axiosInstance.put(`trip/updateSchedule`, data);
+}) => axiosInstance.patch("/trip/updateSchedule", data);
 
 // 일정 삭제
 export const deleteSchedule = (data: { scheduleId: number }) =>
-  axiosInstance.delete(`/trip/deleteSchedule`, { data });
+  axiosInstance.delete("/trip/deleteSchedule", { data });
