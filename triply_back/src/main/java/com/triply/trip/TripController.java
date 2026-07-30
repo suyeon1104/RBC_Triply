@@ -201,4 +201,21 @@ public class TripController {
 		}
 	}
 
+	@Operation(summary = "여행 일정 단일 조회")
+	@GetMapping("/schedule/{scheduleId}")
+	public ResponseEntity<?> getSchedule(@PathVariable("scheduleId") Integer scheduleId,
+			@AuthenticationPrincipal Long userId) {
+
+		try {
+
+			TripScheduleDto response = tripService.getSchedule(scheduleId, userId);
+
+			return ResponseEntity.ok(response);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
 }

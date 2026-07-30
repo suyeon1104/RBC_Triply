@@ -27,6 +27,7 @@ import Planner from "../pages/Planner";
 import CreateTrip from "../pages/CreateTrip";
 import Notification from "../pages/Notification";
 import { useAuth } from "../contexts/useAuth";
+import PlanDetailCreate from "../pages/PlanDetailCreate";
 
 export default function AppRouter() {
   const { isAuthenticated } = useAuth();
@@ -72,6 +73,20 @@ export default function AppRouter() {
             element={<SettlementCreate />}
           />
           <Route path="/notification" element={<Notification />} />
+          <Route
+            path="/trip/:tripId/schedule/new"
+            element={<PlanDetailCreate />}
+          />
+
+          <Route
+            path="/trip/schedule/:scheduleId"
+            element={<PlanDetailCreate />}
+          />
+
+          <Route
+            path="/trip/schedule/:scheduleId/edit"
+            element={<PlanDetailCreate />}
+          />
           {/* 수연 */}
           <Route path="/planner" element={<Planner />} />
           <Route path="/trip/createTrip" element={<CreateTrip />} />
