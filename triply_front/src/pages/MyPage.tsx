@@ -52,13 +52,13 @@ export default function MyPage() {
     (async () => {
       const res = await getProfile();
       if (!res) return;
-      console.log(res.data);
+      // console.log(res.data);
       setUserData(res.data);
     })();
 
     (async () => {
       try {
-        const res = await instance.get<Group[]>('/group/getGroupList');
+        const res = await instance.get<Group[]>("/group/getGroupList");
         const groupList = res.data;
 
         if (Array.isArray(groupList)) {
@@ -71,7 +71,7 @@ export default function MyPage() {
           }
         }
       } catch (error) {
-        console.error('아바타용 userId 추출 실패:', error);
+        console.error("아바타용 userId 추출 실패:", error);
       }
     })();
   }, []);
@@ -80,9 +80,9 @@ export default function MyPage() {
     (async () => {
       const phoneString = userData?.userPhone;
       if (phoneString !== undefined) {
-        const num1 = phoneString?.split('').slice(0, 3).join('');
-        const num2 = phoneString?.split('').slice(3, 7).join('');
-        const num3 = phoneString?.split('').slice(7).join('');
+        const num1 = phoneString?.split("").slice(0, 3).join("");
+        const num2 = phoneString?.split("").slice(3, 7).join("");
+        const num3 = phoneString?.split("").slice(7).join("");
 
         setEdPhone(`${num1} - ${num2} - ${num3}`);
       }
@@ -99,13 +99,11 @@ export default function MyPage() {
 
   function handleLogout() {
     logout();
-    console.log('navigate 실행 직전');
-    navigate('/login');
-    console.log('navigate 실행 직후');
+    navigate("/login");
   }
 
   function handleResign() {
-    alert('회원탈퇴 구현하기!');
+    alert("회원탈퇴 구현하기!");
   }
 
   return (
@@ -118,7 +116,15 @@ export default function MyPage() {
         <div className="container">
           <section>
             <div className="mypage-profile-card">
-              <IconButton variant="outlined" size="s" shape="horizontal" className="profile-edit-btn" onClick={() => navigate('/editprofile', { state: { userData } })}>
+              <IconButton
+                variant="outlined"
+                size="s"
+                shape="horizontal"
+                className="profile-edit-btn"
+                onClick={() =>
+                  navigate("/editprofile", { state: { userData } })
+                }
+              >
                 <Settings />
               </IconButton>
 
@@ -130,7 +136,9 @@ export default function MyPage() {
 
               <div className="profile-id">
                 <span>{userData?.loginId}</span>
-                <button onClick={handleCopyId}>{copied ? <LuCheck /> : <LuCopy />}</button>
+                <button onClick={handleCopyId}>
+                  {copied ? <LuCheck /> : <LuCopy />}
+                </button>
               </div>
 
               <p className="profile-phone">{edPhone}</p>

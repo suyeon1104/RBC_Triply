@@ -2,7 +2,8 @@
 import axiosInstance from "./axiosInstance";
 
 export const join = (data) => axiosInstance.post("/auth/join", data);
-export const login = (data) => axiosInstance.post("/auth/login", data);
+export const loginUser = (data) =>
+  axiosInstance.post("/user/auth/signin", data);
 export const getProfile = () => axiosInstance.get("/user/getProfile");
 export const patchProfile = (data: { userName: string; userPhone: string }) =>
   axiosInstance.patch("/user/patchProfile", data);
