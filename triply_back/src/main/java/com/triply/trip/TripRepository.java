@@ -42,4 +42,25 @@ public interface TripRepository extends JpaRepository<TripEntity, Integer> {
 
 	Integer countByGroup(GroupEntity group);
 
+	List<TripEntity> findByGroup_GroupId(Long groupId);
+
+	@Query("""
+			    SELECT t
+			    FROM TripEntity t
+			    WHERE (
+			        t.user.userId = :userId
+			        OR (
+			            t.group IS NOT NULL
+			            AND t.group.groupId IN (
+			                SELECT gm.group.groupId
+			                FROM GroupMemberEntity gm
+			                WHERE gm.user.userId = :userId
+			            )
+			        )
+			    )
+			    AND t.startDate <= :today
+			    AND t.endDate >= :today
+			""")
+	Optional<TripEntity> findTodayTrip(@Param("userId") Long userId, @Param("today") LocalDate today);
+
 }
