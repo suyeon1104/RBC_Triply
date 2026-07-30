@@ -28,6 +28,7 @@ import CreateTrip from "../pages/CreateTrip";
 import Notification from "../pages/Notification";
 import { useAuth } from "../contexts/useAuth";
 import PlanDetailCreate from "../pages/PlanDetailCreate";
+import GroupTripList from "../pages/GroupTripList";
 
 export default function AppRouter() {
   const { isAuthenticated } = useAuth();
@@ -87,6 +88,7 @@ export default function AppRouter() {
             path="/trip/schedule/:scheduleId/edit"
             element={<PlanDetailCreate />}
           />
+          <Route path="/group/:groupId/trips" element={<GroupTripList />} />
           {/* 수연 */}
           <Route path="/planner" element={<Planner />} />
           <Route path="/trip/createTrip" element={<CreateTrip />} />

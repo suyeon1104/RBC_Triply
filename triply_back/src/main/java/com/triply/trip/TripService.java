@@ -228,4 +228,10 @@ public class TripService {
 				.category(schedule.getCategory()).result(true).msg("여행 일정 조회가 완료되었습니다.").build();
 	}
 
+	public List<TripEntity> getGroupTrips(Long groupId) {
+
+		return tripRepo.findByGroup_GroupId(groupId);
+
+	}
+
 }

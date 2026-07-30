@@ -1,6 +1,6 @@
-import './TripListItem.css';
+import "./TripListItem.css";
 
-interface Trip {
+export interface Trip {
   createdAt: string;
   endDate: string;
   groupId: number;

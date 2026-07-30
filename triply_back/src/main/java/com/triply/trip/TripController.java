@@ -218,4 +218,19 @@ public class TripController {
 		}
 	}
 
+	@Operation(summary = "그룹별 여행목록 조회")
+	@GetMapping("/group/{groupId}")
+	public ResponseEntity<?> getGroupTripList(@PathVariable("groupId") Long groupId) {
+
+		List<TripEntity> trips = tripService.getGroupTrips(groupId);
+
+		List<TripDto> response = trips.stream()
+				.map(trip -> TripDto.builder().tripId(trip.getTripId()).tripTitle(trip.getTripTitle())
+						.tripPlace(trip.getTripPlace()).tripImg(trip.getTripImg()).startDate(trip.getStartDate())
+						.endDate(trip.getEndDate())
+						.groupId(trip.getGroup() != null ? trip.getGroup().getGroupId() : null).result(true).build())
+				.toList();
+
+		return ResponseEntity.ok(response);
+	}
 }
