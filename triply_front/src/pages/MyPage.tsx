@@ -1,16 +1,16 @@
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/useAuth';
-import { useEffect, useState } from 'react';
-import { getProfile } from '../api/authApi';
-import { LuCheck, LuCopy } from 'react-icons/lu';
-import '../styles/MyPage.css';
-import TopNav from '../components/Navigation/TopNav/TopNav';
-import { Settings } from 'lucide-react';
-import IconButton from '../components/Button/IconButton/IconButton';
-import Avatar from '../components/Avatar/Avatar';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/useAuth";
+import { useEffect, useState } from "react";
+import { getProfile } from "../api/authApi";
+import { LuCheck, LuCopy } from "react-icons/lu";
+import "../styles/MyPage.css";
+import TopNav from "../components/Navigation/TopNav/TopNav";
+import { Settings } from "lucide-react";
+import IconButton from "../components/Button/IconButton/IconButton";
+import Avatar from "../components/Avatar/Avatar";
 
 // ============== 아바타용: Axios 및 Group 타입 정의 추가 ==============
-import instance from '../api/axiosInstance';
+import instance from "../api/axiosInstance";
 
 interface Member {
   me: boolean;
@@ -55,14 +55,14 @@ export default function MyPage() {
     (async () => {
       const res = await getProfile();
       if (!res) return;
-      console.log(res.data);
+      // console.log(res.data);
       setUserData(res.data);
     })();
 
     // ============== 아바타용: 백그라운드 그룹 API에서 내 PK(userId)만 추출 ==============
     (async () => {
       try {
-        const res = await instance.get<Group[]>('/group/getGroupList');
+        const res = await instance.get<Group[]>("/group/getGroupList");
         const groupList = res.data;
 
         if (Array.isArray(groupList)) {
@@ -75,7 +75,7 @@ export default function MyPage() {
           }
         }
       } catch (error) {
-        console.error('아바타용 userId 추출 실패:', error);
+        console.error("아바타용 userId 추출 실패:", error);
       }
     })();
     // ================================================================================
@@ -85,9 +85,9 @@ export default function MyPage() {
     (async () => {
       const phoneString = userData?.userPhone;
       if (phoneString !== undefined) {
-        const num1 = phoneString?.split('').slice(0, 3).join('');
-        const num2 = phoneString?.split('').slice(3, 7).join('');
-        const num3 = phoneString?.split('').slice(7).join('');
+        const num1 = phoneString?.split("").slice(0, 3).join("");
+        const num2 = phoneString?.split("").slice(3, 7).join("");
+        const num3 = phoneString?.split("").slice(7).join("");
 
         setEdPhone(`${num1} - ${num2} - ${num3}`);
       }
@@ -104,13 +104,11 @@ export default function MyPage() {
 
   function handleLogout() {
     logout();
-    console.log('navigate 실행 직전');
-    navigate('/login');
-    console.log('navigate 실행 직후');
+    navigate("/login");
   }
 
   function handleResign() {
-    alert('회원탈퇴 구현하기!');
+    alert("회원탈퇴 구현하기!");
   }
 
   return (
@@ -123,13 +121,26 @@ export default function MyPage() {
         <div className="container">
           <section>
             <div className="mypage-profile-card">
-              <IconButton variant="outlined" size="s" shape="horizontal" className="profile-edit-btn" onClick={() => navigate('/editprofile', { state: { userData } })}>
+              <IconButton
+                variant="outlined"
+                size="s"
+                shape="horizontal"
+                className="profile-edit-btn"
+                onClick={() =>
+                  navigate("/editprofile", { state: { userData } })
+                }
+              >
                 <Settings />
               </IconButton>
 
               <div className="profile-image">
                 {/* ============== 아바타용: myPkUserId 전달해서 MakeGroup과 동일 색상 적용 ============== */}
-                <Avatar key={myPkUserId || userData?.loginId || 'loading'} src={userData?.profileUrl} userId={myPkUserId ?? userData?.loginId ?? userData?.userName} size="l" />
+                <Avatar
+                  key={myPkUserId || userData?.loginId || "loading"}
+                  src={userData?.profileUrl}
+                  userId={myPkUserId ?? userData?.loginId ?? userData?.userName}
+                  size="l"
+                />
                 {/* =================================================================================== */}
               </div>
 
@@ -137,7 +148,9 @@ export default function MyPage() {
 
               <div className="profile-id">
                 <span>{userData?.loginId}</span>
-                <button onClick={handleCopyId}>{copied ? <LuCheck /> : <LuCopy />}</button>
+                <button onClick={handleCopyId}>
+                  {copied ? <LuCheck /> : <LuCopy />}
+                </button>
               </div>
 
               <p className="profile-phone">{edPhone}</p>

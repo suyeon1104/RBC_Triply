@@ -53,7 +53,7 @@ export default function MyPageEditProfile() {
       setOriginPhoneNum(res.data.userPhone);
       setPhoneVerified(true);
 
-      console.log(res.data);
+      // console.log(res.data);
     });
 
     return () => {
