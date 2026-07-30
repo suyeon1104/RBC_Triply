@@ -6,7 +6,7 @@ import { LuCheck, LuCopy } from "react-icons/lu";
 // import "../styles/globals.css";
 import "../styles/MyPage.css";
 import TopNav from "../components/Navigation/TopNav/TopNav";
-import { Settings, Settings2 } from "lucide-react";
+import { Settings } from "lucide-react";
 
 export interface UserData {
   loginId: string;
@@ -28,7 +28,7 @@ export default function MyPage() {
     (async () => {
       const res = await getProfile();
       if (!res) return;
-      console.log(res.data);
+      // console.log(res.data);
       setUserData(res.data);
     })();
   }, []);
@@ -56,9 +56,9 @@ export default function MyPage() {
 
   function handleLogout() {
     logout();
-    console.log("navigate 실행 직전");
+    // console.log("navigate 실행 직전");
     navigate("/login");
-    console.log("navigate 실행 직후");
+    // console.log("navigate 실행 직후");
   }
   function handleResign() {
     alert("회원탈퇴 구현하기!");
