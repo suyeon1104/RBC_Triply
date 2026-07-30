@@ -6,6 +6,9 @@ import { getWalletHistory } from '../api/walletApi';
 
 import '../styles/WalletHistory.css';
 import SettlementButton from '../components/SettlementButton';
+import TopNav from '../components/Navigation/TopNav/TopNav';
+import { ArrowRightLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import Button from '../components/Button/Button/Button';
 
 export default function WalletHistory() {
   const navigate = useNavigate();
@@ -104,79 +107,90 @@ export default function WalletHistory() {
   };
 
   return (
-    <div className="container">
-      <main className="wallet-history">
-        <div className="history-top">
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            ←
-          </button>
+    <>
+      <header>
+        <TopNav title="지갑 내역" />
+      </header>
 
-          <h2>지갑 내역</h2>
-        </div>
+      <main className="page">
+        <div className="container">
+          <section>
+            <div className="top-content">
+              <div className="month-selector">
+                <button onClick={() => month > 1 && setMonth(month - 1)}>
+                  <ChevronLeft />
+                </button>
 
-        <div className="month-selector">
-          <button onClick={() => month > 1 && setMonth(month - 1)}>&lt;</button>
+                <span>{month}월</span>
 
-          <span>{month}월</span>
-
-          <button onClick={() => month < 12 && setMonth(month + 1)}>&gt;</button>
-        </div>
-
-        <div className="filter-row">
-          <button className={filter === 'ALL' ? 'selected' : ''} onClick={() => setFilter('ALL')}>
-            전체
-          </button>
-
-          <button className={filter === 'PAYMENT' ? 'selected' : ''} onClick={() => setFilter('PAYMENT')}>
-            결제
-          </button>
-
-          <button className={filter === 'CHARGE' ? 'selected' : ''} onClick={() => setFilter('CHARGE')}>
-            충전
-          </button>
-
-          <button className={filter === 'SETTLEMENT' ? 'selected' : ''} onClick={() => setFilter('SETTLEMENT')}>
-            정산
-          </button>
-        </div>
-
-        {grouped.length === 0 ? (
-          <div className="empty-history">이번 달 거래내역이 없습니다.</div>
-        ) : (
-          grouped.map(([date, items]) => (
-            <div key={date}>
-              <div className="history-date">{date.replaceAll('-', '.')}</div>
-
-              <div className="history-card">
-                {items.map((item) => (
-                  <div key={item.transactionId} className="history-item">
-                    <div className="history-icon">{getIcon(item.type)}</div>
-
-                    <div className="history-info">
-                      <div className="history-amount">
-                        <span className={item.type === 'CHARGE' || item.type === 'SETTLEMENT_IN' ? 'plus' : 'minus'}>{getAmount(item)}</span>
-
-                        {item.foreignAmount && (
-                          <span className="foreign">
-                            | {item.foreignAmount.toLocaleString()}
-                            {item.currency}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="history-title">{getTitle(item)}</div>
-                    </div>
-
-                    {item.type === 'PAYMENT' && <SettlementButton paymentId={item.paymentId} />}
-                  </div>
-                ))}
+                <button onClick={() => month < 12 && setMonth(month + 1)}>
+                  <ChevronRight />
+                </button>
               </div>
+              <Button variant="subtle" size="s" leadingIcon={<ArrowRightLeft />}>
+                달력보기
+              </Button>
             </div>
-          ))
-        )}
+
+            <div className="filter-row">
+              <button className={filter === 'ALL' ? 'selected' : ''} onClick={() => setFilter('ALL')}>
+                전체
+              </button>
+
+              <button className={filter === 'PAYMENT' ? 'selected' : ''} onClick={() => setFilter('PAYMENT')}>
+                결제
+              </button>
+
+              <button className={filter === 'CHARGE' ? 'selected' : ''} onClick={() => setFilter('CHARGE')}>
+                충전
+              </button>
+
+              <button className={filter === 'SETTLEMENT' ? 'selected' : ''} onClick={() => setFilter('SETTLEMENT')}>
+                정산
+              </button>
+            </div>
+          </section>
+
+          <section>
+            {grouped.length === 0 ? (
+              <div className="empty-history">이번 달 거래내역이 없습니다.</div>
+            ) : (
+              grouped.map(([date, items]) => (
+                <div key={date}>
+                  <div className="history-card">
+                    <div className="history-date">{date.replaceAll('-', '.')}</div>
+                    {items.map((item) => (
+                      <div key={item.transactionId} className="history-item">
+                        <div className="history-icon">{getIcon(item.type)}</div>
+
+                        <div className="history-info">
+                          <div className="history-amount">
+                            <span className={item.type === 'CHARGE' || item.type === 'SETTLEMENT_IN' ? 'plus' : 'minus'}>{getAmount(item)}</span>
+
+                            {item.foreignAmount && (
+                              <span className="foreign">
+                                {' '}
+                                | {item.foreignAmount.toLocaleString()}
+                                {item.currency}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="history-title">{getTitle(item)}</div>
+                        </div>
+
+                        {item.type === 'PAYMENT' && <SettlementButton paymentId={item.paymentId} />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
+          </section>
+        </div>
       </main>
 
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
-    </div>
+    </>
   );
 }

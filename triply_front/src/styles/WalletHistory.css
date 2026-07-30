@@ -1,51 +1,15 @@
-.wallet-history {
-  padding: 20px;
-  padding-bottom: 90px;
-}
-
-/* 상단 헤더 */
-.history-top {
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 64px;
-
-  background: white;
-
-  margin: -20px -20px 24px;
-}
-
-.history-top h2 {
-  margin: 0;
-
-  font-size: 22px;
-  font-weight: bold;
-}
-
-.back-btn {
-  position: absolute;
-  left: 20px;
-
-  border: none;
-  background: none;
-
-  font-size: 22px;
-
-  cursor: pointer;
-}
-
 /* 월 선택 */
+.top-content {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
 .month-selector {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 
-  gap: 10px;
-
-  margin-bottom: 14px;
+  gap: 12px;
 }
 
 .month-selector button {
@@ -55,15 +19,13 @@
 
   font-size: 14px;
 
-  color: #777;
+  color: var(--gray-950);
 
   cursor: pointer;
 }
 
 .month-selector span {
-  font-size: 16px;
-
-  font-weight: bold;
+  font: var(--font-body1-bold);
 }
 
 /* 필터 버튼 */
@@ -71,52 +33,48 @@
   display: flex;
 
   gap: 8px;
-
-  margin-bottom: 18px;
 }
 
 .filter-row button {
-  flex: none;
+  width: auto;
+  min-width: 64px;
 
-  padding: 5px 12px;
+  padding: 6px 12px;
 
-  border: 1px solid #ddd;
+  border: 1px solid var(--gray-200);
 
   border-radius: 18px;
 
-  background: white;
+  background: var(--white);
 
-  font-size: 12px;
-
+  font: var(--font-label2-regular);
+  color: var(--gray-600);
   cursor: pointer;
 }
 
 .filter-row .selected {
-  background: #5b86e5;
+  background: var(--main-400);
 
-  color: white;
+  color: var(--white);
 
-  border-color: #5b86e5;
+  border-color: var(--main-400);
 }
 
 /* 날짜 */
 .history-date {
-  margin-top: 18px;
+  font: var(--font-label1-regular);
+  color: var(--gray-600);
 
-  margin-bottom: 10px;
-
-  font-size: 14px;
-
-  font-weight: bold;
+  margin-bottom: 4px;
 }
 
 /* 거래 카드 */
 .history-card {
-  background: white;
+  background: var(--white);
 
   border-radius: 18px;
 
-  padding: 8px 14px;
+  padding: 12px;
 }
 
 /* 거래 한 줄 */
@@ -136,7 +94,19 @@
 
 /* 아이콘 */
 .history-icon {
-  font-size: 24px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  height: 52px;
+
+  border-radius: 16px;
+
+  font-size: 18px;
+
+  background-color: var(--gray-50);
 }
 
 /* 거래 내용 */
@@ -146,59 +116,56 @@
 
 .history-amount {
   display: flex;
+  gap: 4px;
 
   align-items: center;
 
-  gap: 5px;
-
-  font-size: 15px;
-
-  font-weight: bold;
+  font: var(--font-body2-bold);
 }
 
 .plus {
-  color: #2d74ff;
+  color: var(--main-500);
 }
 
 .minus {
-  color: #222;
+  color: var(--gray-950);
 }
 
 .foreign {
-  color: #888;
+  color: var(--gray-500);
 
-  font-size: 11px;
-
-  font-weight: normal;
+  font: var(--font-body2-regular);
 }
 
 .history-title {
   margin-top: 2px;
 
-  color: #777;
+  color: var(--gray-500);
 
-  font-size: 11px;
+  font: var(--font-label1-regular);
 }
 
 /* 정산하기 버튼 */
 .settlement-btn {
-  border: 1px solid #d8d8d8;
+  border: 1px solid var(--gray-200);
+  background-color: transparent;
 
-  background: white;
+  color: var(--gray-600);
 
-  color: #888;
-
-  border-radius: 5px;
+  border-radius: 0px;
 
   padding: 3px 7px;
 
   font-size: 10px;
+
+  white-space: nowrap;
 
   cursor: pointer;
 }
 
 /* 내역 없음 */
 .empty-history {
+  font: var(--font-body1-regular);
   text-align: center;
 
   padding: 70px 0;
