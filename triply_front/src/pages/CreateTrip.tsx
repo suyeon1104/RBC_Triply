@@ -6,7 +6,7 @@ import TopNav from "../components/Navigation/TopNav/TopNav";
 import { Check } from "lucide-react";
 import "../styles/CreateTrip.css";
 import type Group from "./Group";
-import { createTrip, createTripWithOutGroupId } from "../api/tripApi";
+import { createTrip } from "../api/tripApi";
 
 const tripPlaceList: string[] = [
   "한국",
@@ -32,7 +32,6 @@ const CreateTrip = () => {
     undefined,
   );
   const [connectGroupList, setConnectGroupList] = useState<Group[]>([]);
-  // const [newTripId, setNewTripId] = useState("");
 
   // 사용자가 등록해둔 그룹 목록 불러오기
   useEffect(() => {
@@ -69,43 +68,23 @@ const CreateTrip = () => {
       return;
     }
 
+    if (!startDate || !endDate) {
+      alert("여행 기간을 입력해주세요.");
+      return;
+    }
+
     try {
       console.log("try");
-      // if (connectedGroup?.groupId == undefined) return;
-      let createTripRes;
-      // console.log("cG : " + connectedGroup);
-      // const pl = {
-      //   tripTitle: tripTitle,
-      //   tripPlace: tripPlace,
-      //   startDate: startDate,
-      //   endDate: endDate,
-      //   groupId: connectedGroup?.groupId,
-      // };
-      // console.dir(pl);
-      if (connectedGroup?.groupId == undefined) {
-        createTripRes = await createTripWithOutGroupId({
-          tripTitle: tripTitle,
-          tripPlace: tripPlace,
-          startDate: startDate,
-          endDate: endDate,
-        });
-      } else {
-        createTripRes = await createTrip({
-          tripTitle: tripTitle,
-          tripPlace: tripPlace,
-          startDate: startDate,
-          endDate: endDate,
-          groupId: connectedGroup?.groupId,
-        });
-      }
 
-      // setNewTripId(createTripRes.data.tripId);
+      // 통합된 createTrip 함수 사용 (그룹이 없으면 null 또는 파라미터 제외 처리)
+      const createTripRes = await createTrip({
+        tripTitle: tripTitle,
+        tripPlace: tripPlace,
+        startDate: startDate,
+        endDate: endDate,
+        groupId: connectedGroup?.groupId ? Number(connectedGroup.groupId) : null,
+      });
 
-      // if (connectedGroup) {
-      //   console.log("");
-      // }
-
-      // pass newTripId via navigation state instead of nonexistent 'params'
       navigate("/planner", { state: { tripId: createTripRes.data.tripId } });
     } catch (error) {
       console.error("여행 생성 실패:", error);
@@ -119,7 +98,6 @@ const CreateTrip = () => {
         <TopNav
           title="플래너 만들기"
           rightButtonIcon={<Check />}
-          // onRightButtonClick={() => {}}
         />
       </header>
 
@@ -182,9 +160,9 @@ const CreateTrip = () => {
                 id="tripPlace"
                 onChange={(e) => setTripPlace(e.target.value)}
               >
-                {tripPlaceList.map((tripPlace) => (
-                  <option key={tripPlace} value={tripPlace}>
-                    {tripPlace}
+                {tripPlaceList.map((place) => (
+                  <option key={place} value={place}>
+                    {place}
                   </option>
                 ))}
               </select>
@@ -197,7 +175,7 @@ const CreateTrip = () => {
               </label>
               <select
                 id="connectedGroup"
-                value={connectedGroup?.groupId ?? undefined}
+                value={connectedGroup?.groupId ?? ""}
                 onChange={handleGroupChange}
               >
                 <option value="">미선택 시 개인 여행 계획으로 추가돼요.</option>
@@ -208,25 +186,7 @@ const CreateTrip = () => {
                 ))}
               </select>
             </div>
-            {/* 
-            <div className="input-content">
-              <label className="body2">멤버 초대</label>
-              <div className="invite-input-wrapper">
-                <input type="text" placeholder="초대할 멤버의 아이디를 입력해주세요." value={inviteInput} onChange={(e) => setInviteInput(e.target.value)} onKeyDown={handleKeyDown} />
-                <IconButton variant="subtle" shape="horizontal" onClick={handleAddMember}>
-                  <Plus color="var(--gray-950)" />
-                </IconButton>
-              </div>
-            </div> */}
           </section>
-
-          {/* <section>
-            <div className="memberList">
-              {members.map((member) => (
-                <MemberListItem key={member.loginId} member={member} onDelete={() => handleDeleteMember(member.loginId)} />
-              ))}
-            </div>
-          </section> */}
 
           <div className="bottom-action-container">
             <Button variant="primary" size="l" onClick={handleCreateTrip}>

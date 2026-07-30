@@ -1,20 +1,13 @@
 // src/api/travelApi.js
 import axiosInstance from "./axiosInstance";
 
-// 여행 추가 ("플래너 만들기" 버튼)
+// 여행 추가 ("플래너 만들기" 버튼) - 단일 함수로 통합
 export const createTrip = (data: {
   tripTitle: string;
   tripPlace: string;
   startDate: string;
   endDate: string;
-  groupId: number | undefined;
-}) => axiosInstance.post("/trip/createTrip", data);
-
-export const createTripWithOutGroupId = (data: {
-  tripTitle: string;
-  tripPlace: string;
-  startDate: string;
-  endDate: string;
+  groupId?: number | null;
 }) => axiosInstance.post("/trip/createTrip", data);
 
 // 여행목록 조회 ("플래너" 탭 렌더링)

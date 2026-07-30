@@ -6,7 +6,7 @@ import ImageFrame from "../../ImageFrame/ImageFrame";
 interface Trip {
   createdAt: string;
   endDate: string;
-  groupId: number;
+  groupId?: number | null; // null이나 undefined 가능성 반영
   result: boolean;
   startDate: string;
   tripId: number;
@@ -16,21 +16,25 @@ interface Trip {
 
 interface TripListItemProps {
   trip: Trip;
+  handlePlanDetail: (tripId: number) => void;
 }
 
-const TripListItem = ({ trip }: TripListItemProps) => {
+const TripListItem = ({ trip, handlePlanDetail }: TripListItemProps) => {
   const [tripGroupName, setTripGroupName] = useState("");
-  const [tripGroupMemberNum, setTripGroupMembernNum] = useState("");
+  const [tripGroupMemberNum, setTripGroupMemberNum] = useState<number>(0);
 
   useEffect(() => {
+    // [핵심 방어 코드] groupId가 없거나 null/undefined면 API를 절대 호출하지 않음!
+    if (!trip.groupId) return;
+
     let ignore = false;
 
     const fetchTripListItem = async () => {
       try {
-        const res = await getGroupDetail(trip.groupId);
+       const res = await getGroupDetail(trip.groupId!);
         if (!res?.data || ignore) return;
         setTripGroupName(res.data.groupTitle);
-        setTripGroupMembernNum(res.data.members.length);
+        setTripGroupMemberNum(res.data.members.length);
       } catch (e) {
         if (!ignore) console.error(e);
       }
@@ -41,17 +45,16 @@ const TripListItem = ({ trip }: TripListItemProps) => {
     return () => {
       ignore = true;
     };
-  }, [trip]);
+  }, [trip.groupId]); // trip 전체 대신 trip.groupId만 감시하도록 수정
 
   return (
-    <div className="trip-item">
+    <div className="trip-item" onClick={() => handlePlanDetail(trip.tripId)}>
       <div>이미지</div>
       <ImageFrame src="/assets/maru.png" />
       {/* 우측 여행 정보 */}
       <div>
         <div className="trip-title">
           {trip.tripTitle}
-
         </div>
 
         <div className="trip-period">
@@ -62,9 +65,15 @@ const TripListItem = ({ trip }: TripListItemProps) => {
         </div>
         <br />
         <div className="trip-settlement">
-          <span className="trip-group-name">
-            with {tripGroupName}그룹 ({tripGroupMemberNum}명)
-          </span>
+          {trip.groupId ? (
+            <span className="trip-group-name">
+              with {tripGroupName}그룹 ({tripGroupMemberNum}명)
+            </span>
+          ) : (
+            <span className="trip-group-name">
+              개인 여행
+            </span>
+          )}
         </div>
       </div>
     </div>

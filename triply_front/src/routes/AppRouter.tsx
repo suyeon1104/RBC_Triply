@@ -21,6 +21,8 @@ import GroupDetail from '../pages/GroupDetail';
 import Planner from '../pages/Planner';
 import CreateTrip from '../pages/CreateTrip';
 import Notification from '../pages/Notification';
+import { TripDetail } from '../pages/TripDetail';
+import CreateSchedule from '../pages/CreateSchedule';
 
 export default function AppRouter() {
   return (
@@ -45,6 +47,8 @@ export default function AppRouter() {
         {/* 수연 */}
         <Route path="/planner" element={<Planner />} />
         <Route path="/trip/createTrip" element={<CreateTrip />} />
+        <Route path="/trip/detail/:tripId" element={<TripDetail />} />
+        <Route path="/trip/:tripId/schedule/new" element={<CreateSchedule />} />
         <Route path="/notification" element={<Notification />} />
         {/* 재현 */}
         <Route path="/group" element={<Group />} />
