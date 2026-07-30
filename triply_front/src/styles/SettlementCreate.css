@@ -1,18 +1,17 @@
-.settlement-container {
-  min-height: 100vh;
-  background: #fff;
+.title-content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.settlement-content {
-  padding: 10px 16px 16px;
+.top-content h4 {
+  margin: 12px 0;
+  font: var(--font-header2);
+  color: var(--gray-950);
 }
 
-.settlement-content h4 {
-  margin: 12px 0 8px;
-  font-size: 14px;
-  font-weight: 700;
-}
-
+/* 분담 방식 선택 버튼 그룹 */
 .split-type {
   display: flex;
   gap: 8px;
@@ -20,19 +19,34 @@
 }
 
 .split-type button {
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 13px;
+  width: auto;
+  min-width: 64px;
+
+  padding: 6px 12px;
+
+  border: 1px solid var(--gray-200);
+
+  border-radius: 18px;
+
+  background: var(--white);
+
+  font: var(--font-label2-regular);
+  color: var(--gray-600);
   cursor: pointer;
-  transition: 0.2s;
 }
 
 .split-type button.active {
-  background: #333;
-  color: white;
-  border-color: #333;
+  background: var(--main-400);
+
+  color: var(--white);
+
+  border-color: var(--main-400);
+}
+
+/* 멤버 리스트 */
+
+.settlememberlist-title {
+  color: var(--gray-950);
 }
 
 .member-list {
@@ -42,9 +56,9 @@
 }
 
 .member-card {
-  background: white;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
+  background: var(--white);
+  border: none;
+  border-radius: 16px;
   padding: 10px 12px;
   display: flex;
   justify-content: space-between;
@@ -54,143 +68,157 @@
 .member-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #efefef;
+  background: var(--gray-100);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #666;
-  font-size: 13px;
-  font-weight: bold;
+  color: var(--gray-600);
+  font: var(--font-body2-bold);
 }
 
 .member-name {
-  font-size: 14px;
-  font-weight: 600;
+  font: var(--font-body1-bold);
+  color: var(--gray-900);
 }
 
 .member-desc {
   margin-top: 2px;
-  font-size: 11px;
-  color: #999;
+  font: var(--font-label2-regular);
+  color: var(--gray-400);
 }
 
 .member-amount {
-  font-size: 14px;
-  font-weight: 700;
-  color: #666;
+  font: var(--font-body1-bold);
+  color: var(--gray-800);
 }
 
+/* 요약 카드 영역 */
 .summary-card {
-  margin-top: 16px;
-  background: white;
-  border-radius: 10px;
-  border: 1px solid #e8e8e8;
-  padding: 14px;
+  background: var(--white);
+  border-radius: 16px;
+  border: none;
+  padding: 20px 12px;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
-  font-size: 13px;
+  align-items: center;
+
+  margin-bottom: 12px;
+}
+
+.summary-row span {
+  font: var(--font-body1-regular);
+  color: var(--gray-600);
+}
+
+.summary-row span:last-child {
+  font: var(--font-body1-bold);
+  color: var(--gray-950);
 }
 
 .summary-row:last-child {
+  border-top: 1px dashed var(--gray-200);
+  padding-top: 16px;
   margin-bottom: 0;
 }
 
-.summary-row.last {
-  color: #666;
+.summary-row.last span {
+  font: var(--font-body1-bold);
 }
 
-.detail-btn {
+/* .detail-btn {
   width: 100%;
   margin-top: 18px;
-  height: 46px;
+  height: 48px;
   border: none;
-  border-radius: 10px;
-  background: #333;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 12px;
+  background: var(--main-400);
+  color: var(--white);
+  font: var(--font-body1-bold);
   cursor: pointer;
-}
+  transition: background-color 0.2s ease;
+} */
 
-.detail-btn:hover {
-  background: #222;
-}
-
-.payment-id {
+/* .payment-id {
   margin-top: 10px;
   text-align: center;
-  color: #aaa;
-  font-size: 11px;
-}
-/* 추가 */
+  color: var(--gray-400);
+  font: var(--font-label2-regular);
+} */
+
 .ratio-input {
-  width: 55px;
-  margin: 0 6px;
-  padding: 3px 6px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  width: 60px;
+  height: 32px;
+  margin: 0 4px;
+  padding: 0 6px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
   text-align: center;
+  font: var(--font-body2-regular);
+  color: var(--gray-950);
+  background-color: var(--white);
+  outline: none;
+  transition: border-color 0.2s ease;
 }
 
 .amount-input {
-  width: 90px;
-  padding: 4px 8px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  width: 100px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
   text-align: right;
-  font-size: 14px;
+  font: var(--font-body1-bold);
+  color: var(--gray-950);
+  background-color: var(--white);
+  outline: none;
+  transition: border-color 0.2s ease;
 }
-/* 에러 메시지 */
+
+.ratio-input:focus,
+.amount-input:focus {
+  border-color: var(--main-400);
+}
+
+/* 에러 토스트 메시지 */
 .error-message {
   position: fixed;
-
   top: 80px;
   left: 50%;
-
   transform: translateX(-50%);
-
   z-index: 2000;
 
   display: flex;
   align-items: center;
   gap: 8px;
 
-  /* width: fit-content; */
-  width: 80%;
-  max-width: 90%;
+  width: 90%;
 
-  padding: 14px 18px;
+  padding: 12px 20px;
 
   background: #fff5f5;
-
   border: 1px solid #ffcdd2;
-
   border-radius: 14px;
 
-  color: #d32f2f;
+  color: var(--negative);
+  font: var(--font-body2-bold);
 
-  font-size: 12px;
-  font-weight: 600;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-
+  box-shadow: var(--shadow-1);
   animation: toast-show 0.3s ease;
 }
 
 .error-message::before {
-  content: "⚠️";
-  font-size: 17px;
+  content: '⚠️';
+  font-size: 16px;
 }
 
 @keyframes toast-show {
@@ -198,7 +226,6 @@
     opacity: 0;
     transform: translate(-50%, -20px);
   }
-
   to {
     opacity: 1;
     transform: translate(-50%, 0);

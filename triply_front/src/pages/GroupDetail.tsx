@@ -33,13 +33,12 @@ interface SettlementResponse {
   toUserId: number;
   toUserName: string;
   amount: number;
-  status: string;
+  status: 'PENDING' | 'COMPLETED' | string;
   myRole: 'SENDER' | 'RECEIVER';
   requestedAt: string;
   completedAt: string | null;
 }
 
-// 멤버 초대 API 응답 인터페이스
 interface InviteResponse {
   groupName: string;
   invitationId: number;
@@ -59,12 +58,10 @@ const GroupDetail = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [details, setDetails] = useState<DetailItem[]>([]);
 
-  // 💡 모달 상태 관리
-  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false); // 탈퇴/삭제 모달
-  const [showInviteModal, setShowInviteModal] = useState<boolean>(false); // 멤버 초대 모달
-  const [inviteLoginId, setInviteLoginId] = useState<string>(''); // 초대할 아이디
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
+  const [inviteLoginId, setInviteLoginId] = useState<string>('');
 
-  // 💡 초대 대기 중인 멤버 목록 (API 호출 성공 시 로컬에 누적)
   const [pendingMembers, setPendingMembers] = useState<InvitedMember[]>([]);
 
   useEffect(() => {
@@ -78,7 +75,7 @@ const GroupDetail = () => {
           setGroupInfo(targetGroup);
         }
       } catch (error) {
-        console.error(error);
+        console.error('그룹 정보 불러오기 실패:', error);
       }
 
       try {
@@ -86,11 +83,13 @@ const GroupDetail = () => {
         const list = settlementRes.data;
 
         if (list && list.length > 0) {
-          const total = list.reduce((acc, cur) => acc + cur.amount, 0);
-          setTotalAmount(total);
-
+          // 역할(myRole) 기준으로 정산 유형 분기
           const mainRole = list[0]?.myRole;
           const isReceiver = mainRole === 'RECEIVER';
+
+          // 전체 총액 계산
+          const total = list.reduce((acc, cur) => acc + cur.amount, 0);
+          setTotalAmount(total);
 
           setSettlementType(isReceiver ? 'receive' : 'send');
 
@@ -102,6 +101,7 @@ const GroupDetail = () => {
             setConsumedAmount(total);
           }
 
+          // 상세 리스트 데이터 매핑
           const mappedDetails: DetailItem[] = list.map((item) => {
             const isSender = item.myRole === 'SENDER';
             return {
@@ -115,8 +115,13 @@ const GroupDetail = () => {
           setDetails(mappedDetails);
         } else {
           setSettlementType('empty');
+          setTotalAmount(0);
+          setPaidAmount(0);
+          setConsumedAmount(0);
+          setDetails([]);
         }
       } catch (error) {
+        console.error('정산 현황 불러오기 실패:', error);
         setSettlementType('empty');
       }
     };
@@ -124,21 +129,19 @@ const GroupDetail = () => {
     fetchData();
   }, [groupId]);
 
-  // 방장 여부 확인
   const isOwner = groupInfo?.members?.some((m) => m.me && m.role === 'OWNER');
 
-  // 삭제/탈퇴 처리 API
   const handleConfirmAction = async () => {
     if (!groupId) return;
 
     try {
       if (isOwner) {
-        const res = await instance.post('/api/v1/group/deleteGroup', {
-          groupId: Number(groupId),
+        const res = await instance.delete('/group/deleteGroup', {
+          data: { groupId: Number(groupId) },
         });
         alert(res.data.msg || '그룹 삭제가 완료되었습니다.');
       } else {
-        const res = await instance.post('/api/v1/group/leaveGroup', {
+        const res = await instance.post('/group/leaveGroup', {
           groupId: Number(groupId),
         });
         alert(res.data.msg || '그룹 탈퇴가 완료되었습니다.');
@@ -152,7 +155,6 @@ const GroupDetail = () => {
     }
   };
 
-  // 💡 멤버 초대 API 호출
   const handleInviteMember = async () => {
     if (!inviteLoginId.trim()) {
       alert('초대할 유저의 아이디를 입력해주세요.');
@@ -160,23 +162,21 @@ const GroupDetail = () => {
     }
 
     try {
-      const res = await instance.post<InviteResponse>('/api/v1/group/inviteGroup', {
+      const res = await instance.post<InviteResponse>('/group/inviteGroup', {
         groupId: Number(groupId),
         loginId: inviteLoginId,
       });
 
-      // API 응답 데이터를 바탕으로 대기중 멤버 목록에 추가
       const newPendingMember: InvitedMember = {
-        userId: res.data.invitationId, // 임시 키값으로 사용
+        userId: res.data.invitationId,
         receiverName: res.data.receiverName,
         memberRole: '멤버',
-        status: 'PENDING', // 승인 대기 중
+        status: 'PENDING',
       };
 
       setPendingMembers((prev) => [...prev, newPendingMember]);
       alert(`${res.data.receiverName}님에게 초대를 보냈습니다.`);
 
-      // 모달 닫기 및 입력 필드 초기화
       setInviteLoginId('');
       setShowInviteModal(false);
     } catch (error: any) {
@@ -233,7 +233,6 @@ const GroupDetail = () => {
             </div>
             <div className="member-content">
               <div className="member-list">
-                {/* 1. 기존 가입 완료된 멤버 목록 */}
                 {groupInfo?.members && groupInfo.members.length > 0 ? (
                   groupInfo.members.map((member) => {
                     const itemData: InvitedMember = {
@@ -249,7 +248,6 @@ const GroupDetail = () => {
                   <MemberListItem />
                 )}
 
-                {/* 2. 신규 초대(승인 대기 중) 멤버 목록 */}
                 {pendingMembers.map((pending, idx) => (
                   <MemberListItem key={`pending-${idx}`} member={pending} />
                 ))}
@@ -286,7 +284,6 @@ const GroupDetail = () => {
         </div>
       </main>
 
-      {/* 💡 1. 그룹 삭제 / 탈퇴 확인 모달 */}
       {showConfirmModal && (
         <div className="confirm-modal-overlay">
           <div className="confirm-modal">
@@ -313,7 +310,6 @@ const GroupDetail = () => {
         </div>
       )}
 
-      {/* 💡 2. 멤버 초대 (아이디 입력) 모달 */}
       {showInviteModal && (
         <div className="confirm-modal-overlay">
           <div className="confirm-modal">
@@ -326,12 +322,9 @@ const GroupDetail = () => {
               <h3>멤버 초대</h3>
               <h2>초대할 아이디를 입력하세요</h2>
 
-              {/* 아이디 입력 인풋 */}
               <div className="invite-input-container">
                 <input type="text" placeholder="아이디 입력" value={inviteLoginId} onChange={(e) => setInviteLoginId(e.target.value)} className="invite-input" />
               </div>
-
-              <hr />
 
               <div className="modal-buttons">
                 <Button variant="outlined" size="l" className="later-btn" onClick={() => setShowInviteModal(false)}>

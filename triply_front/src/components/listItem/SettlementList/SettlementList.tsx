@@ -19,7 +19,7 @@ export interface SettlementListProps {
   emptyMessage?: string;
 }
 
-const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', totalAmount = 0, details = [], emptyMessage = '정산 내역이 없어요.' }: SettlementListProps) => {
+const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', totalAmount, details = [], emptyMessage = '정산 내역이 없어요.' }: SettlementListProps) => {
   if (type === 'empty') {
     return (
       <div className="settlement-empty">
@@ -33,8 +33,11 @@ const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', 
   const statusColorClass = isReceive ? 'receive' : 'send';
   const statusLabel = isReceive ? '받을 금액' : '보낼 금액';
 
+  // totalAmount가 주어지지 않은 경우 계산값 보장
+  const displayTotal = totalAmount ?? Math.abs(paidAmount - consumedAmount);
+
   return (
-    <div className="settlmentlist-container">
+    <div className="settlement-list-container">
       <div className="settlement-row primary-row">
         <div className="settlement-label">
           <Plus size={24} className="icon" />
@@ -58,7 +61,7 @@ const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', 
           <Equal size={24} className="icon" />
           <span>{statusLabel}</span>
         </div>
-        <span className={`settlement-value total-value ${statusColorClass}`}>{totalAmount.toLocaleString()}원</span>
+        <span className={`settlement-value total-value ${statusColorClass}`}>{displayTotal.toLocaleString()}원</span>
       </div>
 
       {details.length > 0 && (
@@ -69,7 +72,7 @@ const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', 
             const bulletColor = getMappedColor(item.userId || item.userName);
 
             return (
-              <div key={index} className="detail-row">
+              <div key={item.userId ?? index} className="detail-row">
                 <div className="detail-label">
                   <span className="bullet" style={{ backgroundColor: bulletColor }} />
                   <span className="user-name">{item.userName}</span>
