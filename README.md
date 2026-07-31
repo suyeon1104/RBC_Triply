@@ -243,7 +243,7 @@ src
 ## Frontend
 
 ```bash
-git clone [<repository>](https://github.com/suyeon1104/RBC_Triply.git)
+git clone https://github.com/suyeon1104/RBC_Triply.git
 
 cd triply_front
 
@@ -255,11 +255,12 @@ npm run dev
 ## Backend
 
 ```bash
-git clone [<repository>](https://github.com/suyeon1104/RBC_Triply.git)
+git clone https://github.com/suyeon1104/RBC_Triply.git
 
 cd backend
 
 ./gradlew bootRun
+```
 
 ---
 
