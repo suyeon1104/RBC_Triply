@@ -1,7 +1,21 @@
-import { useEffect, useState } from 'react';
-import './TripListItem.css';
-import { getGroupDetail } from '../../../api/groupApi';
-import ImageFrame from '../../ImageFrame/ImageFrame';
+import { useEffect, useState } from "react";
+import "./TripListItem.css";
+import { getGroupDetail } from "../../../api/groupApi";
+import ImageFrame from "../../ImageFrame/ImageFrame";
+
+const tripPlaceImages: Record<string, string> = {
+  한국: "/image/korea.jpg",
+  일본: "/image/japan.jpg",
+  미국: "/image/newyork.jpg",
+  대만: "/image/taiwan.jpg",
+  홍콩: "/image/hongkong.jpg",
+  태국: "/image/thailand.jpg",
+  말레이시아: "/image/malaysia.jpg",
+  이탈리아: "/image/italy.jpg",
+  프랑스: "/image/paris.jpg",
+  독일: "/image/neuschwanstein.jpg",
+  오스트리아: "/image/austria.jpg",
+};
 
 export interface Trip {
   createdAt: string;
@@ -20,7 +34,7 @@ interface TripListItemProps {
 }
 
 const TripListItem = ({ trip, handlePlanDetail }: TripListItemProps) => {
-  const [tripGroupName, setTripGroupName] = useState('');
+  const [tripGroupName, setTripGroupName] = useState("");
   const [tripGroupMemberNum, setTripGroupMemberNum] = useState<number>(0);
 
   useEffect(() => {
@@ -49,13 +63,18 @@ const TripListItem = ({ trip, handlePlanDetail }: TripListItemProps) => {
 
   return (
     <div className="trip-item" onClick={() => handlePlanDetail(trip.tripId)}>
-      <ImageFrame size="l" src="/assets/maru.png" />
+      <ImageFrame
+        size="l"
+        src={tripPlaceImages[trip.tripPlace] ?? "/image/defaultImage.png"}
+        alt={trip.tripPlace}
+      />
       {/* 우측 여행 정보 */}
       <div>
         <div className="trip-title">{trip.tripTitle}</div>
 
         <div className="trip-period">
-          {trip.startDate.split('-').join('.')} - {trip.endDate.split('-').join('.')}
+          {trip.startDate.split("-").join(".")} -{" "}
+          {trip.endDate.split("-").join(".")}
         </div>
         <div className="trip-place">{trip.tripPlace}</div>
 

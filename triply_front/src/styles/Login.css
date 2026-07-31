@@ -12,6 +12,7 @@
   margin-top: 100px;
   display: flex;
   flex-direction: column;
+  padding: 10px;
 }
 
 /* 로고 및 상단 문구 */
@@ -27,7 +28,8 @@
 .logoImg {
   width: auto;
   height: 80px;
-  filter: invert(48%) sepia(82%) saturate(986%) hue-rotate(193deg) brightness(97%) contrast(92%);
+  filter: invert(48%) sepia(82%) saturate(986%) hue-rotate(193deg)
+    brightness(97%) contrast(92%);
 }
 
 .subText {

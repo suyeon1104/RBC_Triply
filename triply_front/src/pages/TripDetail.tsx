@@ -1,14 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import TopNav from '../components/Navigation/TopNav/TopNav';
-import { useNavigate, useParams } from 'react-router-dom';
-import ImageFrame from '../components/ImageFrame/ImageFrame';
-import { getTripDetail } from '../api/tripApi';
-import Button from '../components/Button/Button/Button';
-import { ChevronRight, Plus } from 'lucide-react';
-import { getGroupMembers } from '../api/groupApi';
-import TripScheduleList from '../components/TripScheduleList';
-import TripTransactionList from '../components/TripTransactionList';
+import React, { useEffect, useRef, useState } from "react";
+import TopNav from "../components/Navigation/TopNav/TopNav";
+import { useNavigate, useParams } from "react-router-dom";
+import { getTripDetail } from "../api/tripApi";
+import Button from "../components/Button/Button/Button";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
+import { getGroupMembers } from "../api/groupApi";
+import TripScheduleList from "../components/TripScheduleList";
+import TripTransactionList from "../components/TripTransactionList";
+import "../styles/TripDetail.css";
 
+const tripPlaceImages: Record<string, string> = {
+  한국: "/image/korea.jpg",
+  일본: "/image/japan.jpg",
+  미국: "/image/newyork.jpg",
+  대만: "/image/taiwan.jpg",
+  홍콩: "/image/hongkong.jpg",
+  태국: "/image/thailand.jpg",
+  말레이시아: "/image/malaysia.jpg",
+  이탈리아: "/image/italy.jpg",
+  프랑스: "/image/paris.jpg",
+  독일: "/image/neuschwanstein.jpg",
+  오스트리아: "/image/austria.jpg",
+};
 interface Schedule {
   scheduleId: number;
   scheduleDate: string;
@@ -41,9 +54,33 @@ export const TripDetail = () => {
   const { tripId } = useParams<{ tripId: string }>();
   const [tripInfo, setTripInfo] = useState<TripInfo | null>(null);
   const [groupMemberCount, setGroupMemberCount] = useState<number>(0); // 멤버 수 상태 추가
-  const [toggle, setToggle] = useState<string>('plan');
+  const [toggle, setToggle] = useState<string>("plan");
+  const [selectedDay, setSelectedDay] = useState<string>("all");
+  const dayFilterRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
+  // 날짜별 스케줄
+  const tripDays = React.useMemo(() => {
+    if (!tripInfo) return [];
+
+    const days: string[] = [];
+    const current = new Date(tripInfo.startDate);
+    const end = new Date(tripInfo.endDate);
+
+    while (current <= end) {
+      days.push(current.toISOString().split("T")[0]); // yyyy-MM-dd
+      current.setDate(current.getDate() + 1);
+    }
+
+    return days;
+  }, [tripInfo]);
+
+  const filteredSchedules =
+    selectedDay === "all"
+      ? (tripInfo?.schedules ?? [])
+      : (tripInfo?.schedules ?? []).filter(
+          (schedule) => schedule.scheduleDate === selectedDay,
+        );
 
   // 1. 여행 상세 정보 조회
   useEffect(() => {
@@ -71,72 +108,141 @@ export const TripDetail = () => {
           setGroupMemberCount(res.data.length);
         }
       } catch (error) {
-        console.error('그룹 멤버 조회 실패:', error);
+        console.error("그룹 멤버 조회 실패:", error);
       }
     };
 
     fetchGroupMembers();
   }, [tripInfo?.groupId]);
 
-  function toggleButton() {
-    if (toggle === 'plan') {
-      setToggle('expend');
-    } else {
-      setToggle('plan');
-    }
-  }
-
   return (
     <>
       <header>
         <TopNav
-          title={tripInfo?.tripTitle || '계획 상세'}
+          title={tripInfo?.tripTitle || "계획 상세"}
           // showRightButton={true} rightButtonIcon={isOwner ? <Settings /> : <LogOut />}
         />
         <div className="d-day-buttons">
-          <div className="d-day-tab">
-            <Button variant="subtle" size="s">
+          <div className="day-filter" ref={dayFilterRef}>
+            <span
+              className={`day-item ${selectedDay === "all" ? "active" : ""}`}
+              onClick={() => setSelectedDay("all")}
+            >
               All
-            </Button>
+            </span>
+
+            {tripDays.map((day, index) => {
+              const isSelected = selectedDay === day;
+
+              return (
+                <span
+                  key={day}
+                  className={`day-item ${isSelected ? "active" : ""}`}
+                  onClick={() => setSelectedDay(day)}
+                >
+                  {isSelected
+                    ? `D+${index + 1}`
+                    : String(index + 1).padStart(2, "0")}
+                </span>
+              );
+            })}
           </div>
-          <div>좌우 버튼</div>
+
+          <div className="day-move">
+            <ChevronLeft
+              size={20}
+              onClick={() =>
+                dayFilterRef.current?.scrollBy({
+                  left: -120,
+                  behavior: "smooth",
+                })
+              }
+            />
+
+            <ChevronRight
+              size={20}
+              onClick={() =>
+                dayFilterRef.current?.scrollBy({
+                  left: 120,
+                  behavior: "smooth",
+                })
+              }
+            />
+          </div>
         </div>
       </header>
       <main className="page">
         <div className="container">
-          <ImageFrame src="/assets/maru.png" size="l" />
-          <div>
-            <h2>{tripInfo?.tripTitle}</h2>
-            <p>
-              {tripInfo?.startDate} - {tripInfo?.endDate}
-            </p>
-            <p>{tripInfo?.tripPlace}</p>
-            <p>
-              with {tripInfo?.groupTitle}({groupMemberCount}명)
-            </p>
-            <Button onClick={() => navigate(`/group/${tripInfo?.groupId}`)} variant="subtle" size="s" trailingIcon={<ChevronRight />}>
-              멤버 보기
-            </Button>
-            <hr />
-            <button onClick={toggleButton}>{toggle === 'plan' ? <p>여행 계획</p> : <p>지출 내역</p>}</button>
-            {toggle === 'plan' ? (
-              // tripInfo?.schedules.map((schedule) => (
-              //     <React.Fragment key={schedule.scheduleId}>
-              //         {/* <ImageFrame src="/assets/maru.png" /> */}
-              //       <p>{schedule.scheduleTitle}</p>
-              //       <p>장소 : {schedule.schedulePlace}</p>
-              //       <p>날짜 : {schedule.scheduleDate}</p>
-              //       <p>시간 : {schedule.startTime} - {schedule.endTime}</p>
+          <div className="trip-image">
+            <img
+              src={
+                tripPlaceImages[tripInfo?.tripPlace ?? ""] ??
+                "/image/defaultImage.png"
+              }
+              alt={tripInfo?.tripPlace ?? "여행 이미지"}
+            />
+          </div>
+          <div className="trip-info-section">
+            <div className="trip-info">
+              <div className="trip-info-left">
+                <h2>{tripInfo?.tripTitle}</h2>
 
-              //     </React.Fragment>
-              //   )
-              // )
-              <TripScheduleList schedules={tripInfo?.schedules ?? []} tripId={tripId} />
-            ) : (
-              <>
+                <p className="trip-date">
+                  {tripInfo?.startDate} - {tripInfo?.endDate} |{" "}
+                  {selectedDay === "all"
+                    ? "All"
+                    : `D+${
+                        tripDays.findIndex((day) => day === selectedDay) + 1
+                      }`}
+                </p>
+
+                <p>{tripInfo?.tripPlace}</p>
+
+                {tripInfo?.groupId && (
+                  <p>
+                    with {tripInfo.groupTitle} ({groupMemberCount}명)
+                  </p>
+                )}
+              </div>
+
+              {tripInfo?.groupId && (
+                <Button
+                  variant="subtle"
+                  size="s"
+                  trailingIcon={<ChevronRight size={16} />}
+                  onClick={() => navigate(`/group/${tripInfo.groupId}`)}
+                >
+                  멤버 보기
+                </Button>
+              )}
+            </div>
+
+            <div className="trip-toggle">
+              <button
+                className={toggle === "plan" ? "active" : ""}
+                onClick={() => setToggle("plan")}
+              >
+                여행 계획
+              </button>
+
+              <button
+                className={toggle === "expend" ? "active" : ""}
+                onClick={() => setToggle("expend")}
+              >
+                지출 내역
+              </button>
+            </div>
+
+            <div className="trip-content">
+              {toggle === "plan" ? (
+                <TripScheduleList
+                  schedules={filteredSchedules}
+                  tripId={tripId}
+                />
+              ) : (
                 <TripTransactionList tripId={tripId ?? -1} />
-              </>
-            )}
+              )}
+            </div>
           </div>
 
           <div className="floating-button">

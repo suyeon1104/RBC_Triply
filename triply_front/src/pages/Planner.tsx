@@ -8,7 +8,6 @@ import Button from "../components/Button/Button/Button";
 import "../styles/Planner.css";
 import { Plus } from "lucide-react";
 import GNB from "../components/Navigation/GNB/GNB";
-
 interface Trip {
   createdAt: string;
   endDate: string;
@@ -59,10 +58,10 @@ export default function Planner() {
           <section>
             <div className="trip-list">
               {trips.map((trip) => (
-                <TripListItem 
-                  key={trip.tripId} 
-                  trip={trip} 
-                  handlePlanDetail={handlePlanDetail} 
+                <TripListItem
+                  key={trip.tripId}
+                  trip={trip}
+                  handlePlanDetail={handlePlanDetail}
                 />
               ))}
             </div>
