@@ -4,16 +4,23 @@
   gap: 12px;
 }
 
-.floating-button {
+/* .floating-button {
   position: fixed;
-  left: min(calc(50% + 220px - 24px), calc(100% - 24px));
-  transform: translateX(-100%);
+  left: 50%;
+  bottom: 90px; 
 
-  bottom: 100px;
+  transform: translateX(-50%);
+
+  width: calc(100% - 32px);
+  max-width: 420px;
+
   z-index: 100;
 }
 
+.floating-button > * {
+  width: 100%;
+}
 .floating-button Button {
   width: 164px;
   box-shadow: var(--shadow-2);
-}
+} */

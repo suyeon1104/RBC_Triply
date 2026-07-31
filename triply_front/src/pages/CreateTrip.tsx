@@ -82,14 +82,17 @@ const CreateTrip = () => {
         tripPlace: tripPlace,
         startDate: startDate,
         endDate: endDate,
-        groupId: connectedGroup?.groupId ? Number(connectedGroup.groupId) : null,
+        groupId: connectedGroup?.groupId
+          ? Number(connectedGroup.groupId)
+          : null,
       });
 
       navigate("/planner", { state: { tripId: createTripRes.data.tripId } });
     } catch (error) {
       console.error("여행 생성 실패:", error);
       // 서버에서 보낸 에러 메시지가 있다면 출력
-      const errorMsg = error.response?.data || "여행 생성 중 오류가 발생했습니다.";
+      const errorMsg =
+        error.response?.data || "여행 생성 중 오류가 발생했습니다.";
       alert(errorMsg);
     }
   };
@@ -97,10 +100,7 @@ const CreateTrip = () => {
   return (
     <>
       <header>
-        <TopNav
-          title="플래너 만들기"
-          rightButtonIcon={<Check />}
-        />
+        <TopNav title="플래너 만들기" rightButtonIcon={<Check />} />
       </header>
 
       <main className="page">
