@@ -201,4 +201,36 @@ public class TripController {
 		}
 	}
 
+	@Operation(summary = "여행 일정 단일 조회")
+	@GetMapping("/schedule/{scheduleId}")
+	public ResponseEntity<?> getSchedule(@PathVariable("scheduleId") Integer scheduleId,
+			@AuthenticationPrincipal Long userId) {
+
+		try {
+
+			TripScheduleDto response = tripService.getSchedule(scheduleId, userId);
+
+			return ResponseEntity.ok(response);
+
+		} catch (Exception e) {
+
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+
+	@Operation(summary = "그룹별 여행목록 조회")
+	@GetMapping("/group/{groupId}")
+	public ResponseEntity<?> getGroupTripList(@PathVariable("groupId") Long groupId) {
+
+		List<TripEntity> trips = tripService.getGroupTrips(groupId);
+
+		List<TripDto> response = trips.stream()
+				.map(trip -> TripDto.builder().tripId(trip.getTripId()).tripTitle(trip.getTripTitle())
+						.tripPlace(trip.getTripPlace()).tripImg(trip.getTripImg()).startDate(trip.getStartDate())
+						.endDate(trip.getEndDate())
+						.groupId(trip.getGroup() != null ? trip.getGroup().getGroupId() : null).result(true).build())
+				.toList();
+
+		return ResponseEntity.ok(response);
+	}
 }

@@ -1,9 +1,8 @@
 .recent-transaction {
-  background: white;
+  background: transparent;
 
   border-radius: 18px;
-
-  padding: 14px 16px;
+  padding: 0;
 }
 
 /* 헤더 */
@@ -11,35 +10,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  margin-bottom: 12px;
 }
 
 .recent-header h3 {
   margin: 0;
-
-  font-size: 16px;
-
-  font-weight: bold;
-}
-
-.recent-header button {
-  border: none;
-
-  background: none;
-
-  color: #777;
-
-  font-size: 12px;
-
-  cursor: pointer;
 }
 
 /* 리스트 */
 .transaction-list {
   display: flex;
-
   flex-direction: column;
+
+  background: white;
+
+  border-radius: 16px;
+
+  padding: 12px;
 }
 
 /* 한 줄 */
@@ -54,7 +40,7 @@
 }
 
 .transaction-item:not(:last-child) {
-  border-bottom: 1px solid #f3f3f3;
+  border-bottom: 1px solid var(--gray-200);
 }
 
 /* 아이콘 */
@@ -64,24 +50,24 @@
   justify-content: center;
   align-items: center;
 
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 52px;
 
-  border-radius: 50%;
+  border-radius: 16px;
 
   font-size: 18px;
 }
 
 .transaction-icon.charge {
-  background: #fff5d8;
+  background: #5d94fd;
 }
 
 .transaction-icon.payment {
-  background: #eef3ff;
+  background: #ffa90a;
 }
 
 .transaction-icon.settlement {
-  background: #eaf8ee;
+  background: #089f00;
 }
 
 /* 내용 */
@@ -96,69 +82,59 @@
 
   align-items: center;
 
-  gap: 5px;
+  gap: 4px;
 
-  font-size: 14px;
-
-  font-weight: bold;
+  font: var(--font-body2-bold);
 }
 
 /* 입금 */
 .transaction-amount.plus {
-  color: #2d74ff;
+  color: var(--main-500);
 }
 
 /* 결제 */
 .transaction-amount.minus {
-  color: #222;
-}
-
-.krw-amount {
-  font-size: 15px;
+  color: var(--gray-950);
 }
 
 .foreign-amount {
-  color: #888;
+  color: var(--gray-500);
 
-  font-size: 11px;
-
-  font-weight: normal;
+  font: var(--font-body2-regular);
 }
 
 .transaction-title {
-  margin-top: 2px;
+  margin-top: 0px;
 
-  color: #555;
+  color: var(--gray-500);
 
-  font-size: 12px;
+  font: var(--font-label1-regular);
 }
 
 .transaction-subtitle {
-  margin-top: 1px;
+  margin-top: 2px;
+  color: var(--gray-300);
 
-  color: #999;
-
-  font-size: 11px;
+  font: var(--font-label2-regular);
 }
 
 /* 날짜 */
-.transaction-date {
+/* .transaction-date {
   color: #999;
 
   font-size: 10px;
 
   white-space: nowrap;
-}
+} */
 
 /* 정산 버튼 */
-.recent-settlement-btn {
-  border: 1px solid #d8d8d8;
+.settlementButton {
+  border: 1px solid var(--gray-200);
+  background-color: transparent;
 
-  background: white;
+  color: var(--gray-600);
 
-  color: #888;
-
-  border-radius: 5px;
+  border-radius: 0px;
 
   padding: 3px 7px;
 
@@ -171,21 +147,26 @@
 
 /* 빈 내역 */
 .recent-empty {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  padding: 24px 0;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 24px;
+  background: white;
 
-  padding: 20px 0;
-
-  color: #999;
+  border-radius: 16px;
 }
 
 .empty-icon {
-  font-size: 28px;
-
-  margin-bottom: 8px;
+  color: var(--gray-300, #cbd5e1);
 }
 
 .recent-empty p {
   margin: 0;
-
-  font-size: 13px;
+  color: var(--gray-500);
+  font: var(--font-body2-regular);
 }

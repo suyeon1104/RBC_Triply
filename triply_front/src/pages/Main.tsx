@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import BottomNav from '../components/BottomNav';
+import BottomNav from "../components/BottomNav";
 
-import '../styles/Main.css';
-import { getTripList } from '../api/tripApi';
-import TravelBanner from '../components/TravelBanner';
-import WalletCard from '../components/WalletCard';
-import GNB from '../components/Navigation/GNB/GNB';
+import "../styles/Main.css";
+import { getTripList } from "../api/tripApi";
+import TravelBanner from "../components/TravelBanner";
+import WalletCard from "../components/WalletCard";
+import GNB from "../components/Navigation/GNB/GNB";
 
 export default function Main() {
-  const [activeTab, setActiveTab] = useState('main');
+  const [activeTab, setActiveTab] = useState("main");
   const [nearestTrip, setNearestTrip] = useState<any>(null);
   const now = new Date();
 
-  const todayString = `${now.getFullYear()}.` + `${String(now.getMonth() + 1).padStart(2, '0')}.` + `${String(now.getDate()).padStart(2, '0')}(${['일', '월', '화', '수', '목', '금', '토'][now.getDay()]})`;
+  const todayString =
+    `${now.getFullYear()}.` +
+    `${String(now.getMonth() + 1).padStart(2, "0")}.` +
+    `${String(now.getDate()).padStart(2, "0")}(${["일", "월", "화", "수", "목", "금", "토"][now.getDay()]})`;
 
   useEffect(() => {
     fetchNearestTrip();
@@ -24,13 +27,18 @@ export default function Main() {
       const res = await getTripList();
 
       const trips = res.data;
-      console.log(res.data);
+      // console.log(res.data);
 
       if (!trips.length) return;
 
       const today = new Date();
 
-      const upcomingTrips = trips.filter((trip: any) => new Date(trip.endDate) >= today).sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+      const upcomingTrips = trips
+        .filter((trip: any) => new Date(trip.endDate) >= today)
+        .sort(
+          (a: any, b: any) =>
+            new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+        );
 
       if (upcomingTrips.length > 0) {
         setNearestTrip(upcomingTrips[0]);

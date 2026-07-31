@@ -1,7 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { requestSettlement } from "../api/settlementApi";
-import type { MemberShare } from "../pages/SettlementCreate";
-import "../styles/SettlementConfirmModal.css";
+import { useNavigate } from 'react-router-dom';
+import { X } from 'lucide-react';
+import { requestSettlement } from '../api/settlementApi';
+import type { MemberShare } from '../pages/SettlementCreate';
+import Button from '../components/Button/Button/Button';
+import IconButton from '../components/Button/IconButton/IconButton';
+import '../styles/SettlementConfirmModal.css';
 
 interface Props {
   paymentId: number;
@@ -26,50 +29,51 @@ const SettlementConfirmModal = ({ paymentId, members, onClose }: Props) => {
       settlements,
     };
 
-    console.log(data);
-
     try {
       const res = await requestSettlement(data);
+      console.log('정산 요청 성공', res.data);
 
-      console.log("정산 요청 성공", res.data);
-
-      alert("정산 요청이 완료되었습니다.");
-      // 성공 후 처리
+      alert('정산 요청이 완료되었습니다.');
       onClose();
-
-      // 필요하면 홈이나 정산 완료 페이지 이동
-      navigate("/main");
+      navigate('/main');
     } catch (err) {
-      console.error("정산 요청 실패", err);
+      console.error('정산 요청 실패', err);
     }
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="settlement-modal">
-        <button className="close-btn" onClick={onClose}>
-          ✕
-        </button>
-
-        <h3>정산 요청 확인</h3>
-
-        <div className="settlement-list">
-          {settlements.map((item) => {
-            const member = members.find((m) => m.userId === item.fromUserId);
-
-            return (
-              <div key={item.fromUserId} className="settlement-item">
-                <span>{member?.userName}</span>
-
-                <span>₩{item.amount.toLocaleString()}</span>
-              </div>
-            );
-          })}
+    <div className="settlement-confirm-modal-overlay">
+      <div className="settlement-confirm-modal">
+        {/* 헤더 영역 */}
+        <div className="settlement-confirm-modal-header">
+          <h3>정산 요청 확인</h3>
+          <IconButton variant="subtle" size="l" shape="horizontal" onClick={onClose}>
+            <X color="var(--gray-950)" />
+          </IconButton>
         </div>
 
-        <button className="settlement-submit" onClick={handleSubmit}>
-          정산하기
-        </button>
+        {/* 바디 영역 */}
+        <div className="settlement-confirm-modal-body">
+          <div className="settlement-confirm-modal-list">
+            {settlements.map((item) => {
+              const member = members.find((m) => m.userId === item.fromUserId);
+
+              return (
+                <div key={item.fromUserId} className="settlement-confirm-modal-item">
+                  <span className="settlement-confirm-modal-item-name">{member?.userName}</span>
+                  <span className="settlement-confirm-modal-item-amount">₩{item.amount.toLocaleString()}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 푸터 영역 */}
+        <div className="settlement-confirm-modal-footer">
+          <Button variant="primary" size="l" className="settlement-confirm-modal-submit" onClick={handleSubmit}>
+            정산하기
+          </Button>
+        </div>
       </div>
     </div>
   );

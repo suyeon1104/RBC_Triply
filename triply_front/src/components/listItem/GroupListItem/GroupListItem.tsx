@@ -42,10 +42,6 @@ const GroupListItem = ({ group }: GroupListItemProps) => {
           <span className="group-member-label">멤버 :</span> {group.members.map((member) => member.userName).join(', ')}
         </div>
       </div>
-      {/* 정상 항목 개수 반영해서 수정 필요 */}
-      <div className="group-settlement">
-        <span className="group-settlement-count">2건</span> 정산대기
-      </div>
     </div>
   );
 };

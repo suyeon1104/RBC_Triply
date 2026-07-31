@@ -1,26 +1,47 @@
-import React from 'react';
-import { Plus, Minus, Equal, HelpCircle } from 'lucide-react';
-import './SettlementList.css';
-import { getMappedColor } from '../../Avatar/Avatar';
+import React, { useState } from "react";
+import { Equal, HelpCircle, ChevronDown } from "lucide-react";
+import "./SettlementList.css";
+import { getMappedColor } from "../../Avatar/Avatar";
 
 export interface DetailItem {
+  settlementId: number;
   userName: string;
   userId?: number | string;
-  type: 'receive' | 'send';
+  type: "receive" | "send";
   amount: number;
 }
 
 export interface SettlementListProps {
   paidAmount?: number;
   consumedAmount?: number;
-  type?: 'receive' | 'send' | 'empty';
-  totalAmount?: number;
-  details?: DetailItem[];
+
+  receiveTotal?: number;
+  sendTotal?: number;
+
+  receiveDetails?: DetailItem[];
+  sendDetails?: DetailItem[];
+
   emptyMessage?: string;
 }
 
-const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', totalAmount = 0, details = [], emptyMessage = '정산 내역이 없어요.' }: SettlementListProps) => {
-  if (type === 'empty') {
+const SettlementList = ({
+  paidAmount = 0,
+  consumedAmount = 0,
+
+  receiveTotal = 0,
+  sendTotal = 0,
+
+  receiveDetails = [],
+  sendDetails = [],
+
+  emptyMessage = "정산 내역이 없어요.",
+}: SettlementListProps) => {
+  const [receiveOpen, setReceiveOpen] = useState(false);
+  const [sendOpen, setSendOpen] = useState(false);
+
+  const hasSettlement = receiveDetails.length > 0 || sendDetails.length > 0;
+
+  if (!hasSettlement) {
     return (
       <div className="settlement-empty">
         <HelpCircle className="empty-icon" size={64} />
@@ -29,57 +50,142 @@ const SettlementList = ({ paidAmount = 0, consumedAmount = 0, type = 'receive', 
     );
   }
 
-  const isReceive = type === 'receive';
-  const statusColorClass = isReceive ? 'receive' : 'send';
-  const statusLabel = isReceive ? '받을 금액' : '보낼 금액';
-
   return (
-    <div className="settlmentlist-container">
-      <div className="settlement-row primary-row">
+    <div className="settlement-list-container">
+      {/* 공통 금액 */}
+      {/* <div className="settlement-row primary-row">
         <div className="settlement-label">
-          <Plus size={24} className="icon" />
           <span>결제한 금액</span>
         </div>
-        <span className="settlement-value">{paidAmount.toLocaleString()}원</span>
+
+        <span className="settlement-value">
+          {paidAmount.toLocaleString()}원
+        </span>
       </div>
 
       <div className="settlement-row primary-row">
         <div className="settlement-label">
-          <Minus size={24} className="icon" />
           <span>소비한 금액</span>
         </div>
-        <span className="settlement-value">{consumedAmount.toLocaleString()}원</span>
-      </div>
 
-      <div className="settlement-divider" />
+        <span className="settlement-value">
+          {consumedAmount.toLocaleString()}원
+        </span>
+      </div> */}
 
-      <div className={`settlement-row total-row ${statusColorClass}`}>
-        <div className="settlement-label">
-          <Equal size={24} className="icon" />
-          <span>{statusLabel}</span>
-        </div>
-        <span className={`settlement-value total-value ${statusColorClass}`}>{totalAmount.toLocaleString()}원</span>
-      </div>
+      {/* <div className="settlement-divider" /> */}
 
-      {details.length > 0 && (
-        <div className="settlement-details">
-          {details.map((item, index) => {
-            const isItemReceive = item.type === 'receive';
-            const actionText = isItemReceive ? '에게 받을 금액' : '에게 보낼 금액';
-            const bulletColor = getMappedColor(item.userId || item.userName);
+      {/* 받을 금액 */}
+      {receiveDetails.length > 0 && (
+        <>
+          <div
+            className="settlement-row total-row receive"
+            onClick={() => setReceiveOpen((prev) => !prev)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="settlement-label">
+              <Equal size={24} className="icon" />
 
-            return (
-              <div key={index} className="detail-row">
-                <div className="detail-label">
-                  <span className="bullet" style={{ backgroundColor: bulletColor }} />
-                  <span className="user-name">{item.userName}</span>
-                  <span className="action-text">{actionText}</span>
+              <span>받을 금액</span>
+
+              <ChevronDown
+                size={20}
+                style={{
+                  transition: "0.2s",
+                  transform: receiveOpen ? "rotate(180deg)" : "rotate(0deg)",
+                }}
+              />
+            </div>
+
+            <span className="settlement-value total-value receive">
+              {receiveTotal.toLocaleString()}원
+            </span>
+          </div>
+
+          {receiveOpen && (
+            <div className="settlement-details">
+              {receiveDetails.map((item) => (
+                <div key={item.settlementId} className="detail-row">
+                  <div className="detail-label">
+                    <span
+                      className="bullet"
+                      style={{
+                        backgroundColor: getMappedColor(
+                          item.userId || item.userName,
+                        ),
+                      }}
+                    />
+
+                    <span className="user-name">{item.userName}</span>
+
+                    <span className="action-text">에게 받을 금액</span>
+                  </div>
+
+                  <span className="detail-value">
+                    {item.amount.toLocaleString()}원
+                  </span>
                 </div>
-                <span className="detail-value">{item.amount.toLocaleString()}원</span>
-              </div>
-            );
-          })}
-        </div>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+      {/* 임시추가 한 라인 */}
+      <div className="settlement-divider" />
+      {/* 보낼 금액 */}
+      {sendDetails.length > 0 && (
+        <>
+          <div
+            className="settlement-row total-row send"
+            onClick={() => setSendOpen((prev) => !prev)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="settlement-label">
+              <Equal size={24} className="icon" />
+
+              <span>보낼 금액</span>
+
+              <ChevronDown
+                size={20}
+                style={{
+                  transition: "0.2s",
+                  transform: sendOpen ? "rotate(180deg)" : "rotate(0deg)",
+                }}
+              />
+            </div>
+
+            <span className="settlement-value total-value send">
+              {sendTotal.toLocaleString()}원
+            </span>
+          </div>
+
+          {sendOpen && (
+            <div className="settlement-details">
+              {sendDetails.map((item) => (
+                <div key={item.settlementId} className="detail-row">
+                  <div className="detail-label">
+                    <span
+                      className="bullet"
+                      style={{
+                        backgroundColor: getMappedColor(
+                          item.userId || item.userName,
+                        ),
+                      }}
+                    />
+
+                    <span className="user-name">{item.userName}</span>
+
+                    <span className="action-text">에게 보낼 금액</span>
+                  </div>
+
+                  <span className="detail-value">
+                    {item.amount.toLocaleString()}원
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

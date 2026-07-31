@@ -30,7 +30,7 @@ const Notification = () => {
     try {
       const res = await getNotiList();
       setNotifications(res.data);
-      console.log("알림 목록:", res.data);
+      // console.log('알림 목록:', res.data);
     } catch (error) {
       console.error("알림 목록 조회 실패:", error);
     }
@@ -88,7 +88,9 @@ const Notification = () => {
   };
   return (
     <>
-      <TopNav title="알림내역" />
+      <header>
+        <TopNav title="알림내역" />
+      </header>
       <main className="page">
         {/* 알림 목록을 표시할 컴포넌트를 여기에 추가 */}
         {/* <Button>정산하기</Button> */}
@@ -128,7 +130,7 @@ const Notification = () => {
             className="notification-modal"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2>{selectedNotification.title}</h2>
+            <h3>{selectedNotification.title}</h3>
 
             {selectedNotification.subTitle && (
               <p className="notification-subtitle">
@@ -143,13 +145,16 @@ const Notification = () => {
             {selectedNotification.type === "GROUP_INVITE" ? (
               <div className="modal-buttons">
                 <Button
-                  variant="assistive"
+                  variant="outlined"
+                  size="l"
                   onClick={() => handleReject(selectedNotification.targetId)}
                 >
                   거절
                 </Button>
 
                 <Button
+                  variant="primary"
+                  size="l"
                   onClick={() => handleAccept(selectedNotification.targetId)}
                 >
                   수락
@@ -157,6 +162,8 @@ const Notification = () => {
               </div>
             ) : (
               <Button
+                variant="primary"
+                size="l"
                 onClick={() => handleSettlement(selectedNotification.targetId)}
               >
                 정산하기
@@ -165,7 +172,6 @@ const Notification = () => {
           </div>
         </div>
       )}
-      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
     </>
   );
 };

@@ -1,0 +1,210 @@
+.join-container {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  background: #fff;
+
+  padding: 20px;
+
+  max-width: 480px;
+
+  margin: 0 auto;
+
+  box-sizing: border-box;
+}
+
+.join-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 30px;
+}
+
+.join-back-button {
+  background: none;
+
+  border: none;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  color: #333;
+}
+
+.join-header-title {
+  font-size: 16px;
+
+  font-weight: bold;
+
+  margin: 0;
+
+  color: #333;
+}
+
+.join-form {
+  display: flex;
+
+  flex-direction: column;
+
+  flex: 1;
+
+  padding: 15px;
+}
+
+.join-title-container {
+  margin-bottom: 30px;
+}
+
+.join-main-title {
+  font-size: 22px;
+
+  font-weight: bold;
+
+  color: #222;
+
+  line-height: 1.4;
+
+  margin: 0;
+}
+
+.join-input-group {
+  /* margin-bottom: 20px; */
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.join-label {
+  font-size: 14px;
+
+  color: #333;
+
+  margin-bottom: 8px;
+
+  font-weight: 500;
+}
+
+.join-label span {
+  color: #5b86e5;
+
+  margin-left: 2px;
+}
+
+.join-input {
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid #e0e0e0;
+
+  font-size: 15px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  height: 40px;
+}
+
+.join-input:focus {
+  border-color: #5b86e5;
+}
+
+.join-inline-group {
+  display: flex;
+
+  gap: 10px;
+}
+
+.join-sub-action-button {
+  padding: 0 16px;
+
+  border-radius: 12px;
+
+  border: 1px solid #e0e0e0;
+
+  background: #f5f5f5;
+
+  color: #555;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+}
+
+.join-msg-space {
+  height: 18px;
+
+  margin: 6px 0 0;
+
+  font-size: 13px;
+
+  line-height: 18px;
+
+  visibility: hidden;
+}
+
+.join-msg-space.success {
+  color: #5b86e5;
+
+  visibility: visible;
+}
+
+.join-msg-space.error {
+  color: #ff4d4f;
+
+  visibility: visible;
+}
+
+.phone-code-box {
+  margin-top: 8px;
+
+  padding: 10px;
+
+  background: #f1f3f5;
+
+  border-radius: 8px;
+}
+
+.phone-code-box strong {
+  color: #5b86e5;
+}
+
+.join-submit-button {
+  width: 100%;
+
+  padding: 16px;
+
+  border-radius: 12px;
+
+  background: #5b86e5;
+
+  color: white;
+
+  border: none;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(91, 134, 229, 0.3);
+
+  margin-top: auto;
+
+  margin-bottom: 20px;
+}

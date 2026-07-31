@@ -68,9 +68,7 @@ public class PaymentService {
 		// 7. 오늘 진행 중인 여행 조회
 		LocalDate today = LocalDate.now();
 
-		Optional<TripEntity> trip = tripRepo
-				.findByUser_UserIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(userId, today, today);
-
+		Optional<TripEntity> trip = tripRepo.findTodayTrip(userId, today);
 		// 8. 결제 저장 (여행이 있으면 자동 연결)
 		PaymentEntity payment = PaymentEntity.builder().user(wallet.getUser()).trip(trip.orElse(null))
 				.merchantName(mockPayment.getMerchantName()).amount(mockPayment.getAmount())

@@ -1,3 +1,4 @@
+.settlement-list-container,
 .settlmentlist-container {
   display: flex;
   flex-direction: column;
@@ -15,15 +16,18 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: auto; /* 고정 높이 제거 */
+  height: auto;
 }
 
 .settlement-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
-  font-weight: 500;
+}
+
+/* 🔥 결제, 소비, 총 금액 라벨 span 모두 bold로 변경 */
+.settlement-label span {
+  font: var(--font-body1-bold);
   color: var(--gray-900, #1e293b);
 }
 
@@ -34,9 +38,9 @@
   justify-content: center;
 }
 
+/* 🔥 결제, 소비, 총 금액 오른쪽 금액 span 모두 bold */
 .settlement-value {
-  font-size: 16px;
-  font-weight: 700;
+  font: var(--font-body1-bold);
   color: var(--gray-950, #0f172a);
 }
 
@@ -48,29 +52,37 @@
   margin: 4px 0;
 }
 
-/* 합계 영역 (받을/보낼 금액) */
-.total-row.receive .settlement-label,
-.total-value.receive {
-  color: var(--primary-500, #3b82f6);
+/* 🔥 총 합계 텍스트 색상 강제 초기화 (파란색/빨간색 완전히 제거) */
+.total-row .settlement-label span,
+.total-row.receive .settlement-label span,
+.total-row.send .settlement-label span {
+  font: var(--font-body1-bold);
+  color: var(--gray-900, #1e293b) !important;
 }
 
-.total-row.send .settlement-label,
+.total-value,
+.total-value.receive,
 .total-value.send {
-  color: var(--red-500, #ef4444);
+  font: var(--font-h4-bold, var(--font-body1-bold));
+  color: var(--gray-950, #0f172a) !important;
 }
 
-.total-row .icon {
-  color: inherit !important;
+.total-row.receive .icon {
+  color: var(--main-500, #3b82f6) !important;
 }
 
-/* 멤버별 상세 리스트 영역 (오재현, 홍주희...) */
+.total-row.send .icon {
+  color: var(--negative, #ef4444) !important;
+}
+
+/* 멤버별 상세 리스트 영역 */
 .settlement-details {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* 멤버 항목 간 간격 */
+  gap: 8px;
   margin-top: 4px;
   width: 100%;
-  height: auto; /* 리스트 개수에 맞춰 자연스럽게 늘어남 */
+  height: auto;
 }
 
 .detail-row {
@@ -84,8 +96,6 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  color: var(--gray-600, #475569);
 }
 
 .bullet {
@@ -97,17 +107,17 @@
 }
 
 .user-name {
-  font-weight: 600;
+  font: var(--font-body2-bold);
   color: var(--gray-800, #1e293b);
 }
 
 .action-text {
+  font: var(--font-body2-regular);
   color: var(--gray-600, #64748b);
 }
 
 .detail-value {
-  font-size: 13px;
-  font-weight: 500;
+  font: var(--font-body2-bold);
   color: var(--gray-700, #334155);
 }
 
@@ -117,9 +127,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 160px;
   padding: 24px 0;
   gap: 8px;
   width: 100%;
+  background: var(--white, #ffffff);
 }
 
 .empty-icon {
@@ -127,8 +139,7 @@
 }
 
 .empty-text {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--gray-500, #64748b);
   margin: 0;
+  color: var(--gray-500, #888888);
+  font: var(--font-body2-regular);
 }

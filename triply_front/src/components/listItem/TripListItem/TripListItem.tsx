@@ -3,7 +3,7 @@ import "./TripListItem.css";
 import { getGroupDetail } from "../../../api/groupApi";
 import ImageFrame from "../../ImageFrame/ImageFrame";
 
-interface Trip {
+export interface Trip {
   createdAt: string;
   endDate: string;
   groupId?: number | null; // null이나 undefined 가능성 반영

@@ -19,3 +19,7 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.label1.pending-text {
+  color: var(--negative);
+}

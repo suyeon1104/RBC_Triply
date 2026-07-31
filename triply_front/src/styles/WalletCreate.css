@@ -4,34 +4,8 @@
   display: flex;
   flex-direction: column;
 
-  background: #f8f9fa;
-
   box-sizing: border-box;
   position: relative;
-}
-
-/* ================= 상단 제목 ================= */
-
-.create-top {
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 64px;
-
-  flex-shrink: 0;
-
-  background: white;
-}
-
-.create-top h2 {
-  margin: 0;
-
-  font-size: 22px;
-
-  font-weight: bold;
 }
 
 .back-btn {
@@ -47,7 +21,6 @@
 
   cursor: pointer;
 }
-
 /* ================= 내용 영역 ================= */
 
 .create-content {
@@ -68,7 +41,11 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
+
+  .body-1 {
+    color: var(--gray-500);
+  }
 }
 
 /* ================= 입력 영역 ================= */
@@ -80,50 +57,89 @@
 
   gap: 8px;
 
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+
+  .body-2 {
+    color: var(--gray-800);
+  }
 }
 
-.form-group label {
-  color: #333;
+.body-2 span {
+  color: var(--main-500);
 
-  font-size: 14px;
-
-  font-weight: bold;
-}
-
-.form-group label span {
-  color: #5b86e5;
-
-  margin-left: 3px;
+  margin-left: 4px;
 }
 
 .form-group select,
 .form-group input {
   width: 100%;
-
   height: 48px;
+  padding: 0 12px;
+  box-sizing: border-box;
 
-  padding: 0 14px;
-
-  border: 1px solid #ddd;
-
+  background-color: var(--white);
+  border: 1px solid var(--gray-200, #e0e0e0);
   border-radius: 12px;
 
-  background: white;
+  font: var(--font-body1-regular, inherit);
+  color: var(--gray-950, #111111);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
 
-  color: #333;
+  &::placeholder {
+    color: var(--gray-400, #9e9e9e);
+  }
 
-  font-size: 14px;
-
-  box-sizing: border-box;
+  &:focus {
+    border-color: var(--main-500, #3b82f6);
+    background-color: var(--white, #ffffff);
+  }
 }
 
-.form-group select {
+/* 셀렉트 */
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper select {
+  /* 1. 기본 브라우저 화살표 제거 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* 2. 우측 아이콘에 글자가 겹치지 않게 오른쪽 패딩 확보 */
+  padding-right: 40px;
   cursor: pointer;
 }
 
-.form-group input::placeholder {
-  color: #aaa;
+/* IE/Old Edge 화살표 제거 */
+.select-wrapper select::-ms-expand {
+  display: none;
+}
+
+.form-group select:invalid {
+  color: var(--gray-400, #9e9e9e);
+}
+
+/* 💡 드롭다운을 열었을 때 나오는 실제 옵션 글씨들은 검은색 유지 */
+.form-group select option {
+  color: var(--gray-950, #111111);
+}
+
+/* Lucide 아이콘 우측 중앙 배치 */
+.select-icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-500, #666666);
+
+  /* 클릭 시 아이콘이 아닌 아래 select가 선택되도록 클릭 이벤트 통과 */
+  pointer-events: none;
 }
 
 /* ================= 버튼 ================= */
@@ -150,9 +166,9 @@
 /* ================= 입금 예시 ================= */
 
 .deposit-example {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 
-  padding: 18px;
+  padding: 28px;
 
   background: white;
 
@@ -162,31 +178,27 @@
 }
 
 .deposit-title {
-  color: #888;
+  color: var(--gray-500);
 
-  font-size: 13px;
-
-  margin-bottom: 8px;
+  font: var(--font-label1-regular);
 }
 
 .deposit-name {
-  font-size: 22px;
+  font: var(--font-title2);
 
-  font-weight: bold;
-
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .deposit-name span {
-  color: #5b86e5;
+  color: var(--main-500);
 }
 
 .deposit-example p {
-  margin: 10px 0 0;
+  margin: 8px 0 0;
 
-  color: #999;
+  color: var(--gray-500);
 
-  font-size: 12px;
+  font: var(--font-body2-regular);
 }
 
 /* ================= 인증번호 입력 ================= */
@@ -234,62 +246,49 @@
 .auth-inputs input:focus {
   border-color: #5b86e5;
 }
-/* ================= 입금 알림 팝업 ================= */
 
 .deposit-popup {
+  /* 기존 남이 짜둔 위치/배치 구조 유지 */
   position: absolute;
-
   top: 80px;
   left: 20px;
   right: 20px;
 
   padding: 18px;
-
   background: white;
-
   border-radius: 16px;
-
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 
-  z-index: 10;
+  z-index: 999;
 
   animation: slideDown 0.3s ease;
 }
 
 .popup-title {
   margin-bottom: 10px;
-
   color: #555;
-
   font-size: 13px;
-
   font-weight: bold;
 }
 
 .popup-content {
   font-size: 15px;
-
   color: #333;
 }
 
 .popup-content strong {
   color: #5b86e5;
-
   font-weight: bold;
 }
 
-/* 등장 애니메이션 */
-
+/* 등장 애니메이션 (기존 원본 그대로 유지) */
 @keyframes slideDown {
   from {
     transform: translateY(-20px);
-
     opacity: 0;
   }
-
   to {
     transform: translateY(0);
-
     opacity: 1;
   }
 }
@@ -300,7 +299,7 @@
 
   gap: 8px;
 
-  margin-top: 12px;
+  margin-top: 4px;
 }
 
 .charge-buttons button {
@@ -310,17 +309,15 @@
 
   padding: 0;
 
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--gray-200);
 
   border-radius: 10px;
 
-  background: white;
+  background: var(--white);
 
-  color: #888;
+  color: var(--gray-600);
 
-  font-size: 10px;
-
-  font-weight: 400;
+  font: var(--font-label2-bold);
 
   cursor: pointer;
 }
@@ -328,27 +325,21 @@
 /* ================= 충전 후 잔액 ================= */
 
 .after-balance {
-  margin-top: 24px;
-
   padding: 0;
 
   background: transparent;
 
   text-align: left;
 
-  color: #888;
+  color: var(--gray-500);
 
-  font-size: 11px;
-
-  font-weight: 400;
+  font: var(--font-body1-regular);
 }
 
 .after-balance span {
   margin-left: 5px;
 
-  color: #5b86e5;
+  color: var(--main-500);
 
-  font-size: 13px;
-
-  font-weight: bold;
+  font: var(--font-body1-bold);
 }
