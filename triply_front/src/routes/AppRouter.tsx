@@ -29,6 +29,7 @@ import Notification from "../pages/Notification";
 import { useAuth } from "../contexts/useAuth";
 import PlanDetailCreate from "../pages/PlanDetailCreate";
 import GroupTripList from "../pages/GroupTripList";
+import { TripDetail } from "../pages/TripDetail";
 
 export default function AppRouter() {
   const { isAuthenticated } = useAuth();
@@ -73,6 +74,7 @@ export default function AppRouter() {
             path="/settlement/create/:paymentId"
             element={<SettlementCreate />}
           />
+          <Route path="/trip/detail/:tripId" element={<TripDetail />} />
           <Route path="/notification" element={<Notification />} />
           <Route
             path="/trip/:tripId/schedule/new"

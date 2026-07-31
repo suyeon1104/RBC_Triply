@@ -5,7 +5,9 @@ import ImageFrame from "../components/ImageFrame/ImageFrame";
 import { getTripDetail } from "../api/tripApi";
 import Button from "../components/Button/Button/Button";
 import { ChevronRight, Plus } from "lucide-react";
-import RecentTransaction from "../components/RecentTransaction";
+import { getGroupMembers } from "../api/groupApi";
+import TripScheduleList from "../components/TripScheduleList";
+import TripTransactionList from "../components/TripTransactionList";
 
 interface Schedule {
   scheduleId: number;
@@ -38,10 +40,12 @@ interface TripInfo {
 export const TripDetail = () => {
   const { tripId } = useParams<{ tripId: string }>();
   const [tripInfo, setTripInfo] = useState<TripInfo | null>(null);
+  const [groupMemberCount, setGroupMemberCount] = useState<number>(0); // 멤버 수 상태 추가
   const [toggle, setToggle] = useState<string>("plan");
 
   const navigate = useNavigate();
 
+  // 1. 여행 상세 정보 조회
   useEffect(() => {
     const getTrip = async () => {
       try {
@@ -53,7 +57,26 @@ export const TripDetail = () => {
       }
     };
     getTrip();
-  }, []);
+  }, [tripId]);
+
+  // 2. tripInfo가 세팅되고 groupId가 존재할 때 그룹 멤버 조회
+  useEffect(() => {
+    if (!tripInfo?.groupId) return;
+
+    const fetchGroupMembers = async () => {
+      try {
+        const res = await getGroupMembers(tripInfo.groupId);
+        // 서버 응답 구조에 맞게 수정 (예: res.data가 배열이거나 멤버 목록을 담고 있는 경우)
+        if (res?.data) {
+          setGroupMemberCount(res.data.length); 
+        }
+      } catch (error) {
+        console.error("그룹 멤버 조회 실패:", error);
+      }
+    };
+
+    fetchGroupMembers();
+  }, [tripInfo?.groupId]);
 
   function toggleButton() {
     if (toggle === "plan") {
@@ -84,9 +107,9 @@ export const TripDetail = () => {
           </p>
           <p>{tripInfo?.tripPlace}</p>
           <p>
-            with {tripInfo?.groupTitle}({}명)
+            with {tripInfo?.groupTitle}({groupMemberCount}명)
           </p>
-          <Button variant="subtle" size="s" trailingIcon={<ChevronRight />}>
+          <Button onClick={() => navigate(`/group/${tripInfo?.groupId}`)} variant="subtle" size="s" trailingIcon={<ChevronRight />}>
             멤버 보기
           </Button>
           <hr />
@@ -94,20 +117,21 @@ export const TripDetail = () => {
             {toggle === "plan" ? <p>여행 계획</p> : <p>지출 내역</p>}
           </button>
           {toggle === "plan" ? (
-            tripInfo?.schedules.map((schedule) => (
-                <React.Fragment key={schedule.scheduleId}>
-                    {/* <ImageFrame src="/assets/maru.png" /> */}
-                  <p>{schedule.scheduleTitle}</p>
-                  <p>장소 : {schedule.schedulePlace}</p>
-                  <p>날짜 : {schedule.scheduleDate}</p>
-                  <p>시간 : {schedule.startTime} - {schedule.endTime}</p>
+            // tripInfo?.schedules.map((schedule) => (
+            //     <React.Fragment key={schedule.scheduleId}>
+            //         {/* <ImageFrame src="/assets/maru.png" /> */}
+            //       <p>{schedule.scheduleTitle}</p>
+            //       <p>장소 : {schedule.schedulePlace}</p>
+            //       <p>날짜 : {schedule.scheduleDate}</p>
+            //       <p>시간 : {schedule.startTime} - {schedule.endTime}</p>
 
-                </React.Fragment>
-              )
-            )
+            //     </React.Fragment>
+            //   )
+            // )
+            <TripScheduleList schedules={tripInfo?.schedules ?? []} tripId={tripId} />
           ) : (
             <>
-              <RecentTransaction />
+              <TripTransactionList tripId={tripId ?? -1} />
             </>
           )}
         </div>
@@ -117,7 +141,14 @@ export const TripDetail = () => {
             variant="primary"
             size="l"
             trailingIcon={<Plus />}
-            onClick={() => navigate("/trip/createSchedule")}
+            onClick={() =>
+              navigate(`/trip/${tripId}/schedule/new`, {
+                state: {
+                  startDate: tripInfo?.startDate,
+                  endDate: tripInfo?.endDate,
+                },
+              })
+            }
           >
             계획 추가하기
           </Button>

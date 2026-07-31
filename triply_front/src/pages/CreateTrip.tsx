@@ -88,7 +88,9 @@ const CreateTrip = () => {
       navigate("/planner", { state: { tripId: createTripRes.data.tripId } });
     } catch (error) {
       console.error("여행 생성 실패:", error);
-      alert("여행 생성 중 오류가 발생했습니다.");
+      // 서버에서 보낸 에러 메시지가 있다면 출력
+      const errorMsg = error.response?.data || "여행 생성 중 오류가 발생했습니다.";
+      alert(errorMsg);
     }
   };
 
