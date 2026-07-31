@@ -77,12 +77,12 @@
 }
 
 .settlement-confirm-modal-item-name {
-  font: var(--font-body2-regular);
+  font: var(--font-body1-regular);
   color: var(--gray-700);
 }
 
 .settlement-confirm-modal-item-amount {
-  font: var(--font-body2-bold);
+  font: var(--font-body1-bold);
   color: var(--gray-950);
 }
 

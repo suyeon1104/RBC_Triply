@@ -1,35 +1,33 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import axiosInstance from "../api/axiosInstance";
-import { useAuth } from "../contexts/useAuth";
-import { idCheck, loginUser, phoneCheck } from "../api/authApi";
+import axiosInstance from '../api/axiosInstance';
+import { useAuth } from '../contexts/useAuth';
+import { idCheck, loginUser, phoneCheck } from '../api/authApi';
 
-import "../styles/Join.css";
+import '../styles/Join.css';
 
-import TopNav from "../components/Navigation/TopNav/TopNav";
-import Button from "../components/Button/Button/Button";
+import TopNav from '../components/Navigation/TopNav/TopNav';
+import Button from '../components/Button/Button/Button';
 
-type checkType = "beforeChecked" | "confirmedValue" | "wrongValue";
+type checkType = 'beforeChecked' | 'confirmedValue' | 'wrongValue';
 
 // 비밀번호 정규식: 영문, 숫자, 특수문자를 포함한 8~20자
-const passwordRegex =
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/;
 
 export default function Join() {
   const { login } = useAuth();
-  const [userName, setUserName] = useState("");
-  const [loginId, setLoginId] = useState("");
+  const [userName, setUserName] = useState('');
+  const [loginId, setLoginId] = useState('');
 
-  const [isLoginIdChecked, setIsLoginIdChecked] =
-    useState<checkType>("beforeChecked");
+  const [isLoginIdChecked, setIsLoginIdChecked] = useState<checkType>('beforeChecked');
 
-  const [loginPw, setLoginPw] = useState("");
-  const [userPhone, setUserPhone] = useState("");
+  const [loginPw, setLoginPw] = useState('');
+  const [userPhone, setUserPhone] = useState('');
 
   // 휴대폰 인증
-  const [serverVerificationCode, setServerVerificationCode] = useState("");
-  const [inputCode, setInputCode] = useState("");
+  const [serverVerificationCode, setServerVerificationCode] = useState('');
+  const [inputCode, setInputCode] = useState('');
   const [showPhoneInput, setShowPhoneInput] = useState(false);
   const [isPhoneVerified, setIsPhoneVerified] = useState(false);
 
@@ -37,10 +35,10 @@ export default function Join() {
   const [showPhonePopup, setShowPhonePopup] = useState(false);
 
   // 메시지
-  const [idMsg, setIdMsg] = useState("");
-  const [phoneMsg, setPhoneMsg] = useState("");
-  const [joinMsg, setJoinMsg] = useState("");
-  const [pwMsg, setPwMsg] = useState("");
+  const [idMsg, setIdMsg] = useState('');
+  const [phoneMsg, setPhoneMsg] = useState('');
+  const [joinMsg, setJoinMsg] = useState('');
+  const [pwMsg, setPwMsg] = useState('');
 
   const [isPwValid, setIsPwValid] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -49,7 +47,7 @@ export default function Join() {
   const { isAuthenticated } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem('accessToken');
 
     if (isAuthenticated || token) {
       // navigate("/main");
@@ -59,22 +57,22 @@ export default function Join() {
   // 회원가입
   const handleJoin = async () => {
     if (!userName || !loginId || !loginPw || !userPhone) {
-      setJoinMsg("모든 필드를 입력해주세요.");
+      setJoinMsg('모든 필드를 입력해주세요.');
       return;
     }
 
-    if (isLoginIdChecked !== "confirmedValue") {
-      setJoinMsg("아이디 중복 확인을 진행해주세요.");
+    if (isLoginIdChecked !== 'confirmedValue') {
+      setJoinMsg('아이디 중복 확인을 진행해주세요.');
       return;
     }
 
     if (!isPwValid) {
-      setJoinMsg("비밀번호 조건을 확인해주세요.");
+      setJoinMsg('비밀번호 조건을 확인해주세요.');
       return;
     }
 
     if (!isPhoneVerified) {
-      setJoinMsg("휴대폰 번호 인증을 진행해주세요.");
+      setJoinMsg('휴대폰 번호 인증을 진행해주세요.');
       return;
     }
 
@@ -86,11 +84,11 @@ export default function Join() {
     };
 
     setLoading(true);
-    setJoinMsg("");
+    setJoinMsg('');
 
     try {
       // 1. 회원가입
-      await axiosInstance.post("/user/auth/join", data);
+      await axiosInstance.post('/user/auth/join', data);
 
       // 2. 로그인
       const loginResponse = await loginUser({
@@ -101,11 +99,11 @@ export default function Join() {
       // 3. 토큰 저장
       login(loginResponse.data.token);
 
-      alert("회원가입이 완료되었습니다.");
+      alert('회원가입이 완료되었습니다.');
 
-      navigate("/main");
+      navigate('/main');
     } catch (error: any) {
-      setJoinMsg(error.response?.data?.msg ?? "회원가입에 실패했습니다.");
+      setJoinMsg(error.response?.data?.msg ?? '회원가입에 실패했습니다.');
     } finally {
       setLoading(false);
     }
@@ -114,7 +112,7 @@ export default function Join() {
   // 아이디 중복 확인
   const handleCheckId = async () => {
     if (!loginId) {
-      setIdMsg("아이디를 입력해주세요.");
+      setIdMsg('아이디를 입력해주세요.');
       return;
     }
 
@@ -122,29 +120,29 @@ export default function Join() {
       const res = await idCheck(loginId);
 
       if (res.data.result) {
-        setIsLoginIdChecked("confirmedValue");
-        setIdMsg("사용 가능한 아이디입니다.");
+        setIsLoginIdChecked('confirmedValue');
+        setIdMsg('사용 가능한 아이디입니다.');
       } else {
-        setIsLoginIdChecked("wrongValue");
-        setIdMsg("이미 사용 중인 아이디입니다.");
+        setIsLoginIdChecked('wrongValue');
+        setIdMsg('이미 사용 중인 아이디입니다.');
       }
     } catch {
-      setIsLoginIdChecked("wrongValue");
-      setIdMsg("아이디 확인 중 오류가 발생했습니다.");
+      setIsLoginIdChecked('wrongValue');
+      setIdMsg('아이디 확인 중 오류가 발생했습니다.');
     }
   };
 
   // 휴대폰 인증번호 요청
   const handleRequestPhoneAuth = async () => {
     if (!userPhone) {
-      setPhoneMsg("휴대폰 번호를 입력해주세요.");
+      setPhoneMsg('휴대폰 번호를 입력해주세요.');
       return;
     }
 
     try {
       const res = await phoneCheck();
 
-      const code = String(res.data.code ?? "999999");
+      const code = String(res.data.code ?? '999999');
 
       setServerVerificationCode(code);
 
@@ -161,9 +159,9 @@ export default function Join() {
         setShowPhonePopup(false);
       }, 5000);
 
-      setPhoneMsg("인증번호가 발송되었습니다.");
+      setPhoneMsg('인증번호가 발송되었습니다.');
     } catch {
-      setPhoneMsg("인증번호 발송에 실패했습니다.");
+      setPhoneMsg('인증번호 발송에 실패했습니다.');
     }
   };
 
@@ -175,18 +173,18 @@ export default function Join() {
 
     if (value === serverVerificationCode) {
       setIsPhoneVerified(true);
-      setPhoneMsg("휴대폰 인증이 완료되었습니다.");
+      setPhoneMsg('휴대폰 인증이 완료되었습니다.');
     } else {
       setIsPhoneVerified(false);
 
       if (value.length === 6) {
-        setPhoneMsg("인증번호가 일치하지 않습니다.");
+        setPhoneMsg('인증번호가 일치하지 않습니다.');
       }
     }
   };
   // 전화번호 포맷함수
   const formatPhoneNumber = (value: string) => {
-    const numbers = value.replace(/\D/g, "").slice(0, 11);
+    const numbers = value.replace(/\D/g, '').slice(0, 11);
 
     if (numbers.length < 4) return numbers;
     if (numbers.length < 8) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
@@ -226,11 +224,7 @@ export default function Join() {
             이름<span>*</span>
           </label>
 
-          <input
-            className="join-input"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
+          <input className="join-input" value={userName} onChange={(e) => setUserName(e.target.value)} />
 
           <p className="join-msg-space"></p>
         </div>
@@ -247,32 +241,17 @@ export default function Join() {
               value={loginId}
               onChange={(e) => {
                 setLoginId(e.target.value);
-                setIsLoginIdChecked("beforeChecked");
-                setIdMsg("");
+                setIsLoginIdChecked('beforeChecked');
+                setIdMsg('');
               }}
             />
 
-            <Button
-              variant={
-                isLoginIdChecked === "confirmedValue" ? "primary" : "assistive"
-              }
-              onClick={handleCheckId}
-            >
-              {isLoginIdChecked === "confirmedValue"
-                ? "확인 완료"
-                : "아이디 중복 확인"}
+            <Button variant={isLoginIdChecked === 'confirmedValue' ? 'primary' : 'assistive'} onClick={handleCheckId}>
+              {isLoginIdChecked === 'confirmedValue' ? '확인 완료' : '아이디 중복 확인'}
             </Button>
           </div>
 
-          <p
-            className={
-              isLoginIdChecked === "confirmedValue"
-                ? "join-msg-space success"
-                : "join-msg-space error"
-            }
-          >
-            {idMsg}
-          </p>
+          <p className={isLoginIdChecked === 'confirmedValue' ? 'join-msg-space success' : 'join-msg-space error'}>{idMsg}</p>
         </div>
 
         {/* 비밀번호 */}
@@ -291,26 +270,18 @@ export default function Join() {
               setLoginPw(value);
 
               if (passwordRegex.test(value)) {
-                setPwMsg("사용 가능한 비밀번호입니다.");
+                setPwMsg('사용 가능한 비밀번호입니다.');
 
                 setIsPwValid(true);
               } else {
-                setPwMsg(
-                  "영문, 숫자, 특수문자를 포함한 8~20자로 입력해주세요.",
-                );
+                setPwMsg('영문, 숫자, 특수문자를 포함한 8~20자로 입력해주세요.');
 
                 setIsPwValid(false);
               }
             }}
           />
 
-          <p
-            className={
-              isPwValid ? "join-msg-space success" : "join-msg-space error"
-            }
-          >
-            {pwMsg}
-          </p>
+          <p className={isPwValid ? 'join-msg-space success' : 'join-msg-space error'}>{pwMsg}</p>
         </div>
 
         {/* 휴대폰 */}
@@ -326,57 +297,42 @@ export default function Join() {
               inputMode="numeric"
               value={formatPhoneNumber(userPhone)}
               onChange={(e) => {
-                const numbers = e.target.value.replace(/\D/g, "").slice(0, 11);
+                const numbers = e.target.value.replace(/\D/g, '').slice(0, 11);
 
                 setUserPhone(numbers);
 
-                setPhoneMsg("");
+                setPhoneMsg('');
                 setIsPhoneVerified(false);
                 setShowPhoneInput(false);
               }}
             />
 
             <Button
-              variant={isPhoneVerified ? "primary" : "assistive"}
+              variant={isPhoneVerified ? 'primary' : 'assistive'}
               onClick={() => {
                 if (isPhoneVerified) return;
 
                 handleRequestPhoneAuth();
               }}
             >
-              {isPhoneVerified ? "인증 완료" : "휴대폰 번호 인증"}
+              {isPhoneVerified ? '인증 완료' : '휴대폰 번호 인증'}
             </Button>
           </div>
 
-          <p
-            className={
-              isPhoneVerified
-                ? "join-msg-space success"
-                : "join-msg-space error"
-            }
-          >
-            {phoneMsg}
-          </p>
+          <p className={isPhoneVerified ? 'join-msg-space success' : 'join-msg-space error'}>{phoneMsg}</p>
 
-          {showPhoneInput && (
-            <input
-              className="join-input"
-              placeholder="인증번호 입력...."
-              value={inputCode}
-              onChange={handleCheckPhoneCode}
-            />
-          )}
+          {showPhoneInput && <input className="join-input" placeholder="인증번호 입력...." value={inputCode} onChange={handleCheckPhoneCode} />}
         </div>
 
-        <p className="join-msg-space error">{joinMsg || " "}</p>
+        <p className="join-msg-space error">{joinMsg || ' '}</p>
 
         {/* <Button onClick={handleJoin}>
           {loading ? "가입 중..." : "가입하고 서비스 이용하기"}
         </Button> */}
 
-        <div className="edit-profile-bottom">
-          <Button className="edit-profile-submit" onClick={handleJoin}>
-            {loading ? "가입 중..." : "가입하고 서비스 이용하기"}
+        <div className="bottom-action-container">
+          <Button variant="primary" size="l" className="edit-profile-submit" onClick={handleJoin}>
+            {loading ? '가입 중...' : '가입하고 서비스 이용하기'}
           </Button>
         </div>
       </div>
