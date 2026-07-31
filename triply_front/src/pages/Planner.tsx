@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import instance from "../api/axiosInstance";
-import TripListItem from "../components/listItem/TripListItem/TripLIstItem";
+import TripListItem from "../components/listItem/TripListItem/TripListItem";
 
 import BottomNav from "../components/BottomNav";
 import Button from "../components/Button/Button/Button";
@@ -12,7 +12,7 @@ import GNB from "../components/Navigation/GNB/GNB";
 interface Trip {
   createdAt: string;
   endDate: string;
-  groupId: number;
+  groupId?: number | null; // 개인 여행일 경우 null 또는 undefined 가능성 반영
   result: boolean;
   startDate: string;
   tripId: number;
@@ -27,25 +27,27 @@ export default function Planner() {
   const location = useLocation();
   const [trips, setTrips] = useState<Trip[]>([]);
 
+  // tripId를 받아서 상세 페이지로 이동
+  function handlePlanDetail(tripId: number) {
+    navigate(`/trip/detail/${tripId}`);
+  }
+
   useEffect(() => {
     const fetchTripList = async () => {
       try {
         const res = await instance.get<Trip[]>("/trip/getTripList");
 
-        let sortedList = res.data.sort((a, b) => b.tripId - a.tripId);
+        const sortedList = res.data.sort((a, b) => b.tripId - a.tripId);
 
-        const newTrip = location.state?.newTrip;
-        if (newTrip && !sortedList.some((t) => t.tripId === newTrip.tripId)) {
-          sortedList = [newTrip, ...sortedList];
-        }
         setTrips(sortedList);
+        console.log(sortedList);
       } catch (error) {
         console.error("여행 목록 조회 실패:", error);
       }
     };
 
     fetchTripList();
-  }, [location.state]);
+  }, [location.state?.tripId]);
 
   return (
     <>
@@ -57,7 +59,11 @@ export default function Planner() {
           <section>
             <div className="trip-list">
               {trips.map((trip) => (
-                <TripListItem key={trip.tripId} trip={trip} />
+                <TripListItem 
+                  key={trip.tripId} 
+                  trip={trip} 
+                  handlePlanDetail={handlePlanDetail} 
+                />
               ))}
             </div>
           </section>

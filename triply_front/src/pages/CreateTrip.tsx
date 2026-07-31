@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import instance from "../api/axiosInstance";
 import Button from "../components/Button/Button/Button";
 import TopNav from "../components/Navigation/TopNav/TopNav";
 import { Check } from "lucide-react";
 import "../styles/CreateTrip.css";
 import type Group from "./Group";
-import { getTripList } from "../api/tripApi";
-// import IconButton from '../components/Button/IconButton/IconButton';
-// import MemberListItem, { type InvitedMember } from '../components/listItem/MemberList/MemberListItem';
-
-// interface ExtendedInvitedMember extends InvitedMember {
-//   loginId: string;
-// }
+import { createTrip } from "../api/tripApi";
 
 const tripPlaceList: string[] = [
   "한국",
@@ -29,12 +23,14 @@ const tripPlaceList: string[] = [
 ];
 
 const CreateTrip = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [tripTitle, setTripTitle] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [tripPlace, setTripPlace] = useState("");
-  const [connectedGroup, setConnectedGroup] = useState<Group | null>(null);
+  const [tripPlace, setTripPlace] = useState(tripPlaceList[0]);
+  const [connectedGroup, setConnectedGroup] = useState<Group | undefined>(
+    undefined,
+  );
   const [connectGroupList, setConnectGroupList] = useState<Group[]>([]);
 
   // 사용자가 등록해둔 그룹 목록 불러오기
@@ -43,6 +39,7 @@ const CreateTrip = () => {
       try {
         const res = await instance.get<Group[]>("/group/getGroupList");
         setConnectGroupList(res.data);
+        console.log(res.data);
       } catch (error) {
         console.error("그룹 목록 조회 실패:", error);
       }
@@ -55,14 +52,14 @@ const CreateTrip = () => {
     const selectedId = e.target.value;
 
     if (!selectedId) {
-      setConnectedGroup(null);
+      setConnectedGroup(undefined);
       return;
     }
 
     const selected = connectGroupList.find(
       (group) => String(group.groupId) === selectedId,
     );
-    setConnectedGroup(selected ?? null);
+    setConnectedGroup(selected ?? undefined);
   }
 
   const handleCreateTrip = async () => {
@@ -71,12 +68,29 @@ const CreateTrip = () => {
       return;
     }
 
+    if (!startDate || !endDate) {
+      alert("여행 기간을 입력해주세요.");
+      return;
+    }
+
     try {
       console.log("try");
-      // const res = getTripList();
+
+      // 통합된 createTrip 함수 사용 (그룹이 없으면 null 또는 파라미터 제외 처리)
+      const createTripRes = await createTrip({
+        tripTitle: tripTitle,
+        tripPlace: tripPlace,
+        startDate: startDate,
+        endDate: endDate,
+        groupId: connectedGroup?.groupId ? Number(connectedGroup.groupId) : null,
+      });
+
+      navigate("/planner", { state: { tripId: createTripRes.data.tripId } });
     } catch (error) {
-      console.error("그룹 생성 및 멤버 초대 실패:", error);
-      alert("여행 생성 중 오류가 발생했습니다.");
+      console.error("여행 생성 실패:", error);
+      // 서버에서 보낸 에러 메시지가 있다면 출력
+      const errorMsg = error.response?.data || "여행 생성 중 오류가 발생했습니다.";
+      alert(errorMsg);
     }
   };
 
@@ -86,7 +100,6 @@ const CreateTrip = () => {
         <TopNav
           title="플래너 만들기"
           rightButtonIcon={<Check />}
-          onRightButtonClick={handleCreateTrip}
         />
       </header>
 
@@ -149,9 +162,9 @@ const CreateTrip = () => {
                 id="tripPlace"
                 onChange={(e) => setTripPlace(e.target.value)}
               >
-                {tripPlaceList.map((tripPlace) => (
-                  <option key={tripPlace} value={tripPlace}>
-                    {tripPlace}
+                {tripPlaceList.map((place) => (
+                  <option key={place} value={place}>
+                    {place}
                   </option>
                 ))}
               </select>
@@ -175,25 +188,7 @@ const CreateTrip = () => {
                 ))}
               </select>
             </div>
-            {/* 
-            <div className="input-content">
-              <label className="body2">멤버 초대</label>
-              <div className="invite-input-wrapper">
-                <input type="text" placeholder="초대할 멤버의 아이디를 입력해주세요." value={inviteInput} onChange={(e) => setInviteInput(e.target.value)} onKeyDown={handleKeyDown} />
-                <IconButton variant="subtle" shape="horizontal" onClick={handleAddMember}>
-                  <Plus color="var(--gray-950)" />
-                </IconButton>
-              </div>
-            </div> */}
           </section>
-
-          {/* <section>
-            <div className="memberList">
-              {members.map((member) => (
-                <MemberListItem key={member.loginId} member={member} onDelete={() => handleDeleteMember(member.loginId)} />
-              ))}
-            </div>
-          </section> */}
 
           <div className="bottom-action-container">
             <Button variant="primary" size="l" onClick={handleCreateTrip}>

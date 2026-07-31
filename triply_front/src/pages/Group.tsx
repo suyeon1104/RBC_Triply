@@ -31,6 +31,7 @@ const Group = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [groups, setGroups] = useState<Group[]>([]);
+  const [activeTab, setActiveTab] = useState("group");
 
   useEffect(() => {
     const fetchGroupList = async () => {
@@ -53,7 +54,6 @@ const Group = () => {
     fetchGroupList();
   }, [location.state]);
 
-  const [activeTab, setActiveTab] = useState('group');
   return (
     <>
       <header>
