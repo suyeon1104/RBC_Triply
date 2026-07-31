@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import "./TripListItem.css";
-import { getGroupDetail } from "../../../api/groupApi";
-import ImageFrame from "../../ImageFrame/ImageFrame";
+import { useEffect, useState } from 'react';
+import './TripListItem.css';
+import { getGroupDetail } from '../../../api/groupApi';
+import ImageFrame from '../../ImageFrame/ImageFrame';
 
 export interface Trip {
   createdAt: string;
@@ -20,7 +20,7 @@ interface TripListItemProps {
 }
 
 const TripListItem = ({ trip, handlePlanDetail }: TripListItemProps) => {
-  const [tripGroupName, setTripGroupName] = useState("");
+  const [tripGroupName, setTripGroupName] = useState('');
   const [tripGroupMemberNum, setTripGroupMemberNum] = useState<number>(0);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const TripListItem = ({ trip, handlePlanDetail }: TripListItemProps) => {
 
     const fetchTripListItem = async () => {
       try {
-       const res = await getGroupDetail(trip.groupId!);
+        const res = await getGroupDetail(trip.groupId!);
         if (!res?.data || ignore) return;
         setTripGroupName(res.data.groupTitle);
         setTripGroupMemberNum(res.data.members.length);
@@ -49,30 +49,23 @@ const TripListItem = ({ trip, handlePlanDetail }: TripListItemProps) => {
 
   return (
     <div className="trip-item" onClick={() => handlePlanDetail(trip.tripId)}>
-      <div>이미지</div>
-      <ImageFrame src="/assets/maru.png" />
+      <ImageFrame size="l" src="/assets/maru.png" />
       {/* 우측 여행 정보 */}
       <div>
-        <div className="trip-title">
-          {trip.tripTitle}
-        </div>
+        <div className="trip-title">{trip.tripTitle}</div>
 
         <div className="trip-period">
-          {trip.startDate.split("-").join(".")} - {trip.endDate.split("-").join(".")}
+          {trip.startDate.split('-').join('.')} - {trip.endDate.split('-').join('.')}
         </div>
-        <div className="trip-place">
-          {trip.tripPlace}
-        </div>
-        <br />
+        <div className="trip-place">{trip.tripPlace}</div>
+
         <div className="trip-settlement">
           {trip.groupId ? (
             <span className="trip-group-name">
               with {tripGroupName}그룹 ({tripGroupMemberNum}명)
             </span>
           ) : (
-            <span className="trip-group-name">
-              개인 여행
-            </span>
+            <span className="trip-group-name">개인 여행</span>
           )}
         </div>
       </div>
